@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/widgets/button.dart';
 import 'package:storage_guard/app/widgets/link_text.dart';
 import 'package:storage_guard/app/widgets/text_form_field.dart';
+import 'package:storage_guard/core/funcs.dart';
 import 'package:storage_guard/features/authentication/presentation/login_page.dart';
 import 'package:storage_guard/features/authentication/presentation/widgets/email_text_field.dart';
 import 'package:storage_guard/features/authentication/presentation/widgets/pass_text_field.dart';
@@ -63,7 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     elevation: 2,
                                     borderRadius: BorderRadius.circular(24),
                                     child: CustomTextFormField(
-                                      controller: emailCon,
+                                      controller: nameCon,
                                       fillColor: AppColors.textFieldColor,
                                       hintText: 'Username',
                                       textDirection: TextDirection.ltr,
@@ -72,16 +74,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 20, horizontal: 14),
                                       textColor: AppColors.textColor,
-                                      validator: (text) {
-                                        if (text!.isEmpty) {
-                                          return 'userName should not be empty';
-                                        }
-                                        return null;
-                                      },
                                     ),
                                   ),
                                   const SizedBox(height: 18),
-                                  EmailTextField(emailCon: emailCon,isSignUp: true,),
+                                  EmailTextField(
+                                    emailCon: emailCon,
+                                    isSignUp: true,
+                                  ),
                                   const SizedBox(height: 18),
                                   PassTextField(passCon: passCon),
                                   const SizedBox(height: 18),
@@ -89,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     elevation: 2,
                                     borderRadius: BorderRadius.circular(24),
                                     child: CustomTextFormField(
-                                      controller: passCon,
+                                      controller: confirmpassCon,
                                       fillColor: AppColors.textFieldColor,
                                       borderRadius: 24,
                                       padding: const EdgeInsets.symmetric(
@@ -98,12 +97,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                       textColor: AppColors.textColor,
                                       hintColor: Colors.grey,
                                       isObscur: isHidden,
-                                      validator: (text) {
-                                        if (text! == passCon.text) {
-                                          return 'passwords should be the same';
-                                        }
-                                        return null;
-                                      },
                                     ),
                                   ),
                                   const SizedBox(height: 32),
@@ -114,7 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(90),
-                                          gradient: LinearGradient(
+                                          gradient: const LinearGradient(
                                             begin: Alignment.centerLeft,
                                             end: Alignment.centerRight,
                                             stops: [0.0, 1.0],
@@ -137,6 +130,17 @@ class _SignUpPageState extends State<SignUpPage> {
                                             };
                                             if (_formKey.currentState!
                                                 .validate()) {
+                                              Fluttertoast.showToast(
+                                                gravity: ToastGravity.BOTTOM,
+                                                msg:
+                                                    getTextFieldValidationInfoSignUp(
+                                                        nameCon.text.trim(),
+                                                        emailCon.text.trim(),
+                                                        passCon.text.trim(),
+                                                        confirmpassCon.text
+                                                            .trim()),
+                                                backgroundColor: Colors.red,
+                                              );
                                               // BlocProvider.of<AuthCubit>(context).login(data);
                                             }
                                           },
@@ -145,7 +149,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                           child: Row(
                                             children: const [
                                               Text(
-                                                'Login',
+                                                'Create Account',
                                                 style: TextStyle(
                                                     height: 1,
                                                     color: Colors.white,
@@ -214,11 +218,11 @@ class _SignUpPageState extends State<SignUpPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Don't have an account? ",
+                              "Already have an account? ",
                               style: TextStyles.smallLightTextStyle,
                             ),
                             LinkText(
-                              "Sign up",
+                              "Sign in",
                               fontSize: 16,
                               color: AppColors.mainblue,
                               onTap: () {
@@ -226,7 +230,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const SignUpPage()));
+                                            const LoginPage()));
                               },
                             ),
                           ],

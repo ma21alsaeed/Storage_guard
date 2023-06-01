@@ -36,12 +36,7 @@ class _PassTextFieldState extends State<PassTextField> {
           isHidden: isHidden,
         ),
         isObscur: isHidden,
-        validator: (text) {
-          if (text!.isEmpty) {
-            return 'password should not be empty';
-          }
-          return null;
-        },
+        
       ),
     );
   }

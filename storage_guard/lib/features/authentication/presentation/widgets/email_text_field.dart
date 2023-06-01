@@ -21,12 +21,7 @@ class EmailTextField extends StatelessWidget {
         borderRadius: 24,
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
         textColor: AppColors.textColor,
-        validator: (text) {
-          if (text!.isEmpty) {
-            return 'email should not be empty';
-          }
-          return null;
-        },
+        
       ),
     );
   }

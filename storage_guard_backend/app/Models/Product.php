@@ -15,6 +15,7 @@ class Product extends Model
     'description',
     'production_date',
     'expity_date',
+    
     'max_temp',
     'min_temp',
     'max_humidity',

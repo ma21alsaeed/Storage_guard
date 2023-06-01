@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/widgets/button.dart';
 import 'package:storage_guard/app/widgets/link_text.dart';
 import 'package:storage_guard/app/widgets/text_form_field.dart';
+import 'package:storage_guard/core/funcs.dart';
 import 'package:storage_guard/features/authentication/presentation/signup_page.dart';
 import 'package:storage_guard/features/authentication/presentation/widgets/email_text_field.dart';
 import 'package:storage_guard/features/authentication/presentation/widgets/pass_text_field.dart';
@@ -55,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 42),
                         Form(
                           key: _formKey,
+                          autovalidateMode: AutovalidateMode.disabled,
                           child: Column(
                             children: [
                               Column(
@@ -93,6 +96,13 @@ class _LoginPageState extends State<LoginPage> {
                                             };
                                             if (_formKey.currentState!
                                                 .validate()) {
+                                              emailCon.text.isEmpty;
+                                              passCon.text.isEmpty;
+                                              Fluttertoast.showToast(gravity: ToastGravity.BOTTOM,
+                                                msg:
+                                                    getTextFieldValidationInfoLogin(emailCon.text.trim(),passCon.text.trim()),
+                                                backgroundColor: Colors.red,
+                                              );
                                               // BlocProvider.of<AuthCubit>(context).login(data);
                                             }
                                           },

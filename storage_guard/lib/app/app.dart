@@ -5,6 +5,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/features/authentication/presentation/login_page.dart';
+import 'package:storage_guard/main_page.dart';
 
 class StorageGuardApp extends StatelessWidget {
   static Future<void> init() async {
@@ -31,7 +32,7 @@ class StorageGuardApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const LoginPage()
+          home: const MainPage()
         );
     // MultiProvider(
     //   providers: [
