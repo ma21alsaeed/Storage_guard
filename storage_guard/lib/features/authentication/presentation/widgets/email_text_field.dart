@@ -15,7 +15,7 @@ class EmailTextField extends StatelessWidget {
       child: CustomTextFormField(
         controller: emailCon,
         fillColor: AppColors.textFieldColor,
-        hintText: isSignUp ? "Email" : 'Username or Email',
+        hintText: "Email",
         textDirection: TextDirection.ltr,
         hintColor: Colors.grey,
         borderRadius: 24,

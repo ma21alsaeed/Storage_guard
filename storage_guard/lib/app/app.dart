@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:storage_guard/app/di.dart';
+import 'package:storage_guard/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:storage_guard/features/authentication/presentation/login_page.dart';
 import 'package:storage_guard/main_page.dart';
 
@@ -12,7 +13,6 @@ class StorageGuardApp extends StatelessWidget {
     //splash screen
     FlutterNativeSplash.preserve(
         widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
-
     await DI.init();
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -28,12 +28,18 @@ class StorageGuardApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => DI.di<AuthCubit>()),
+      ],
+      child: MaterialApp(
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const MainPage()
-        );
+          home: DI.userService.getUser() == null
+              ? const LoginPage()
+              : const MainPage()),
+    );
     // MultiProvider(
     //   providers: [
     //     ChangeNotifierProvider(
@@ -52,7 +58,7 @@ class StorageGuardApp extends StatelessWidget {
     //       theme: ThemeData(
     //         primarySwatch: Colors.blue,
     //       ),
-    //       home: 
+    //       home:
     //     ),
     //   ),
     // );

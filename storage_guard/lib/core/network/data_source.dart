@@ -12,10 +12,8 @@ Future<T> dataSource<T>(Function call,
     if (model == null) {
       return Future.value(null);
     }
-    return isUpdateUser
-        ? model(response.body, isUpdateUser: true)
-        : model(response.body);
+    return model(response.body);
   } else {
-    throw HttpException(jsonResponse["error"]["message"]);
+    throw HttpException(jsonResponse["message"]);
   }
 }

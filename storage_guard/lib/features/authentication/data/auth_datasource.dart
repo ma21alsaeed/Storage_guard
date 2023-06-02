@@ -13,10 +13,11 @@ class AuthDataSource {
         Uri.parse(loginUrl),
         body: json.encode(data),
         headers: {
-          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
         },
       ),
-      // model: userModelFromJson
+      model: userModelFromJson
     );
   }
   Future<UserModel> register(Map<String, dynamic> data) async {
@@ -25,10 +26,11 @@ class AuthDataSource {
         Uri.parse(registerUrl),
         body: json.encode(data),
         headers: {
-          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
         },
       ), 
-      // model: userModelFromJson
+      model: userModelFromJson
     );
   }
 }
