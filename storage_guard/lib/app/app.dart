@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:storage_guard/features/authentication/presentation/login_page.dart';
+import 'package:storage_guard/features/welcome/welcome_page.dart';
 import 'package:storage_guard/main_page.dart';
 
 class StorageGuardApp extends StatelessWidget {
@@ -36,9 +37,14 @@ class StorageGuardApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: DI.userService.getUser() == null
-              ? const LoginPage()
-              : const MainPage()),
+          home:const WelcomePage()
+          //  DI.userService.getUser() == null
+          //     ? const LoginPage()
+          //     : 
+              // DI.welcomeService.getIsFirstTime() != null
+              //     ? const MainPage()
+              //     : const WelcomePage()
+                  ),
     );
     // MultiProvider(
     //   providers: [

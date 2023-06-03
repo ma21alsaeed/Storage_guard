@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
+import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/app/extensions/snack_bar_build_context.dart';
 import 'package:storage_guard/app/widgets/button.dart';
 import 'package:storage_guard/app/widgets/link_text.dart';
@@ -83,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       const MainPage()));
+                                          DI.welcomeService.setIsFirstTime();
                                         } else if (state is ErrorState) {
                                           Fluttertoast.showToast(
                                               msg: state.message);
