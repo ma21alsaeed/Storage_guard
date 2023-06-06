@@ -14,6 +14,11 @@ abstract class TextStyles {
     fontSize: 28,
     fontWeight: FontWeight.w600,
   );
+  static TextStyle titleDividerTextStyle = const TextStyle(
+    color: AppColors.textColor,
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+  );
   //Medium
   static TextStyle mediumTextStyle = const TextStyle(
     color: AppColors.textColor,
@@ -25,6 +30,10 @@ abstract class TextStyles {
     color: AppColors.textColor,
     fontSize: 20,
   );
+  static TextStyle bodyTitleTextStyle = const TextStyle(
+    color: AppColors.textColor,
+    fontSize: 16,
+  );
   //Light
   static TextStyle lightTextStyle = const TextStyle(
     color: AppColors.textColor,
@@ -34,6 +43,11 @@ abstract class TextStyles {
   static TextStyle smallLightTextStyle = const TextStyle(
     color: AppColors.textColor,
     fontSize: 16,
+    fontWeight: FontWeight.w300,
+  );
+  static TextStyle bodyTextStyle = const TextStyle(
+    color: AppColors.textColor,
+    fontSize: 15,
     fontWeight: FontWeight.w300,
   );
 }

@@ -37,13 +37,12 @@ class StorageGuardApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home:const WelcomePage()
-          //  DI.userService.getUser() == null
+          home:const MainPage()
+          // home: DI.userService.getUser() == null
           //     ? const LoginPage()
-          //     : 
-              // DI.welcomeService.getIsFirstTime() != null
-              //     ? const MainPage()
-              //     : const WelcomePage()
+          //     : DI.welcomeService.getIsFirstTime() != null
+          //         ? const MainPage()
+          //         : const WelcomePage()
                   ),
     );
     // MultiProvider(

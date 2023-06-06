@@ -7,6 +7,7 @@ import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/extensions/snack_bar_build_context.dart';
 import 'package:storage_guard/app/widgets/button.dart';
+import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
 import 'package:storage_guard/app/widgets/link_text.dart';
 import 'package:storage_guard/app/widgets/text_form_field.dart';
 import 'package:storage_guard/core/funcs.dart';
@@ -148,25 +149,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                               child:
                                                   CircularProgressIndicator());
                                         }
-                                        return Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(90),
-                                            gradient: const LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,
-                                              stops: [0.0, 1.0],
-                                              colors: [
-                                                Color(0xBD233A8E),
-                                                AppColors.mainblue,
-                                              ],
-                                            ),
-                                          ),
-                                          child: CustomElevatedButton(
-                                            buttonColor: Colors.transparent,
-                                            shadowColor: Colors.transparent,
-                                            textColor: AppColors.background,
-                                            borderRadius: 90,
+                                        return GradientButton(
                                             onPressed: () {
                                               Map<String, dynamic> data = {
                                                 "email": emailCon.text.trim(),
@@ -191,28 +174,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                     .register(data);
                                               }
                                             },
-                                            verticalPadding: 12,
-                                            horizantalPadding: 28,
-                                            child: Row(
-                                              children: const [
-                                                Text(
-                                                  'Create Account',
-                                                  style: TextStyle(
-                                                      height: 1,
-                                                      color: Colors.white,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                SizedBox(width: 8),
-                                                Icon(
-                                                  CupertinoIcons.arrow_right,
-                                                  color: Colors.white,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        );
+                                            title: 'Create Account');
                                       }),
                                     ],
                                   ),

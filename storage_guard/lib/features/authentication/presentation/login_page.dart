@@ -7,6 +7,7 @@ import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/app/extensions/snack_bar_build_context.dart';
 import 'package:storage_guard/app/widgets/button.dart';
+import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
 import 'package:storage_guard/app/widgets/link_text.dart';
 import 'package:storage_guard/app/widgets/text_form_field.dart';
 import 'package:storage_guard/core/funcs.dart';
@@ -95,69 +96,30 @@ class _LoginPageState extends State<LoginPage> {
                                               child:
                                                   CircularProgressIndicator());
                                         }
-                                        return Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(90),
-                                            gradient: const LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,
-                                              stops: [0.0, 1.0],
-                                              colors: [
-                                                Color(0xBD233A8E),
-                                                AppColors.mainblue,
-                                              ],
-                                            ),
-                                          ),
-                                          child: CustomElevatedButton(
-                                            buttonColor: Colors.transparent,
-                                            shadowColor: Colors.transparent,
-                                            textColor: AppColors.background,
-                                            borderRadius: 90,
-                                            onPressed: () {
-                                              Map<String, dynamic> data = {
-                                                "email": emailCon.text.trim(),
-                                                "password": passCon.text.trim()
-                                              };
-                                              if (getTextFieldValidationInfo(
-                                                      emailCon.text.trim(),
-                                                      passCon.text.trim())
-                                                  .isNotEmpty) {
-                                                Fluttertoast.showToast(
-                                                  gravity: ToastGravity.BOTTOM,
-                                                  msg:
-                                                      getTextFieldValidationInfo(
-                                                          emailCon.text.trim(),
-                                                          passCon.text.trim()),
-                                                  backgroundColor: Colors.red,
-                                                );
-                                              } else {
-                                                BlocProvider.of<AuthCubit>(
-                                                        context)
-                                                    .login(data);
-                                              }
-                                            },
-                                            verticalPadding: 12,
-                                            horizantalPadding: 28,
-                                            child: Row(
-                                              children: const [
-                                                Text(
-                                                  'Login',
-                                                  style: TextStyle(
-                                                      height: 1,
-                                                      color: Colors.white,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                SizedBox(width: 8),
-                                                Icon(
-                                                  CupertinoIcons.arrow_right,
-                                                  color: Colors.white,
-                                                )
-                                              ],
-                                            ),
-                                          ),
+                                        return GradientButton(
+                                          onPressed: () {
+                                            Map<String, dynamic> data = {
+                                              "email": emailCon.text.trim(),
+                                              "password": passCon.text.trim()
+                                            };
+                                            if (getTextFieldValidationInfo(
+                                                    emailCon.text.trim(),
+                                                    passCon.text.trim())
+                                                .isNotEmpty) {
+                                              Fluttertoast.showToast(
+                                                gravity: ToastGravity.BOTTOM,
+                                                msg: getTextFieldValidationInfo(
+                                                    emailCon.text.trim(),
+                                                    passCon.text.trim()),
+                                                backgroundColor: Colors.red,
+                                              );
+                                            } else {
+                                              BlocProvider.of<AuthCubit>(
+                                                      context)
+                                                  .login(data);
+                                            }
+                                          },
+                                          title: 'Login',
                                         );
                                       }),
                                     ],
