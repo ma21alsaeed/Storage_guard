@@ -1,13 +1,20 @@
 #include "dht_sensor.h"
 
-DhtSensor::DhtSensor(int pin, int type) : dht_(pin, type) {
+DhtSensor::DhtSensor(int pin, int type) : dht_(pin, type), temperature_(0), humidity_(0) {
   dht_.begin();
 }
 
-float DhtSensor::readTemperature() {
-  return dht_.readTemperature();
+bool DhtSensor::readValues() {
+  temperature_ = dht_.readTemperature();
+  humidity_ = dht_.readHumidity();
+  return true;
+  
 }
 
-float DhtSensor::readHumidity() {
-  return dht_.readHumidity();
+float DhtSensor::getTemperature() {
+  return temperature_;
+}
+
+float DhtSensor::getHumidity() {
+  return humidity_;
 }
