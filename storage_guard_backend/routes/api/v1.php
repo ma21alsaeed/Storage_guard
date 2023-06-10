@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\UserController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Products\ProductController;
-
 use App\Http\Controllers\Api\Operations\OperationsController;
 use App\Http\Controllers\Api\Operations\ProductListController;
 use App\Http\Controllers\Api\Operations\SensorReadingsController;
@@ -27,8 +26,8 @@ Route::Post('/login', LoginController::class);
 
 Route::middleware('auth:sanctum')->group(function ()
 {
-    Route::Put('/user/{user}', [UserController::class, 'update']);
-    Route::Delete('/user/{user}', [UserController::class, 'destroy']);
+    Route::Put('/user/{userId}', [UserController::class, 'update']);
+    Route::Delete('/user/{userId}', [UserController::class, 'destroy']);
     Route::resource('/products', ProductController::class)->except('create', 'edit');
     Route::resource('/user/operations', OperationsController::class)->except('create', 'edit');
     Route::get('/operation-products/{operation}', [ProductListController::class, 'index']);
@@ -36,9 +35,5 @@ Route::middleware('auth:sanctum')->group(function ()
     Route::delete('/operation-products/{operation}', [ProductListController::class, 'destroy']);
     Route::get('/operation-sensor-records/{operation}', [SensorReadingsController::class, 'index']);
     Route::post('/operation-sensor-records/{operation}', [SensorReadingsController::class, 'store']);
-    Route::delete('/operation-sensor-records/{sensorReadings}', [SensorReadingsController::class, 'destroy']);
-
-
-
-
+    Route::delete('/operation-sensor-records', [SensorReadingsController::class, 'destroy']);
 });

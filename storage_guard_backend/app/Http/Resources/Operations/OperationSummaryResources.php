@@ -20,10 +20,10 @@ class OperationSummaryResources extends JsonResource
         [
             'id'             => $this->id,
             'type'           => $this->type,
+            'user_id'        => $this->user_id,
             'created_at'     => $this->created_at,
             'updated_at'     => $this->updated_at,
             'finished_at'    => $this->finished_at ? Carbon::parse($this->finished_at) : null,
-            'user'           => $this->user,
             'products_count' => ProductResources::collection($this->products)->count(),
             'readings_count' => SensorReadingsResources::collection($this->sensorReadings)->count()
         ];
