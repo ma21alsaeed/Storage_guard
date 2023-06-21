@@ -1,7 +1,5 @@
-import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:storage_guard/features/authentication/data/user_model.dart';
 
 class WelcomeService {
   final SharedPreferences _preferences;

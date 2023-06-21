@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:provider/provider.dart';
 import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/features/authentication/presentation/cubit/auth_cubit.dart';
-import 'package:storage_guard/features/authentication/presentation/login_page.dart';
-import 'package:storage_guard/features/welcome/welcome_page.dart';
 import 'package:storage_guard/main_page.dart';
 
 class StorageGuardApp extends StatelessWidget {

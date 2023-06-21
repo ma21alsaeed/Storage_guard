@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:storage_guard/app/di.dart';
-import 'package:storage_guard/features/welcome/welcome_page.dart';
 import 'features/home/presentation/home_page.dart';
 import 'features/qrcode/presentation/qrcode_page.dart';
 import 'features/transport/presentation/transport_page.dart';

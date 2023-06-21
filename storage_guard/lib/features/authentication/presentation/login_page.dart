@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,10 +5,8 @@ import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/app/extensions/snack_bar_build_context.dart';
-import 'package:storage_guard/app/widgets/button.dart';
 import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
 import 'package:storage_guard/app/widgets/link_text.dart';
-import 'package:storage_guard/app/widgets/text_form_field.dart';
 import 'package:storage_guard/core/funcs.dart';
 import 'package:storage_guard/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:storage_guard/features/authentication/presentation/signup_page.dart';

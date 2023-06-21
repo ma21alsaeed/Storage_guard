@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/di.dart';
-import 'package:storage_guard/app/widgets/button.dart';
 import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/features/welcome/widgets/app_sections_row.dart';
@@ -83,7 +80,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   children: [
                     GradientButton(
                       onPressed: () {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainPage()));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainPage()));
                       },
                       title:"Next",
                     )

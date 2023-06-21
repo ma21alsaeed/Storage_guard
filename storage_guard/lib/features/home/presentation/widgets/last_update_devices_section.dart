@@ -17,7 +17,7 @@ class LastUpdateDevicesSection extends StatelessWidget {
                   "Devices",
                   style: TextStyles.regularTextStyle,
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
                   "All Safe",
                   style: TextStyles.regularTextStyle,

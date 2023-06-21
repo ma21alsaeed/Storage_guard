@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/features/home/presentation/widgets/last_update_bottom_operations_section.dart';
 import 'package:storage_guard/features/home/presentation/widgets/last_update_devices_section.dart';
@@ -42,7 +41,7 @@ class Homepage extends StatelessWidget {
 }
 
 class _CurrentOperationsSection extends StatelessWidget {
-  const _CurrentOperationsSection({super.key});
+  const _CurrentOperationsSection();
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +65,13 @@ class _CurrentOperationsSection extends StatelessWidget {
 }
 
 class _LastUpdateSection extends StatelessWidget {
-  const _LastUpdateSection({super.key});
+  const _LastUpdateSection();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         TitleDivider("Last Update"),
         SizedBox(height: 16),
         LastUpdateDevicesSection(),

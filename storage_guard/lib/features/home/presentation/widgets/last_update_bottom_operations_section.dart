@@ -15,15 +15,15 @@ class LastUpdateBottomSection extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Padding(
-            padding: EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(left: 20),
             child: ListView.separated(
               itemCount: 2,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (context, index) => const SizedBox(
                 height: 20,
               ),
-              itemBuilder: (context, index) => _LastOperation(),
+              itemBuilder: (context, index) => const _LastOperation(),
             ))
       ],
     );
@@ -31,7 +31,7 @@ class LastUpdateBottomSection extends StatelessWidget {
 }
 
 class _LastOperation extends StatelessWidget {
-  const _LastOperation({super.key});
+  const _LastOperation();
 
   @override
   Widget build(BuildContext context) {

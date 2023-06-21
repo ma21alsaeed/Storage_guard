@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/extensions/snack_bar_build_context.dart';
-import 'package:storage_guard/app/widgets/button.dart';
 import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
 import 'package:storage_guard/app/widgets/link_text.dart';
 import 'package:storage_guard/app/widgets/text_form_field.dart';
@@ -15,7 +13,6 @@ import 'package:storage_guard/features/authentication/presentation/cubit/auth_cu
 import 'package:storage_guard/features/authentication/presentation/login_page.dart';
 import 'package:storage_guard/features/authentication/presentation/widgets/email_text_field.dart';
 import 'package:storage_guard/features/authentication/presentation/widgets/pass_text_field.dart';
-import 'package:storage_guard/features/authentication/presentation/widgets/show_pass_widget.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});

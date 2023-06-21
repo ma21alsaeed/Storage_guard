@@ -32,7 +32,7 @@ class OperationWidget extends StatelessWidget {
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      _ValuesColumn("Current", "18", "40"),
+                      const _ValuesColumn("Current", "18", "40"),
                       Container(
                         height: 55,
                         padding: const EdgeInsets.only(bottom: 4),
@@ -40,7 +40,7 @@ class OperationWidget extends StatelessWidget {
                           color: Colors.black45,
                         ),
                       ),
-                      _ValuesColumn("Avg", "20", "50"),const SizedBox(width: 6),
+                      const _ValuesColumn("Avg", "20", "50"),const SizedBox(width: 6),
                       Column(
                         children: [
                           Text(
@@ -69,7 +69,7 @@ class OperationWidget extends StatelessWidget {
 }
 
 class _ValuesColumn extends StatelessWidget {
-  const _ValuesColumn(this.title, this.temp, this.humidity, {super.key});
+  const _ValuesColumn(this.title, this.temp, this.humidity);
   final String title;
   final String temp;
   final String humidity;
@@ -99,7 +99,7 @@ class _ValuesColumn extends StatelessWidget {
               "assets/icons/temp.png",
               width: 25,
             ),
-            SizedBox(
+            const SizedBox(
                 height: 28,
                 child: VerticalDivider(
                   color: Colors.black45,
