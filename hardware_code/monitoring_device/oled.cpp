@@ -2,6 +2,7 @@
 #include "storage_guard_logo.h"
 #include "temp_icon.h"
 #include "hum_icon.h"
+#include "bluetooth_icon.h"
 
 OLED::OLED() : display(128, 64, &Wire, -1) {}
 
@@ -53,8 +54,12 @@ void OLED::showText(String text) {
   }
 }
 
-void OLED::showTempAndHum(float temperature, float humidity) {
+void OLED::showTempAndHum(float temperature, float humidity,bool state) {
+
   display.clearDisplay();
+  if(state){
+    showBluetoothState();
+  }
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(0, 10);
@@ -85,4 +90,8 @@ void OLED::displayLoadingAnimation() {
     display.display();
     delay(10);
   }
+}
+
+void OLED::showBluetoothState(){
+    display.drawBitmap(90, 10, bluetooth_icon, 12, 12, SSD1306_WHITE);
 }

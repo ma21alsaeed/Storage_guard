@@ -42,7 +42,7 @@ void DeviceManagement::storeSensorData(fs::FS &fs){
   
 }
 void DeviceManagement::showSensorData(){
-    oled.showTempAndHum(dhtSensor.getTemperature(),dhtSensor.getHumidity());
+    oled.showTempAndHum(dhtSensor.getTemperature(),dhtSensor.getHumidity(),bluetoothConnection.isConnected());
 }
 void DeviceManagement::sendSensorData(){
     float humidity = dhtSensor.getTemperature();
