@@ -1,6 +1,5 @@
-
-#include "fs_util.h"
 #include <LITTLEFS.h>
+#include <ArduinoJson.h>
 
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels) {
   Serial.printf("Listing directory: %s\r\n", dirname);
@@ -157,7 +156,7 @@ void deleteAllFiles(fs::FS &fs, const char * dirname, uint8_t levels) {
 
 
 // Function to append sensor data in JSON format to a file
-void appendSensorData(fs::FS &fs, const char *path, const char *sensorData) {
+void appendSensorData(fs::FS &fs, const char *path, String sensorData) {
   Serial.printf("Appending to file: %s\r\n", path);
 
   // Create a DynamicJsonDocument to hold the JSON data

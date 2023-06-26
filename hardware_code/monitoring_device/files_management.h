@@ -1,8 +1,5 @@
-
 #ifndef FS_UTIL_H
 #define FS_UTIL_H
-
-#include <Arduino.h>
 #include "FS.h"
 
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels);
@@ -14,6 +11,6 @@ void appendFile(fs::FS &fs, const char * path, const char * message);
 void renameFile(fs::FS &fs, const char * path1, const char * path2);
 void deleteFile(fs::FS &fs, const char * path);
 void deleteAllFiles(fs::FS &fs, const char * dirname, uint8_t levels);
-void appendSensorData(fs::FS &fs, const char *path, const char *sensorData);
+void appendSensorData(fs::FS &fs, const char *path, String sensorData);
 
 #endif

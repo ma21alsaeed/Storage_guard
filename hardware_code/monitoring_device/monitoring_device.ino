@@ -1,4 +1,47 @@
+#include "device_management.h"
+#include "FS.h"
 #include <LITTLEFS.h>
+
+DeviceManagement deviceManagement = DeviceManagement();
+void setup(){
+  deviceManagement.begin();
+}
+void loop(){
+
+  if(deviceManagement.readSensorData()){
+    deviceManagement.storeSensorData(LITTLEFS);
+    deviceManagement.showSensorData();
+    deviceManagement.sendSensorData();
+
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*#include <LITTLEFS.h>
 #include <ArduinoJson.h>
 #include "dht_sensor.h"
 
@@ -86,6 +129,7 @@ void loop() {
     file.close();
   }
 }
+*/
 /*
 #include "oled.h"
 #include "dht_sensor.h"
