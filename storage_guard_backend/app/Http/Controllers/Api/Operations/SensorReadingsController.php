@@ -45,7 +45,7 @@ class SensorReadingsController extends Controller
         {
             return response()->json(['message' => 'Operation not found.'], 404);
         }
-        // return 'pass';
+
         $incomingData = $request->validated();
         foreach ($incomingData['readings'] as $reading)
         {
@@ -55,6 +55,24 @@ class SensorReadingsController extends Controller
             $sensorReadings->temperature = (double) $reading['temperature'];
             $sensorReadings->humidity = (double) $reading['humidity'];
             $sensorReadings->save();
+
+            // ! check new value's temp/humidity
+
+            foreach ($operation->products as $product)
+            {
+                if ($sensorReadings->temperature > $product->max_temp || $sensorReadings->temperature < $product->min_temp)
+                {
+                    $product->safety_status = false;
+                    $product->save();
+                }
+
+                if ($sensorReadings->humidity > $product->max_humidity || $sensorReadings->temperature < $product->humidity)
+                {
+                    $product->safety_status = false;
+                    $product->save();
+                }
+            }
+
         }
 
         return response()->json(

@@ -29,7 +29,6 @@ class ProductResources extends JsonResource
             'safety_status'   => $this->safety_status,
             'created_at'      => $this->created_at,
             'updated_at'      => $this->updated_at,
-
         ];
     }
 }

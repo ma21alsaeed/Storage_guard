@@ -10,7 +10,6 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-//dddadwqfpoq
 class UserController extends Controller
 {
     public function index(Request $request)
