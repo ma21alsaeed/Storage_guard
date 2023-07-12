@@ -11,6 +11,7 @@ void appendFile(fs::FS &fs, const char * path, const char * message);
 void renameFile(fs::FS &fs, const char * path1, const char * path2);
 void deleteFile(fs::FS &fs, const char * path);
 void deleteAllFiles(fs::FS &fs, const char * dirname, uint8_t levels);
-void appendSensorData(fs::FS &fs, const char *path, String sensorData);
+void appendSensorData(fs::FS &fs, const char *path, float temp,float hum,bool wasSent);
+
 
 #endif

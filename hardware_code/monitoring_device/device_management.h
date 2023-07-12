@@ -12,10 +12,14 @@ class DeviceManagement{
     public:
     DeviceManagement();
     void begin();
+    void printAllFiles(fs::FS &fs);
+    void resetDeivce(fs::FS &fs);
     bool readSensorData();
-    void storeSensorData(fs::FS &fs);
+    bool resendSensorData(fs::FS &fs);
+
+    void storeSensorData(fs::FS &fs,bool wasSent);
     void showSensorData();
-    void sendSensorData();
+    bool sendSensorData();
 
 
     private:

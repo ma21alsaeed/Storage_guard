@@ -1,23 +1,49 @@
 #include "device_management.h"
 #include "FS.h"
 #include <LITTLEFS.h>
-
+#define FORMAT_LITTLEFS_IF_FAILED true
+#define RESTART_BUTTON_PIN 0 
 DeviceManagement deviceManagement = DeviceManagement();
-void setup(){
+bool checkFile = false;
+void setup() {
+  
+  Serial.begin(115200);
+  pinMode(RESTART_BUTTON_PIN,INPUT_PULLUP);
+  if (!LITTLEFS.begin(FORMAT_LITTLEFS_IF_FAILED)) {
+    Serial.println("LITTLEFS Mount Failed");
+    return;
+  }
   deviceManagement.begin();
+  if (true) { // Check if Boot button is pressed
+    deviceManagement.resetDeivce(LITTLEFS);
+    delay(100);
+  }
 }
-void loop(){
-
-  if(deviceManagement.readSensorData()){
-    deviceManagement.storeSensorData(LITTLEFS);
+void loop() {
+  if (digitalRead(RESTART_BUTTON_PIN) == LOW) { // Check if Boot button is pressed
+    deviceManagement.resetDeivce(LITTLEFS);
+    delay(100);
+  }
+  readFile(LITTLEFS,"/Data/sensor_data.json");
+  if (checkFile) {
+    deviceManagement.resendSensorData(LITTLEFS);
+  }
+  if (deviceManagement.readSensorData()) {
     deviceManagement.showSensorData();
-    deviceManagement.sendSensorData();
+    if (deviceManagement.sendSensorData())
+    {
+      deviceManagement.storeSensorData(LITTLEFS, true);
+      checkFile = false;
+    }
+    else {
+      deviceManagement.storeSensorData(LITTLEFS, false);
+      checkFile = true;
+    }
+    delay(10000);
 
   }
 
 }
-
-
 
 
 
@@ -42,17 +68,17 @@ void loop(){
 
 
 /*#include <LITTLEFS.h>
-#include <ArduinoJson.h>
-#include "dht_sensor.h"
+  #include <ArduinoJson.h>
+  #include "dht_sensor.h"
 
-#define DHT_PIN 15
-#define DHT_TYPE DHT11
-#define READ_INTERVAL 2000
+  #define DHT_PIN 15
+  #define DHT_TYPE DHT11
+  #define READ_INTERVAL 2000
 
-DhtSensor dht_sensor(DHT_PIN, DHT_TYPE);
-unsigned long last_read_time = 0;
+  DhtSensor dht_sensor(DHT_PIN, DHT_TYPE);
+  unsigned long last_read_time = 0;
 
-void setup() {
+  void setup() {
   Serial.begin(115200);
 
   // Initialize LITTLEFS
@@ -75,9 +101,9 @@ void setup() {
 
   // Close the file
   file.close();
-}
+  }
 
-void loop() {
+  void loop() {
   // Read the sensor values every READ_INTERVAL milliseconds
   if (millis() - last_read_time >= READ_INTERVAL) {
     dht_sensor.readValues();
@@ -123,31 +149,31 @@ void loop() {
     // Read the contents of the file and print it to the serial monitor
 
       Serial.write(file.read());
- 
+
 
     // Close the file
     file.close();
   }
-}
+  }
 */
 /*
-#include "oled.h"
-#include "dht_sensor.h"
-#define DHT_PIN 15
-#define DHT_TYPE DHT11
-DhtSensor dht = DhtSensor(DHT_PIN, DHT_TYPE);
-OLED oled  = OLED();
+  #include "oled.h"
+  #include "dht_sensor.h"
+  #define DHT_PIN 15
+  #define DHT_TYPE DHT11
+  DhtSensor dht = DhtSensor(DHT_PIN, DHT_TYPE);
+  OLED oled  = OLED();
 
-void setup()
-{
+  void setup()
+  {
 
   oled.begin();
   oled.splashScreen();
 
-}
+  }
 
 
-void loop() {
+  void loop() {
   if (dht.readValues())
   {
     oled.showTempAndHum(dht.getTemperature(), dht.getHumidity());
@@ -156,4 +182,4 @@ void loop() {
     oled.displayLoadingAnimation();
   }
 
-}*/
+  }*/

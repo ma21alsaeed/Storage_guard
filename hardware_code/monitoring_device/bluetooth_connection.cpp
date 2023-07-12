@@ -10,11 +10,13 @@ bool BluetoothConnection::isConnected() {
   return SerialBT_.connected();
 }
 
-void BluetoothConnection::sendData(const String& data) {
+bool BluetoothConnection::sendData(const String& data) {
   if (isConnected()) {
     SerialBT_.println(data);
+    return true;
   } else {
     Serial.println("Please check connection");
+    return false;
   }
 }
 

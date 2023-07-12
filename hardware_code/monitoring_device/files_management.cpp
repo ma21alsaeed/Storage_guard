@@ -88,6 +88,8 @@ void writeFile(fs::FS &fs, const char * path, const char * message) {
 
 void appendFile(fs::FS &fs, const char * path, const char * message) {
   Serial.printf("Appending to file: %s\r\n", path);
+  StaticJsonDocument<1024> jsonDoc;
+
 
   File file = fs.open(path, FILE_APPEND);
   if (!file) {
@@ -124,7 +126,7 @@ void deleteAllFiles(fs::FS &fs, const char * dirname, uint8_t levels) {
   Serial.printf("Listing directory: %s\r\n", dirname);
 
   File root = fs.open(dirname);
-  if (!root){
+  if (!root) {
     Serial.println("- failed to open directory");
     return;
   }
@@ -156,42 +158,33 @@ void deleteAllFiles(fs::FS &fs, const char * dirname, uint8_t levels) {
 
 
 // Function to append sensor data in JSON format to a file
-void appendSensorData(fs::FS &fs, const char *path, String sensorData) {
+void appendSensorData(fs::FS &fs, const char *path, float temp, float hum, bool wasSent) {
   Serial.printf("Appending to file: %s\r\n", path);
+  StaticJsonDocument<64> jsonDoc;
 
-  // Create a DynamicJsonDocument to hold the JSON data
-  DynamicJsonDocument jsonDoc(1024); // Adjust the size as per your data requirements
+  // Add some data to the JSON document
+  jsonDoc["temp"] = temp;
+  jsonDoc["hum"] = hum;
+  jsonDoc["wasSent"] = wasSent;
+  jsonDoc["timestamp"] = millis();
 
-  // Parse the existing file content, if any
-  if (fs.exists(path)) {
-    File file = fs.open(path, FILE_READ);
-    DeserializationError error = deserializeJson(jsonDoc, file);
-    file.close();
+  // Serialize the JSON document to a string
+  String jsonString;
 
-    if (error) {
-      Serial.println("- failed to parse existing JSON data");
-      return;
-    }
-  }
 
-  // Add the new sensor data to the JSON document
-  JsonObject newData = jsonDoc.createNestedObject();
-  newData["timestamp"] = millis(); // Example: Add a timestamp field
-  newData["data"] = sensorData; // Example: Add the sensor data field
-
-  // Open the file in append mode
+  //jsonString = jsonString +",";
+  // Print the JSON string to the Serial monitor
+  Serial.println();
   File file = fs.open(path, FILE_APPEND);
   if (!file) {
     Serial.println("- failed to open file for appending");
     return;
   }
-
-  // Serialize the JSON document and append it to the file
-  if (serializeJson(jsonDoc, file) > 0) {
-    Serial.println("- sensor data appended");
+  serializeJson(jsonDoc, file);
+  if (file.println()) {
+    Serial.println("- message appended");
   } else {
     Serial.println("- append failed");
   }
-
   file.close();
 }

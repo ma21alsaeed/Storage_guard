@@ -12,7 +12,7 @@ class BluetoothConnection
   bool isConnected();
   String receiveData();
   void closeConnection();
-  void sendData(const String& data);
+  bool sendData(const String& data);
 
   private:
   BluetoothSerial SerialBT_;
