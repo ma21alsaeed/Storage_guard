@@ -6,7 +6,7 @@ abstract class TextStyles {
   static TextStyle titleTextStyle = const TextStyle(
     color: AppColors.textColor,
     fontSize: 30,
-    fontWeight: FontWeight.w700,
+    
   );
   //Semi Bold
   static TextStyle semiTitleTextStyle = const TextStyle(

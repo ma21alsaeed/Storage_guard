@@ -53,7 +53,7 @@ class _AddPackageSection extends StatelessWidget {
                     style: TextStyles.regularTextStyle,
                   ),
                   const SizedBox(width: 10)
-                  SizedBox(width: 6,child: Image.asset(name),)
+                  // SizedBox(width: 6,child: Image.asset(name),)
                 ],
               ),
             ],
