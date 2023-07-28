@@ -18,7 +18,7 @@ class ErrorOccuredTextWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "$message!!",
+              message,
               style: const TextStyle(color: Color.fromRGBO(0, 0, 0, 1), fontSize: 28),
             ),
             InkWell(

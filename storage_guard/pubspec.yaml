@@ -47,7 +47,13 @@ dependencies:
   flutter_bloc: ^8.1.2
   http: ^0.13.5
   flutter_svg: ^1.1.6
+  qr_code_scanner: ^1.0.1
+  flutter_bluetooth_serial: ^0.4.0
+  permission_handler: ^10.3.0
+  syncfusion_flutter_charts: ^21.2.9
+  rxdart: ^0.27.7
 
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
