@@ -35,7 +35,7 @@ class GradientButton extends StatelessWidget {
         onPressed: onPressed,
         verticalPadding: 12,
         horizantalPadding: 28,
-        child: Row(
+        child: Row(mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               title,

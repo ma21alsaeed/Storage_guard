@@ -3,6 +3,7 @@ import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/app/widgets/title_appbar.dart';
+import 'package:storage_guard/features/transport/presentation/add_new_package_page.dart';
 
 class TransportPage extends StatelessWidget {
   const TransportPage({super.key});
@@ -82,7 +83,12 @@ class _AddPackageSection extends StatelessWidget {
                 children: [
                   GradientButton(
                     title: "Add",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AddNewPackagePage()));
+                    },
                     withArrow: false,
                   )
                 ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/features/operation/sensor.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -14,47 +15,26 @@ class SensorDataScreen extends StatefulWidget {
 }
 
 class _SensorDataScreenState extends State<SensorDataScreen> {
-  String data = '';
   List<SensorData> listData = [];
   List<Point> points = [];
   List<Point> points2 = [];
-  List<double> values = [];
-  BluetoothConnection? connection;
-
-  @override
+  List<double>? values = [];
+@override
   void initState() {
+    // TODO: implement initState
     super.initState();
-
-    connectToDevice();
+    DI.bluetoothService.connectToDevice(widget.device.address);
   }
+  void getData(String data) async {
+    try {
+      listData.add(SensorData(
+          temperature: double.parse(data.toString().substring(0, 4)),
+          humidity: double.parse(data.toString().substring(6, 10))));
+      points.add(Point(x: listData.last.time, y: listData.last.temperature));
+      points2.add(Point(x: listData.last.time, y: listData.last.humidity));
 
-  void connectToDevice() async {
-    connection = await BluetoothConnection.toAddress(widget.device.address);
-    connection!.input?.listen((data) {
-      setState(() {
-        this.data = String.fromCharCodes(data);
-
-        try {
-          listData.add(SensorData(
-              temperature: double.parse(this.data.toString().substring(0, 4)),
-              humidity: double.parse(this.data.toString().substring(6, 10))));
-          points
-              .add(Point(x: listData.last.time, y: listData.last.temperature));
-          points2.add(Point(x: listData.last.time, y: listData.last.humidity));
-
-          values = getMinMaxAvg(listData);
-        } catch (e) {}
-      });
-    }).onDone(() {
-      connection!.dispose();
-      connection = null;
-    });
-  }
-
-  @override
-  void dispose() {
-    connection?.dispose();
-    super.dispose();
+      values = getMinMaxAvg(listData);
+    } catch (e) {}
   }
 
   @override
@@ -63,85 +43,99 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
         body: SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const TitleDivider("Storage Operation"),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
+        child: StreamBuilder<String>(
+            stream: DI.bluetoothService.dataStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                getData(snapshot.data!);
+                print("DataIS:${snapshot.data!}");
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.safety_check, color: Colors.blue.shade900),
+                    const TitleDivider("Storage Operation"),
                     const SizedBox(
-                      width: 5,
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 22,
+                              child:
+                                  Image.asset("assets/icons/shield_small.png"),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            const Text(
+                              "Safe",
+                              style: TextStyle(color: Colors.black87),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                                width: 8 * 2,
+                                height: 8 * 2,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color.fromARGB(255, 60, 206, 55),
+                                )),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "Online",
+                              style: TextStyle(color: Colors.grey.shade400),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    SfCartesianChart(
+                        title: ChartTitle(
+                            text: 'Sensor Data',
+                            textStyle: const TextStyle(fontSize: 12)),
+                        primaryXAxis: DateTimeAxis(),
+                        series: <ChartSeries>[
+                          // Renders line chart
+                          LineSeries<Point, DateTime>(
+                              dataSource: points,
+                              name: "Temp",
+                              xValueMapper: (Point point, _) => point.x,
+                              yValueMapper: (Point point, _) => point.y),
+                          LineSeries<Point, DateTime>(
+                              name: "Humidity",
+                              color: Colors.green,
+                              dataSource: points2,
+                              xValueMapper: (Point point, _) => point.x,
+                              yValueMapper: (Point point, _) => point.y)
+                        ]),
+                    const SizedBox(
+                      height: 10,
                     ),
                     const Text(
-                      "Safe",
-                      style: TextStyle(color: Colors.black87),
+                      "Numeric values",
+                      style: TextStyle(color: Colors.black87, fontSize: 20),
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Container(
-                        width: 8 * 2,
-                        height: 8 * 2,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromARGB(255, 60, 206, 55),
-                        )),
+                    Divider(
+                      color: Colors.grey.shade400,
+                      thickness: 2,
+                      endIndent: 30,
+                    ),
                     const SizedBox(
-                      width: 5,
+                      height: 10,
                     ),
-                    Text(
-                      "Online",
-                      style: TextStyle(color: Colors.grey.shade400),
-                    )
+                    _TableSection(values ?? [])
                   ],
-                ),
-              ],
-            ),
-            SfCartesianChart(
-                title: ChartTitle(
-                    text: 'Sensor Data',
-                    textStyle: const TextStyle(fontSize: 12)),
-                primaryXAxis: DateTimeAxis(),
-                series: <ChartSeries>[
-                  // Renders line chart
-                  LineSeries<Point, DateTime>(
-                      dataSource: points,
-                      name: "Temp",
-                      xValueMapper: (Point point, _) => point.x,
-                      yValueMapper: (Point point, _) => point.y),
-                  LineSeries<Point, DateTime>(
-                      name: "Humidity",
-                      color: Colors.green,
-                      dataSource: points2,
-                      xValueMapper: (Point point, _) => point.x,
-                      yValueMapper: (Point point, _) => point.y)
-                ]),
-            const SizedBox(
-              height: 10,
-            ),
-            const Text(
-              "Numeric values",
-              style: TextStyle(color: Colors.black87, fontSize: 20),
-            ),
-            Divider(
-              color: Colors.grey.shade400,
-              thickness: 2,
-              endIndent: 30,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            _TableSection(values)
-          ],
-        ),
+                );
+              } else {
+                return Container();
+              }
+            }),
       ),
     ));
   }
@@ -199,19 +193,22 @@ class _TableSection extends StatelessWidget {
             TableCell(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Text(values[1].toString().substring(0, 4)),
+                child: Text(
+                    values.isEmpty ? "" : values[1].toString().substring(0, 4)),
               ),
             ),
             TableCell(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Text(values[0].toString().substring(0, 4)),
+                child: Text(
+                    values.isEmpty ? "" : values[0].toString().substring(0, 4)),
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: TableCell(
-                child: Text(values[2].toString().substring(0, 4)),
+                child: Text(
+                    values.isEmpty ? "" : values[2].toString().substring(0, 4)),
               ),
             ),
           ],
@@ -227,18 +224,21 @@ class _TableSection extends StatelessWidget {
             TableCell(
                 child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Text(values[4].toString().substring(0, 4)),
+              child: Text(
+                  values.isEmpty ? "" : values[4].toString().substring(0, 4)),
             )),
             TableCell(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Text(values[3].toString().substring(0, 4)),
+                child: Text(
+                    values.isEmpty ? "" : values[3].toString().substring(0, 4)),
               ),
             ),
             TableCell(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Text(values[5].toString().substring(0, 4)),
+                child: Text(
+                    values.isEmpty ? "" : values[5].toString().substring(0, 4)),
               ),
             ),
           ],
