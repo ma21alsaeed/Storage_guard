@@ -86,10 +86,10 @@ class _OperationPageState extends State<OperationPage> {
                             await DI.bluetoothService.enableBluetooth() ??
                                 false;
                         if (result) {
+                          DI.bluetoothService.getPairedDevices();
                           setState(() {
                             isBluetoothOn = true;
                           });
-                          DI.bluetoothService.getPairedDevices();
                         }
                       },
                     )

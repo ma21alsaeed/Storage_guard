@@ -4,9 +4,14 @@ import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/widgets/button.dart';
 
 class GradientButton extends StatelessWidget {
-  const GradientButton({super.key, this.onPressed, this.title = "Button"});
+  const GradientButton(
+      {super.key,
+      this.onPressed,
+      this.title = "Button",
+      this.withArrow = true});
   final Function()? onPressed;
   final String title;
+  final bool withArrow;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,11 +45,13 @@ class GradientButton extends StatelessWidget {
                   fontSize: 20,
                   fontWeight: FontWeight.w500),
             ),
-            const SizedBox(width: 8),
-            const Icon(
-              CupertinoIcons.arrow_right,
-              color: Colors.white,
-            )
+            withArrow ? const SizedBox(width: 8) : const SizedBox.shrink(),
+            withArrow
+                ? const Icon(
+                    CupertinoIcons.arrow_right,
+                    color: Colors.white,
+                  )
+                : const SizedBox.shrink()
           ],
         ),
       ),
