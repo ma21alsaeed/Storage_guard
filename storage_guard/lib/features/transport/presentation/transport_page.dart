@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/app/widgets/title_appbar.dart';
 import 'package:storage_guard/features/transport/presentation/add_new_package_page.dart';
+import 'package:storage_guard/features/transport/presentation/link_device_page.dart';
 
 class TransportPage extends StatelessWidget {
   const TransportPage({super.key});
@@ -84,10 +86,8 @@ class _AddPackageSection extends StatelessWidget {
                   GradientButton(
                     title: "Add",
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AddNewPackagePage()));
+                      PersistentNavBarNavigator.pushNewScreen(context,
+                          screen: AddNewPackagePage(), withNavBar: false);
                     },
                     withArrow: false,
                   )
@@ -141,7 +141,10 @@ class _AddDevicesSection extends StatelessWidget {
                 children: [
                   GradientButton(
                     title: "Link",
-                    onPressed: () {},
+                    onPressed: () {
+                      PersistentNavBarNavigator.pushNewScreen(context,
+                          screen: LinkDevicePage(), withNavBar: false);
+                    },
                     withArrow: false,
                   )
                 ],

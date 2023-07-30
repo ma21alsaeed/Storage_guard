@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:storage_guard/app/constants/colors.dart';
+import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/widgets/blue_title_text.dart';
 import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
-import 'package:storage_guard/features/qrcode/presentation/qr_view_page.dart';
+import 'package:storage_guard/app/widgets/buttons/title_button.dart';
 import 'package:storage_guard/features/transport/presentation/package_specifications_page.dart';
 
-class AddNewPackagePage extends StatelessWidget {
+class AddNewPackagePage extends StatefulWidget {
   const AddNewPackagePage({super.key});
 
+  @override
+  State<AddNewPackagePage> createState() => _AddNewPackagePageState();
+}
+
+class _AddNewPackagePageState extends State<AddNewPackagePage> {
+  List packageList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,23 +33,25 @@ class AddNewPackagePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text(
-                            "Cancel",
-                            style: TextStyle(
-                                color: Color(0xFF1E1E1E), fontSize: 18),
-                          )),
+                      const TitleButton("Cancel"),
                       const SizedBox(height: 45),
-                      BlueTitleText("Add New Package"),
+                      const BlueTitleText("Add New Package"),
                       const SizedBox(height: 20),
-                      Text(
+                      const Text(
                         "press on scan button to read QR code and add packages",
                         style: TextStyle(
                             color: AppColors.textColor,
                             fontSize: 17,
                             fontFamily: "Inter"),
                       ),
+                      const SizedBox(height: 45),
+                      ListView.separated(
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) =>
+                              const _PackageWidget(),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 20),
+                          itemCount: packageList.length)
                     ],
                   ),
                   Padding(
@@ -58,7 +66,7 @@ class AddNewPackagePage extends StatelessWidget {
                               onPressed: () {
                                 PersistentNavBarNavigator.pushNewScreen(context,
                                     withNavBar: false,
-                                    screen: PackageSpecificationPage());
+                                    screen: const PackageSpecificationPage());
                                 // PersistentNavBarNavigator.pushNewScreen(context,
                                 //         withNavBar: false, screen: QRViewPage())
                                 //     .then((value) {
@@ -82,6 +90,57 @@ class AddNewPackagePage extends StatelessWidget {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PackageWidget extends StatelessWidget {
+  const _PackageWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 6,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.fromLTRB( 20, 12,20,20),
+        decoration: BoxDecoration(
+          color: AppColors.blueGray,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  "Kitkat Package",
+                  style: TextStyles.bodyTitleTextStyle,
+                ),
+                const SizedBox(width: 45),
+                Text(
+                  "Safe ",
+                  style: TextStyles.bodyTitleTextStyle,
+                ),
+                const SizedBox(width: 6),
+                SizedBox(
+                    width: 22,
+                    child: Image.asset('assets/icons/shield_small.png'))
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Manufactured by Nestlé',
+              style: const TextStyle(
+                  color: AppColors.textColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w300,
+                  fontFamily: "Inter"),
+            )
+          ],
         ),
       ),
     );

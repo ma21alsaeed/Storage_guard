@@ -3,7 +3,7 @@ import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/di.dart';
 
-import '../../../operation/presentation/operation_page.dart';
+import '../../../../bluetooth_devices_page.dart';
 
 class OperationWidget extends StatelessWidget {
   const OperationWidget({super.key});
@@ -14,7 +14,7 @@ class OperationWidget extends StatelessWidget {
       onTap: () {
         DI.bluetoothService.requestBluetoothPermission();
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const OperationPage()));
+            MaterialPageRoute(builder: (context) => const BluetoothDevicesPage()));
       },
       child: Material(
         elevation: 5,

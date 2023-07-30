@@ -19,12 +19,13 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
   List<Point> points = [];
   List<Point> points2 = [];
   List<double>? values = [];
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
     DI.bluetoothService.connectToDevice(widget.device.address);
   }
+
   void getData(String data) async {
     try {
       listData.add(SensorData(
@@ -32,7 +33,6 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
           humidity: double.parse(data.toString().substring(6, 10))));
       points.add(Point(x: listData.last.time, y: listData.last.temperature));
       points2.add(Point(x: listData.last.time, y: listData.last.humidity));
-
       values = getMinMaxAvg(listData);
     } catch (e) {}
   }
@@ -96,6 +96,9 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
                       ],
                     ),
                     SfCartesianChart(
+                        legend: Legend(
+                          title: LegendTitle(text: "Temp"),
+                        ),
                         title: ChartTitle(
                             text: 'Sensor Data',
                             textStyle: const TextStyle(fontSize: 12)),

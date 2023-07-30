@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 abstract class AppColors {
   static const white = Color(0xFFFFFFFF);
   static const lightGray = Color(0xFFF0F0F2);
+  static const blueGray = Color(0xFFF8F8F8);
   static const wheat = Color(0xFFEAEAFF);
   
   static const background = Color(0xFF111111);

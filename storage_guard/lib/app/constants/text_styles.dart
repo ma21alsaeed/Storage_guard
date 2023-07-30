@@ -25,10 +25,14 @@ abstract class TextStyles {
   //Regular
   static TextStyle regularTextStyle = const TextStyle(
     color: AppColors.textColor,
+    fontFamily: "Inter",
     fontSize: 20,
   );
   static TextStyle bodyTitleTextStyle = const TextStyle(
-      color: AppColors.textColor, fontSize: 16, fontFamily: "Inter");
+    color: AppColors.textColor,
+    fontSize: 16,
+    fontFamily: "Inter",
+  );
   //Light
   static TextStyle lightTextStyle = const TextStyle(
       color: AppColors.textColor,

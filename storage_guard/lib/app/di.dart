@@ -6,6 +6,9 @@ import 'package:storage_guard/features/authentication/data/auth_datasource.dart'
 import 'package:storage_guard/features/authentication/data/auth_repositories.dart';
 import 'package:storage_guard/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:storage_guard/features/authentication/services/user_service.dart';
+import 'package:storage_guard/features/operation/data/operation_datasource.dart';
+import 'package:storage_guard/features/operation/data/operation_repositories.dart';
+import 'package:storage_guard/features/operation/presentation/cubit/send_records_cubit.dart';
 import 'package:storage_guard/features/product/data/product_datasource.dart';
 import 'package:storage_guard/features/product/data/product_repositories.dart';
 import 'package:storage_guard/features/product/presentation/cubit/product_cubit.dart';
@@ -51,6 +54,15 @@ abstract class DI {
     di.registerLazySingleton<ShopRepositories>(
         () => ShopRepositories(di<ShopDataSource>()));
     di.registerFactory<ShopCubit>(() => ShopCubit(di<ShopRepositories>()));
+  }
+
+  static void registerOperation() async {
+    di.registerLazySingleton<OperationDataSource>(
+        () => OperationDataSource(di<Client>()));
+    di.registerLazySingleton<OperationRepositories>(
+        () => OperationRepositories(di<OperationDataSource>()));
+    di.registerFactory<SendRecordsCubit>(() =>
+        SendRecordsCubit(di<OperationRepositories>(), di<SharedPreferences>()));
   }
 
   static UserService get userService => di.get<UserService>();
