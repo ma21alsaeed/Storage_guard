@@ -19,19 +19,29 @@ class SendRecordsCubit extends Cubit<SendRecordState> {
     final either =
         await _operationRepositories.sendSensorRecordings(sensorData);
     either.fold((error) async {
-      SensorModel model = sensorModelFromJson(sensorData, false);
-      _preferences.setString(
-          Preferences.sensorReadingsKey, sensorModelToJson(model).toString());
+      saveSensorReading(false, sensorData);
       final errorMessage = getErrorMessage(error);
       emit(ErrorState(errorMessage));
     }, (data) {
-      SensorModel model = sensorModelFromJson(sensorData, true);
-      _preferences.setString(
-          Preferences.sensorReadingsKey, sensorModelToJson(model).toString());
+      saveSensorReading(true, sensorData);
       emit(SentRecordsState());
     });
   }
+
+  Future<void> saveSensorReading(
+      bool wasSent, Map<String, dynamic> sensorData) async {
+    List<SensorModel> sensorList = getSensorReadingsFromMemory();
+    String jsonSensorModelList = "";
+    SensorModel model = sensorModelFromBasicJson(sensorData, wasSent);
+    sensorList.add(model);
+    jsonSensorModelList = sensorModelListToJson(sensorList);
+    _preferences.setString(Preferences.sensorReadingsKey, jsonSensorModelList);
+  }
+
+  List<SensorModel> getSensorReadingsFromMemory() => sensorModelListFromJson(
+      _preferences.getString(Preferences.sensorReadingsKey));
 }
+
 //  {
 //         "readings": [
 //           {

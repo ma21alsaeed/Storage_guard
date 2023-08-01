@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/features/home/presentation/widgets/last_update_bottom_operations_section.dart';
 import 'package:storage_guard/features/home/presentation/widgets/last_update_devices_section.dart';
-import 'package:storage_guard/features/home/presentation/widgets/operation_widget.dart';
+import 'package:storage_guard/features/operation/presentation/widgets/operation_widget.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});

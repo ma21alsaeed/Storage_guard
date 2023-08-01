@@ -1,9 +1,26 @@
-Map<String, dynamic> sensorModelToJson(SensorModel data) => data.toJson();
+import 'dart:convert';
+
+Map<String, dynamic> sensorModelToJson(SensorModel data, {bool? wasSent}) =>
+    data.toJson(wasSent: wasSent);
+
 SensorModel sensorModelFromString(String data, DateTime referenceTime) =>
     SensorModel.fromString(data, referenceTime);
-SensorModel sensorModelFromJson(Map<String, dynamic> data, bool wasSent) =>
+
+String sensorModelListToJson(List<SensorModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+List<SensorModel> sensorModelListFromJson(String? str) => str == null
+    ? []
+    : List<SensorModel>.from(json
+        .decode(str)
+        .map((x) => sensorModelFromBasicJson(x, x["was_sent"])));
+
+SensorModel sensorModelFromBasicJson(Map<String, dynamic> data, bool wasSent) =>
     SensorModel(
-        temperature: data, humidity: data, timeStamp: data, wasSent: wasSent);
+        temperature: data["temperature"],
+        humidity: data["humidity"],
+        timeStamp: data["read_at"],
+        wasSent: wasSent);
 
 class SensorModel {
   SensorModel(
@@ -23,13 +40,16 @@ class SensorModel {
           timeStamp: referenceTime.add(Duration(
               milliseconds: int.parse(data.substring(12, data.length)))));
 
-  Map<String, dynamic> toJson() => {
-        "readings": [
-          {
-            "temperature": temperature,
-            "humidity": humidity,
-            "read_at": timeStamp
-          }
-        ]
-      };
+  Map<String, dynamic> toJson({bool? wasSent}) => wasSent != null
+      ? {
+          "temperature": temperature,
+          "humidity": humidity,
+          "read_at": timeStamp,
+          "was_sent": wasSent
+        }
+      : {
+          "temperature": temperature,
+          "humidity": humidity,
+          "read_at": timeStamp
+        };
 }
