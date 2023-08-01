@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:storage_guard/app/di.dart';
+import 'package:storage_guard/app/widgets/loading_widget.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/features/operation/sensor.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -136,8 +137,9 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
                 );
               } else {
                 return SizedBox(
-                  height: MediaQuery.sizeOf(context).height*0.9,
-                  child: const Center(child: CircularProgressIndicator()),
+                  height: MediaQuery.sizeOf(context).height * 0.9,
+                  width: MediaQuery.sizeOf(context).width,
+                  child: const LoadingWidget(),
                 );
               }
             }),

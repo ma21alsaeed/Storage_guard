@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/widgets/error_occured_widget.dart';
+import 'package:storage_guard/app/widgets/loading_widget.dart';
 import 'package:storage_guard/app/widgets/title_appbar.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/features/shop/data/shop_model.dart';
@@ -22,9 +23,7 @@ class ShopPage extends StatelessWidget {
                 return SizedBox(
                     height: MediaQuery.sizeOf(context).height,
                     width: MediaQuery.sizeOf(context).width,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ));
+                    child: LoadingWidget());
               } else if (state is GotShop) {
                 ShopModel shop = state.shop;
                 return Padding(

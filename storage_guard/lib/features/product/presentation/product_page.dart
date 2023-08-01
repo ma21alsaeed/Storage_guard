@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/widgets/error_occured_widget.dart';
+import 'package:storage_guard/app/widgets/loading_widget.dart';
 import 'package:storage_guard/app/widgets/title_appbar.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/features/product/data/product_model.dart';
@@ -23,9 +24,7 @@ class ProductPage extends StatelessWidget {
                 return SizedBox(
                     height: MediaQuery.sizeOf(context).height,
                     width: MediaQuery.sizeOf(context).width,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ));
+                    child: LoadingWidget());
               } else if (state is GotProduct) {
                 ProductModel product = state.product;
                 return Column(
