@@ -97,7 +97,7 @@ class _AddNewPackagePageState extends State<AddNewPackagePage> {
 }
 
 class _PackageWidget extends StatelessWidget {
-  const _PackageWidget({super.key});
+  const _PackageWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +106,7 @@ class _PackageWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.fromLTRB( 20, 12,20,20),
+        padding: const EdgeInsets.fromLTRB( 20, 12,20,20),
         decoration: BoxDecoration(
           color: AppColors.blueGray,
           borderRadius: BorderRadius.circular(20),
@@ -132,9 +132,9 @@ class _PackageWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 6),
-            Text(
+            const Text(
               'Manufactured by Nestlé',
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.textColor,
                   fontSize: 14,
                   fontWeight: FontWeight.w300,

@@ -23,7 +23,7 @@ class ProductPage extends StatelessWidget {
                 return SizedBox(
                     height: MediaQuery.sizeOf(context).height,
                     width: MediaQuery.sizeOf(context).width,
-                    child: Center(
+                    child: const Center(
                       child: CircularProgressIndicator(),
                     ));
               } else if (state is GotProduct) {
@@ -36,9 +36,9 @@ class ProductPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TitleAppBar(),
+                          const TitleAppBar(),
                           const SizedBox(height: 60),
-                          TitleDivider("Specifications"),
+                          const TitleDivider("Specifications"),
                           const SizedBox(height: 10),
                           Row(
                             children: [
@@ -47,7 +47,7 @@ class ProductPage extends StatelessWidget {
                               const Spacer(),
                               Text(
                                 product.safe ? "Safe" : "Not Safe",
-                                style: TextStyle(fontSize: 15),
+                                style: const TextStyle(fontSize: 15),
                               ),
                               const SizedBox(width: 10),
                               SizedBox(
@@ -60,7 +60,7 @@ class ProductPage extends StatelessWidget {
                           const SizedBox(height: 8),
                           Text(
                             product.productName,
-                            style: TextStyle(fontSize: 15),
+                            style: const TextStyle(fontSize: 15),
                           ),
                           const SizedBox(height: 20),
                           Text("Manfactured by",
@@ -72,15 +72,15 @@ class ProductPage extends StatelessWidget {
                               style: TextStyles.regularTextStyle),
                           const SizedBox(height: 8),
                           Text(product.productionDate,
-                              style: TextStyle(fontSize: 15)),
+                              style: const TextStyle(fontSize: 15)),
                           const SizedBox(height: 20),
                           Text("Expiration Date",
                               style: TextStyles.regularTextStyle),
                           const SizedBox(height: 8),
                           Text(product.expirationDate,
-                              style: TextStyle(fontSize: 15)),
+                              style: const TextStyle(fontSize: 15)),
                           const SizedBox(height: 50),
-                          TitleDivider("Logs"),
+                          const TitleDivider("Logs"),
                           const SizedBox(height: 40),
                         ],
                       ),
@@ -109,7 +109,7 @@ class ProductPage extends StatelessWidget {
               return SizedBox(
                   height: MediaQuery.sizeOf(context).height,
                   width: MediaQuery.sizeOf(context).width,
-                  child: Center(
+                  child: const Center(
                     child: ErrorOccuredTextWidget(),
                   ));
             }),
@@ -133,7 +133,7 @@ class LogWidget extends StatelessWidget {
           children: [
             Text(
               log.getDate(),
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 10),
             Container(
@@ -166,9 +166,9 @@ class LineWidget extends StatelessWidget {
       width: isFirstLine ? 25 : 35,
       height: 1.5,
       margin: isFirstLine
-          ? EdgeInsets.only(right: 6)
-          : EdgeInsets.symmetric(horizontal: 6),
-      decoration: BoxDecoration(color: Colors.black87),
+          ? const EdgeInsets.only(right: 6)
+          : const EdgeInsets.symmetric(horizontal: 6),
+      decoration: const BoxDecoration(color: Colors.black87),
     );
   }
 }

@@ -4,8 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/features/authentication/presentation/cubit/auth_cubit.dart';
+import 'package:storage_guard/features/authentication/presentation/login_page.dart';
+import 'package:storage_guard/features/operation/presentation/cubit/send_records_cubit.dart';
 import 'package:storage_guard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:storage_guard/features/shop/presentation/cubit/shop_cubit.dart';
+import 'package:storage_guard/features/welcome/welcome_page.dart';
 import 'package:storage_guard/main_page.dart';
 
 class StorageGuardApp extends StatelessWidget {
@@ -33,17 +36,18 @@ class StorageGuardApp extends StatelessWidget {
         BlocProvider(create: (_) => DI.di<AuthCubit>()),
         BlocProvider(create: (_) => DI.di<ProductCubit>()),
         BlocProvider(create: (_) => DI.di<ShopCubit>()),
+        BlocProvider(create: (_) => DI.di<SendRecordsCubit>()),
       ],
       child: MaterialApp(
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const MainPage()
-          // home: DI.userService.getUser() == null
-          //     ? const LoginPage()
-          //     : DI.welcomeService.getIsFirstTime() != null
-          //         ? const MainPage()
-          //         : const WelcomePage()
+          // home: const MainPage()
+          home: DI.userService.getUser() == null
+              ? const LoginPage()
+              : DI.welcomeService.getIsFirstTime() != null
+                  ? const MainPage()
+                  : const WelcomePage()
           ),
     );
   }

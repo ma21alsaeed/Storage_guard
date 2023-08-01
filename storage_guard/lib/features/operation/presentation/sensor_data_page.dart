@@ -8,7 +8,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class SensorDataScreen extends StatefulWidget {
   final BluetoothDevice device;
 
-  SensorDataScreen({required this.device});
+  const SensorDataScreen({super.key, required this.device});
 
   @override
   _SensorDataScreenState createState() => _SensorDataScreenState();
@@ -48,7 +48,6 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 getData(snapshot.data!);
-                print("DataIS:${snapshot.data!}");
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -136,7 +135,10 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
                   ],
                 );
               } else {
-                return Container();
+                return SizedBox(
+                  height: MediaQuery.sizeOf(context).height*0.9,
+                  child: const Center(child: CircularProgressIndicator()),
+                );
               }
             }),
       ),
@@ -145,7 +147,7 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
 }
 
 class _TableSection extends StatelessWidget {
-  const _TableSection(this.values, {super.key});
+  const _TableSection(this.values);
   final List<double> values;
   @override
   Widget build(BuildContext context) {
@@ -181,14 +183,14 @@ class _TableSection extends StatelessWidget {
         TableRow(
           decoration: BoxDecoration(
             color: Colors.grey[200],
-            border: Border(
+            border: const Border(
               top: BorderSide(width: 1, color: Colors.grey),
               bottom: BorderSide(width: 1, color: Colors.grey),
             ),
           ),
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: TableCell(
                 child: Text('Temp'),
               ),
@@ -218,9 +220,9 @@ class _TableSection extends StatelessWidget {
         ),
         TableRow(
           children: [
-            TableCell(
+            const TableCell(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Text('Humidity'),
               ),
             ),

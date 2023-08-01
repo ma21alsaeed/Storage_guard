@@ -8,7 +8,7 @@ class BlueTitleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: TextStyle(
+      style: const TextStyle(
           color: AppColors.mainblue,
           fontSize: 28,
           fontWeight: FontWeight.w500,

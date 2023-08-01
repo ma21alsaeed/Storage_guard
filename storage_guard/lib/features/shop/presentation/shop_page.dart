@@ -22,7 +22,7 @@ class ShopPage extends StatelessWidget {
                 return SizedBox(
                     height: MediaQuery.sizeOf(context).height,
                     width: MediaQuery.sizeOf(context).width,
-                    child: Center(
+                    child: const Center(
                       child: CircularProgressIndicator(),
                     ));
               } else if (state is GotShop) {
@@ -44,7 +44,7 @@ class ShopPage extends StatelessWidget {
                           const Spacer(),
                           Text(
                             shop.safe ? "Safe" : "Not Safe",
-                            style: TextStyle(fontSize: 15),
+                            style: const TextStyle(fontSize: 15),
                           ),
                           const SizedBox(width: 10),
                           SizedBox(
@@ -55,8 +55,8 @@ class ShopPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        shop.temperature + " Celsius",
-                        style: TextStyle(fontSize: 15),
+                        "${shop.temperature} Celsius",
+                        style: const TextStyle(fontSize: 15),
                       ),
                       const SizedBox(height: 20),
                       Text("Humidity", style: TextStyles.regularTextStyle),
@@ -69,14 +69,14 @@ class ShopPage extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         shop.location,
-                        style: TextStyle(fontSize: 15),
+                        style: const TextStyle(fontSize: 15),
                       ),
                       const SizedBox(height: 10),
                       Text("Phone", style: TextStyles.regularTextStyle),
                       const SizedBox(height: 8),
                       Text(
                         shop.phone,
-                        style: TextStyle(fontSize: 15),
+                        style: const TextStyle(fontSize: 15),
                       ),
                     ],
                   ),
@@ -85,7 +85,7 @@ class ShopPage extends StatelessWidget {
               return SizedBox(
                   height: MediaQuery.sizeOf(context).height,
                   width: MediaQuery.sizeOf(context).width,
-                  child: Center(
+                  child: const Center(
                     child: ErrorOccuredTextWidget(),
                   ));
             }),

@@ -1,15 +1,23 @@
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:storage_guard/app/constants/preferences.dart';
 import 'package:storage_guard/app/di.dart';
+import 'package:storage_guard/features/operation/data/operation_repositories.dart';
 import 'package:storage_guard/features/operation/presentation/cubit/send_records_cubit.dart';
 import 'package:storage_guard/features/operation/sensor_model.dart';
 
 class BluetoothService {
+  final SharedPreferences _preferences;
+  final OperationRepositories _operationRepositories;
+  BluetoothService(this._preferences, this._operationRepositories);
+
   FlutterBluetoothSerial bluetooth = FlutterBluetoothSerial.instance;
   BluetoothConnection? connection;
   String data = '';
   late DateTime referenceTime;
+  bool isFirstConnection = true;
 
   BehaviorSubject<List<BluetoothDevice>> devicesStreamController =
       BehaviorSubject<List<BluetoothDevice>>();
@@ -39,28 +47,65 @@ class BluetoothService {
       FlutterBluetoothSerial.instance.requestEnable();
 
   Future<void> connectToDevice(String address) async {
-    bool isFirstConnection = true;
-    if (connection?.isConnected ?? false) {
-      connection!.close();
+    if (connection != null && connection!.isConnected) {
+      print("DISCONNECTING");
+      await connection!.close();
       isFirstConnection = true;
+      await Future.delayed(const Duration(seconds: 1));
+      connectToDevice(address);
     }
     connection = await BluetoothConnection.toAddress(address);
-    connection!.input?.listen((value) {
+    connection!.input?.listen((value) async {
       data = String.fromCharCodes(value);
-      print("RawDataIS:$data");
-      if (!isFirstConnection) {
-        DI.di<SendRecordsCubit>().sendSensorRecordings(sensorModelToJson(sensorModelFromString(data,referenceTime)));
-        dataStreamController.sink.add(data);
-      } else {
-        referenceTime =
-            DateTime.now().subtract(Duration(microseconds: int.parse(data)));
-        isFirstConnection = false;
-      }
+      print("RawBluetoothDataIs:$data");
+      await processData();
     }).onDone(() {
       connection!.dispose();
       connection = null;
       isFirstConnection = true;
     });
+  }
+
+  Future<void> processData() async {
+    if (data.length > 3) {
+      if (!isFirstConnection) {
+        //Getting SensorModel from bluetooth data
+        var stringModel = sensorModelFromString(data, referenceTime);
+        //Getting json from model to send to api
+        var jsonModel = sensorModelToJson(stringModel);
+        //adding data to show in ui streamBuilder
+        dataStreamController.sink.add(data);
+        //Check SensorModel list in memory to send the unsent values
+        await sendUnsentModels();
+        //Send data to api
+        DI.di<SendRecordsCubit>().sendSensorRecordings([jsonModel]);
+      } else {
+        referenceTime =
+            DateTime.now().subtract(Duration(microseconds: int.parse(data)));
+        isFirstConnection = false;
+      }
+    }
+  }
+
+  Future<void> sendUnsentModels() async {
+    List<SensorModel> memoryList = sensorModelListFromJson(
+        _preferences.getString(Preferences.sensorReadingsKey));
+    //for each SensorModel in memory check if wasSent value is false
+    //if wasSent=false resend the value then add the result to the memory list
+    for (int i = 0; i < memoryList.length; i++) {
+      SensorModel sensorModel = memoryList[i];
+      if (!sensorModel.wasSent) {
+        final either = await _operationRepositories
+            .sendSensorRecordings([sensorModelToJson(sensorModel)]);
+        either.fold((error) {}, (data) {
+          sensorModel.wasSent = true;
+          memoryList[i] = sensorModel;
+          String jsonSensorModelList = sensorModelListToJson(memoryList);
+          _preferences.setString(
+              Preferences.sensorReadingsKey, jsonSensorModelList);
+        });
+      }
+    }
   }
 
   get devicesStream => devicesStreamController.stream;

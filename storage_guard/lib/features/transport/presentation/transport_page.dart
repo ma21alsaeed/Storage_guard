@@ -87,7 +87,7 @@ class _AddPackageSection extends StatelessWidget {
                     title: "Add",
                     onPressed: () {
                       PersistentNavBarNavigator.pushNewScreen(context,
-                          screen: AddNewPackagePage(), withNavBar: false);
+                          screen: const AddNewPackagePage(), withNavBar: false);
                     },
                     withArrow: false,
                   )
@@ -143,7 +143,7 @@ class _AddDevicesSection extends StatelessWidget {
                     title: "Link",
                     onPressed: () {
                       PersistentNavBarNavigator.pushNewScreen(context,
-                          screen: LinkDevicePage(), withNavBar: false);
+                          screen: const LinkDevicePage(), withNavBar: false);
                     },
                     withArrow: false,
                   )

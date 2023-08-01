@@ -22,7 +22,7 @@ class PackageSpecificationPage extends StatelessWidget {
                 children: [
                   TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: Text(
+                      child: const Text(
                         "Cancel",
                         style:
                             TextStyle(color: Color(0xFF1E1E1E), fontSize: 18),
@@ -63,11 +63,11 @@ class PackageSpecificationPage extends StatelessWidget {
                   ),
                   const _TableSection(),
                   const SizedBox(height: 38),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Flexible(
-                        child: const Text(
+                        child: Text(
                             "Do you want to add this package or not?",
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -89,7 +89,7 @@ class PackageSpecificationPage extends StatelessWidget {
                           withArrow: false,
                           onPressed: () {},
                         )),
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         Expanded(
                             child: GradientButton(
                           title: "Add",
@@ -110,7 +110,7 @@ class PackageSpecificationPage extends StatelessWidget {
 }
 
 class _TableSection extends StatelessWidget {
-  const _TableSection({super.key});
+  const _TableSection();
 
   @override
   Widget build(BuildContext context) {
@@ -146,60 +146,60 @@ class _TableSection extends StatelessWidget {
         TableRow(
           decoration: BoxDecoration(
             color: Colors.grey[200],
-            border: Border(
+            border: const Border(
               top: BorderSide(width: 1, color: Colors.grey),
               bottom: BorderSide(width: 1, color: Colors.grey),
             ),
           ),
-          children: [
+          children: const [
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: TableCell(
                 child: Text('Temp'),
               ),
             ),
             TableCell(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Text("20"),
               ),
             ),
             TableCell(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Text("20"),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: TableCell(
                 child: Text("20"),
               ),
             ),
           ],
         ),
-        TableRow(
+        const TableRow(
           children: [
             TableCell(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Text('Humidity'),
               ),
             ),
             TableCell(
                 child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Text("20"),
             )),
             TableCell(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Text("20"),
               ),
             ),
             TableCell(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Text("20"),
               ),
             ),

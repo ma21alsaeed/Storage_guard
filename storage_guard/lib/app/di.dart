@@ -25,10 +25,12 @@ abstract class DI {
     di.registerLazySingleton<WelcomeService>(() => WelcomeService(preferences));
     di.registerLazySingleton<UserService>(() => UserService(preferences));
     di.registerLazySingleton<Client>(() => Client());
-    di.registerLazySingleton<BluetoothService>(() => BluetoothService());
+    di.registerLazySingleton<BluetoothService>(
+        () => BluetoothService(preferences, di<OperationRepositories>()));
     registerAuth();
     registerProduct();
     registerShop();
+    registerOperation(preferences);
   }
 
   static void registerAuth() async {
@@ -56,13 +58,13 @@ abstract class DI {
     di.registerFactory<ShopCubit>(() => ShopCubit(di<ShopRepositories>()));
   }
 
-  static void registerOperation() async {
+  static void registerOperation(SharedPreferences preferences) async {
     di.registerLazySingleton<OperationDataSource>(
         () => OperationDataSource(di<Client>()));
     di.registerLazySingleton<OperationRepositories>(
         () => OperationRepositories(di<OperationDataSource>()));
-    di.registerFactory<SendRecordsCubit>(() =>
-        SendRecordsCubit(di<OperationRepositories>(), di<SharedPreferences>()));
+    di.registerFactory<SendRecordsCubit>(
+        () => SendRecordsCubit(di<OperationRepositories>(), preferences));
   }
 
   static UserService get userService => di.get<UserService>();

@@ -13,41 +13,42 @@ class SendRecordsCubit extends Cubit<SendRecordState> {
   SendRecordsCubit(this._operationRepositories, this._preferences)
       : super(SendRecordInitial());
 
-  Future<void> sendSensorRecordings(Map<String, dynamic> sensorData) async {
+  Future<void> sendSensorRecordings(
+      List<Map<String, dynamic>> sensorData) async {
     print(sensorData);
     emit(LoadingState());
     final either =
         await _operationRepositories.sendSensorRecordings(sensorData);
     either.fold((error) async {
-      saveSensorReading(false, sensorData);
+      print("CUBIT ERROR$error");
+      saveSensorReading(false, sensorData[0]);
       final errorMessage = getErrorMessage(error);
       emit(ErrorState(errorMessage));
     }, (data) {
-      saveSensorReading(true, sensorData);
+      print("CUBIT DATA");
+      saveSensorReading(true, sensorData[0]);
       emit(SentRecordsState());
     });
   }
 
   Future<void> saveSensorReading(
       bool wasSent, Map<String, dynamic> sensorData) async {
+    //Getting SensorModel list saved in memory
     List<SensorModel> sensorList = getSensorReadingsFromMemory();
-    String jsonSensorModelList = "";
+    //Test printing sript///
+    List<String> wasSentListwithIndex = [];
+    for (SensorModel sensorModel in sensorList) {
+      wasSentListwithIndex.add("${sensorModel.wasSent}");
+    }
+    print('SensorListFromMemory$wasSentListwithIndex');/////
+    //Adding the sensorData to sensorList
     SensorModel model = sensorModelFromBasicJson(sensorData, wasSent);
     sensorList.add(model);
-    jsonSensorModelList = sensorModelListToJson(sensorList);
+    //Restoring sensorList to memory
+    String jsonSensorModelList = sensorModelListToJson(sensorList);
     _preferences.setString(Preferences.sensorReadingsKey, jsonSensorModelList);
   }
 
   List<SensorModel> getSensorReadingsFromMemory() => sensorModelListFromJson(
       _preferences.getString(Preferences.sensorReadingsKey));
 }
-
-//  {
-//         "readings": [
-//           {
-//             "temperature": temperature,
-//             "humidity": humidity,
-//             "read_at": timeStamp
-//           }
-//         ]
-//       };

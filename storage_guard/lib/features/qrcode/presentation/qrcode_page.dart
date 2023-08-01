@@ -24,23 +24,23 @@ class QrCodePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TitleAppBar(),
+                const TitleAppBar(),
                 const SizedBox(height: 60),
                 Container(
                   width: double.infinity,
                   height: 170,
-                  padding: EdgeInsets.all(22),
+                  padding: const EdgeInsets.all(22),
                   decoration: BoxDecoration(
                       color: AppColors.lightGray,
                       borderRadius: BorderRadius.circular(18)),
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Scan Qr Code",
                         style: TextStyle(color: Colors.black, fontSize: 20),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       Text(
                         "Press the Scan button to start capturing QR codes",
                         style: TextStyle(color: Colors.black, fontSize: 16),
@@ -64,7 +64,7 @@ class QrCodePage extends StatelessWidget {
                           Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => QRViewPage()))
+                                      builder: (context) => const QRViewPage()))
                               .then((value) {
                             if (value.contains("product")) {
                               BlocProvider.of<ProductCubit>(context)
@@ -82,7 +82,7 @@ class QrCodePage extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ShopPage()));
+                                      builder: (context) => const ShopPage()));
                             }
                           });
                         },

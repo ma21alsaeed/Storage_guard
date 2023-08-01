@@ -17,9 +17,9 @@ class TitleAppBar extends StatelessWidget {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(Icons.arrow_back)),
+                      icon: const Icon(Icons.arrow_back)),
                   Padding(
-                    padding: EdgeInsets.only(right: 30),
+                    padding: const EdgeInsets.only(right: 30),
                     child: SizedBox(
                         width: 180,
                         child: Image.asset("assets/images/text_logo.png")),

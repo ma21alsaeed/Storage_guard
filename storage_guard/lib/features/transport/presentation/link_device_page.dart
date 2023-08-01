@@ -16,21 +16,21 @@ class LinkDevicePage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 19),
             child: SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.85,
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TitleButton("Cancel"),
-                  const SizedBox(height: 45),
-                  const BlueTitleText("Connect to Device"),
-                  const SizedBox(height: 20),
-                  const Text(
+                  SizedBox(height: 45),
+                  BlueTitleText("Connect to Device"),
+                  SizedBox(height: 20),
+                  Text(
                     "please connect your phones to start monitoring device",
                     style: TextStyle(
                         color: AppColors.textColor,
                         fontSize: 17,
                         fontFamily: "Inter"),
                   ),
-                  const SizedBox(height: 45),
+                  SizedBox(height: 45),
                   BluetoothDevicesWidget()
                 ],
               ),
