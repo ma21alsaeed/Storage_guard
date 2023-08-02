@@ -20,6 +20,7 @@ class OperationResources extends JsonResource
         [
             'id'              => $this->id,
             'type'            => $this->type,
+            'name'            => $this->name,
             'created_at'      => $this->created_at,
             'updated_at'      => $this->updated_at,
             'finished_at'     => $this->finished_at ? Carbon::parse($this->finished_at) : null,

@@ -15,6 +15,7 @@ return new class extends Migration
         {
             $table->id();
             $table->string('type');
+            $table->string('name');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamp('finished_at')->nullable();
             $table->timestamps();

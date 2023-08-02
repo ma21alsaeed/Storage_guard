@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api\Operations;
 use Carbon\Carbon;
 use App\Models\Operation;
 use App\Models\ProductsList;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Operations\OperationResources;
 use App\Http\Requests\Operations\StoreOperationRequest;
 use App\Http\Requests\Operations\UpdateOperationRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Operations\OperationSummaryResources;
 
 class OperationsController extends Controller
@@ -35,6 +36,7 @@ class OperationsController extends Controller
         $operation = Operation::create(
             [
                 'type'    => $incomingData['type'],
+                'name'    => $incomingData['name'],
                 'user_id' => auth()->user()->id
             ]);
         /**
@@ -79,6 +81,7 @@ class OperationsController extends Controller
      */
     public function update(UpdateOperationRequest $request, $operationId)
     {
+
         $operation = Operation::where('id', $operationId)->where('user_id', auth()->user()->id)->first();
 
         if (!$operation)
@@ -100,8 +103,20 @@ class OperationsController extends Controller
         {
             $operation['finished_at'] = Carbon::parse($requestData['finished_at']);
         }
-        $operation->type = $requestData['type'];
-        return response()->json(['message' => 'Operation updated successfully.', 'operation' => new OperationResources($operation)]);
+        if (isset($requestData['type']))
+        {
+            $operation['type'] = $requestData['type'];
+        }
+        if (isset($requestData['name']))
+        {
+            $operation['name'] = $requestData['name'];
+        }
+        $operation->save();
+        return response()->json(
+            [
+                'message'   => 'Operation updated successfully.',
+                'operation' => new OperationResources($operation)
+            ]);
     }
     /**
      * Remove the specified resource from storage.

@@ -47,7 +47,6 @@ class ProductListController extends Controller
         $requestData = $request->validate([
             'product_id' => 'required|numeric|exists:products,id'
         ]);
-
         $productList = ProductsList::where('operation_id', $operation->id)
                                     ->where('product_id', $requestData['product_id'])
                                     ->first();
@@ -59,12 +58,10 @@ class ProductListController extends Controller
                 'data'    => ProductResources::collection($operation->products)
             ]);
         }
-
         $productList = new ProductsList();
         $productList->operation_id = $operation->id;
         $productList->product_id = (int) $requestData['product_id'];
         $productList->save();
-
         return response()->json([
             'message' => 'The product is added successfully.',
             'data'    => ProductResources::collection($operation->products)

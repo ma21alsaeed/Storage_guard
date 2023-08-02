@@ -11,6 +11,7 @@ class Operation extends Model
 
     protected $fillable = [
     'type',
+    'name',
     'user_id',
     'finish_at',
     'created_at'
