@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api\Operations;
 
+use App\Services\OperationStatusService;
 use Carbon\Carbon;
 use App\Models\Operation;
 use App\Models\ProductsList;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Operations\OperationResources;
 use App\Http\Requests\Operations\StoreOperationRequest;
