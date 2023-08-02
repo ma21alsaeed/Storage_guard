@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,24 +50,46 @@ class BluetoothService {
   Future<bool?> enableBluetooth() async =>
       FlutterBluetoothSerial.instance.requestEnable();
 
-  Future<void> connectToDevice(String address) async {
+  Future<void> connectToDevice(String address,
+      {bool warehouseConnection = false}) async {
     if (connection != null && connection!.isConnected) {
       print("DISCONNECTING");
       await connection!.close();
       isFirstConnection = true;
       await Future.delayed(const Duration(seconds: 1));
-      connectToDevice(address);
+      connectToDevice(address, warehouseConnection: warehouseConnection);
     }
     connection = await BluetoothConnection.toAddress(address);
-    connection!.input?.listen((value) async {
-      data = String.fromCharCodes(value);
-      print("RawBluetoothDataIs:$data");
-      await processData();
-    }).onDone(() {
-      connection!.dispose();
-      connection = null;
-      isFirstConnection = true;
-    });
+    if (warehouseConnection) {
+      String data =
+          "1,${DI.userService.getUser()!.token},${DateTime.now().millisecondsSinceEpoch.toString()}";
+      print(data);
+      connection!.output.add(Uint8List.fromList(utf8.encode(data)));
+      await connection!.output.allSent;
+      connection!.input?.listen((value) async {
+        data = String.fromCharCodes(value);
+        print("RawBluetoothDataIs:$data");
+        if (data == DI.userService.getUser()!.token) {
+          Fluttertoast.showToast(msg: "Linked Successful");
+        }
+        Fluttertoast.showToast(msg: "Linked Unsuccessful, Please try again");
+        connection!.close();
+      }).onDone(() {
+        connection!.dispose();
+        connection = null;
+        isFirstConnection = true;
+      });
+    } else {
+      connection!.input?.listen((value) async {
+        data = String.fromCharCodes(value);
+        print("RawBluetoothDataIs:$data");
+        await processData();
+      }).onDone(() {
+        connection!.dispose();
+        connection = null;
+        isFirstConnection = true;
+      });
+    }
   }
 
   Future<void> processData() async {

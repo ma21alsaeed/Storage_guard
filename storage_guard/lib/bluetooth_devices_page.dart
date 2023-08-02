@@ -4,6 +4,7 @@ import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/app/widgets/error_occured_widget.dart';
 import 'package:storage_guard/app/widgets/title_appbar.dart';
 import 'package:storage_guard/features/operation/presentation/sensor_data_page.dart';
+import 'package:storage_guard/app/widgets/loading_widget.dart';
 
 class BluetoothDevicesPage extends StatelessWidget {
   const BluetoothDevicesPage({super.key});
@@ -30,8 +31,8 @@ class BluetoothDevicesPage extends StatelessWidget {
 }
 
 class BluetoothDevicesWidget extends StatefulWidget {
-  const BluetoothDevicesWidget({super.key});
-
+  const BluetoothDevicesWidget({super.key, this.warehouseData});
+  final Map<String, dynamic>? warehouseData;
   @override
   State<BluetoothDevicesWidget> createState() => _BluetoothDevicesWidgetState();
 }
@@ -71,13 +72,31 @@ class _BluetoothDevicesWidgetState extends State<BluetoothDevicesWidget> {
                       return ListTile(
                         title: Text(devices[index].name ?? "ESP32_DHT"),
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  SensorDataScreen(device: devices[index]),
-                            ),
-                          );
+                          widget.warehouseData == null
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SensorDataScreen(
+                                        device: devices[index]),
+                                  ),
+                                )
+                              : Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          LoadingPageWithHandler(
+                                            handlerText: "Make sure you get Linked Successful message if you don't try again",
+                                            () async {
+                                              await DI.bluetoothService
+                                                  .connectToDevice(
+                                                      devices[index].address,
+                                                      warehouseConnection: true)
+                                                  .then((value) {
+                                                Navigator.pop(context);
+                                                Navigator.pop(context);
+                                              });
+                                            },
+                                          )));
                         },
                       );
                     },

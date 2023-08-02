@@ -139,7 +139,12 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
                 return SizedBox(
                   height: MediaQuery.sizeOf(context).height * 0.9,
                   width: MediaQuery.sizeOf(context).width,
-                  child: const LoadingWidget(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const LoadingWidget(),
+                    ],
+                  ),
                 );
               }
             }),
