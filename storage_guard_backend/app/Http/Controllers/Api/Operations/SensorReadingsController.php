@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api\Operations;
 
-use App\Http\Resources\Operations\SensorReadingsResources;
-use App\Models\Operation;
-use App\Models\SensorReadings;
 use Carbon\Carbon;
+use App\Models\Operation;
 use Illuminate\Http\Request;
+use App\Models\SensorReadings;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Operations\SensorReadingsResources;
 use App\Http\Requests\SensorReadings\StoreSensorReadingsRequest;
 
 class SensorReadingsController extends Controller
@@ -15,8 +16,16 @@ class SensorReadingsController extends Controller
     /**
      * Display the all readings from that operations.
      */
-    public function index(Operation $operation)
+    public function index($operaionId)
     {
+        try
+        {
+            $operation = Operation::findOrFail($operaionId);
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return response()->json(['message' => 'Operation not found.'], 404);
+        }
         return response()->json(
             [
             'data' => SensorReadingsResources::collection($operation->sensorReadings)
@@ -26,8 +35,17 @@ class SensorReadingsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSensorReadingsRequest $request, Operation $operation)
+    public function store(StoreSensorReadingsRequest $request, $operaionId)
     {
+        try
+        {
+            $operation = Operation::findOrFail($operaionId);
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return response()->json(['message' => 'Operation not found.'], 404);
+        }
+
         $incomingData = $request->validated();
         foreach ($incomingData['readings'] as $reading)
         {
@@ -37,6 +55,24 @@ class SensorReadingsController extends Controller
             $sensorReadings->temperature = (double) $reading['temperature'];
             $sensorReadings->humidity = (double) $reading['humidity'];
             $sensorReadings->save();
+
+            // ! check new value's temp/humidity
+
+            foreach ($operation->products as $product)
+            {
+                if ($sensorReadings->temperature > $product->max_temp || $sensorReadings->temperature < $product->min_temp)
+                {
+                    $product->safety_status = false;
+                    $product->save();
+                }
+
+                if ($sensorReadings->humidity > $product->max_humidity || $sensorReadings->temperature < $product->humidity)
+                {
+                    $product->safety_status = false;
+                    $product->save();
+                }
+            }
+
         }
 
         return response()->json(
@@ -49,9 +85,18 @@ class SensorReadingsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SensorReadings $sensorReadings)
+    public function destroy(Request $request)
     {
-        $sensorReadings->delete();
-        return response()->json(['message' => 'The recode has been deleted successfully.']);
+        $data = $request->validate(['sensor_id' => 'required']);
+
+        $sensorReading = SensorReadings::find($data['sensor_id']);
+        if (!$sensorReading)
+        {
+            return response()->json(['message' => 'The record is not found.'], 404);
+        }
+
+        $sensorReading->delete();
+
+        return response()->json(['message' => 'The record has been deleted successfully.']);
     }
 }

@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Api\Operations;
 use Carbon\Carbon;
 use App\Models\Operation;
 use App\Models\ProductsList;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Operations\OperationResources;
 use App\Http\Requests\Operations\StoreOperationRequest;
 use App\Http\Requests\Operations\UpdateOperationRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Operations\OperationSummaryResources;
 
 class OperationsController extends Controller
@@ -34,6 +34,7 @@ class OperationsController extends Controller
         $operation = Operation::create(
             [
                 'type'    => $incomingData['type'],
+                'name'    => $incomingData['name'],
                 'user_id' => auth()->user()->id
             ]);
         /**
@@ -60,37 +61,61 @@ class OperationsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Operation $operation)
+    public function show($operationId)
     {
-        return response()->json([
-            'data' => new OperationResources($operation)
-        ]);
+        try
+        {
+            $operation = Operation::findOrFail($operationId);
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return response()->json(['message' => 'Operation not found.'], 404);
+        }
+        return response()->json(['data' => new OperationResources($operation)]);
     }
 
     /**
      * Update the specified operation that belong to user in storage.
      */
-    public function update(UpdateOperationRequest $request, Operation $operation)
+    public function update(UpdateOperationRequest $request, $operationId)
     {
+
+        $operation = Operation::where('id', $operationId)->where('user_id', auth()->user()->id)->first();
+
+        if (!$operation)
+        {
+            return response()->json(['message' => 'Operation not found.'], 404);
+        }
+
         if (!$request->validated())
         {
-            return response()->json(['message' => 'please provide some information to update it.'], 400);
+            return response()->json(['message' => 'Please provide information to update.'], 400);
         }
-        if ($operation->user_id !== auth()->user()->id)
-        {
-            return response()->json(['message' => 'Unauthorized.'], 403);
-        }
-        $requestData = $request->validated();
-        $request->input('created_at')
-            ? $requestData['created_at'] = Carbon::parse($requestData['created_at'])
-            : null;
-        $request->input('finished_at')
-            ? $requestData['finished_at'] = Carbon::parse($requestData['finished_at'])
-            : null;
-        $operation->fill($request->validated());
-        return response()->json(['message' => 'Your operation has been updated successfully.', 'operation' => new OperationResources($operation)]);
-    }
 
+        $requestData = $request->validated();
+        if (isset($requestData['created_at']))
+        {
+            $operation['created_at'] = Carbon::parse($requestData['created_at']);
+        }
+        if (isset($requestData['finished_at']))
+        {
+            $operation['finished_at'] = Carbon::parse($requestData['finished_at']);
+        }
+        if (isset($requestData['type']))
+        {
+            $operation['type'] = $requestData['type'];
+        }
+        if (isset($requestData['name']))
+        {
+            $operation['name'] = $requestData['name'];
+        }
+        $operation->save();
+        return response()->json(
+            [
+                'message'   => 'Operation updated successfully.',
+                'operation' => new OperationResources($operation)
+            ]);
+    }
     /**
      * Remove the specified resource from storage.
      */

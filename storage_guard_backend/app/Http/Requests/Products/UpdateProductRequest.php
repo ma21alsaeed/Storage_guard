@@ -30,6 +30,7 @@ class UpdateProductRequest extends FormRequest
             'min_temp'        => 'sometimes|numeric',
             'max_humidity'    => 'sometimes|numeric',
             'min_humidity'    => 'sometimes|numeric',
+            'safety_status'   => 'sometimes|boolean'
 
         ];
     }

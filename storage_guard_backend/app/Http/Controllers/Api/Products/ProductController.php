@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api\Products;
 
 use Carbon\Carbon;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Products\ProductResources;
 use App\Http\Requests\Products\StoreProductRequest;
 use App\Http\Requests\Products\UpdateProductRequest;
-use App\Http\Resources\Operations\OperationSummaryResources;
+use App\Http\Resources\Operations\OperationResources;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductController extends Controller
 {
@@ -43,43 +43,71 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($productId)
     {
+        try
+        {
+            $product = Product::findOrFail($productId);
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
         return response()->json([
             'product'    => new ProductResources($product),
-            'operations' => OperationSummaryResources::collection($product->operations)
-        ]);
+            'operations' => OperationResources::collection($product->operations)
+            ]);
     }
 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, $productId)
     {
-        $requestData = $request->validated();
+        try
+        {
+            $product = Product::findOrFail($productId);
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
 
-        $request->input('production_date')
-            ? $requestData['production_date'] = Carbon::parse($requestData['production_date'])
-            : null;
-        $request->input('expity_date')
-            ? $requestData['expity_date'] = Carbon::parse($requestData['expity_date'])
-            : null;
+        $requestData = $request->validated();
+        if ($request->has('production_date'))
+        {
+            $requestData['production_date'] = Carbon::parse($requestData['production_date']);
+        }
+
+        if ($request->has('expiry_date'))
+        {
+            $requestData['expiry_date'] = Carbon::parse($requestData['expiry_date']);
+        }
 
         $product->fill($requestData);
         $product->save();
-        return response()->json(
-            [
-                'message' => 'The product has been successfully Updated in the store',
-                'product' => new ProductResources($product)
-            ]);
+
+        return response()->json([
+            'message' => 'The product has been successfully updated in the store',
+            'product' => new ProductResources($product)
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy($productId)
     {
+        try
+        {
+            $product = Product::findOrFail($productId);
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
         $product->delete();
         return response()->json(['message' => 'The product has been deleted successfully.']);
     }

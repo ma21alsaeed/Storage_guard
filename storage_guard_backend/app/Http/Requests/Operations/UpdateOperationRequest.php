@@ -23,6 +23,7 @@ class UpdateOperationRequest extends FormRequest
     {
         return [
             'type'        => 'sometimes|string',
+            'name'        => 'sometimes|string',
             'created_at'  => 'sometimes|date',
             'finished_at' => 'sometimes|date|after:created_at'
         ];

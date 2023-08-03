@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+
+use App\Models\ClonedProdect;
 use Laravel\Sanctum\HasApiTokens;
 use SebastianBergmann\Type\VoidType;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -51,4 +52,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Operation::class, 'user_id', 'id');
     }
+
+    public function clonedProducts()
+    {
+        return $this->hasMany(ClonedProdect::class, 'user_id', 'id');
+    }
+
 }

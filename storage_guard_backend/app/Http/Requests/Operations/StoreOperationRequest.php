@@ -23,6 +23,7 @@ class StoreOperationRequest extends FormRequest
     {
         return [
             'type'          => 'required|string',
+            'name'          => 'required|string',
             'products'      => 'required|array|min:1',
             'products.*.id' => 'required|integer|exists:products,id'
         ];
