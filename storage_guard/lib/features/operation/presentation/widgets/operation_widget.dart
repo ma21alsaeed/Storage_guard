@@ -31,57 +31,64 @@ class OperationWidget extends StatelessWidget {
               Text(
                 "${operation.type[0].toUpperCase()}${operation.type.substring(1)} Operation",
                 style: TextStyles.bodyTitleTextStyle,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 7),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Divider(
-                      color: Colors.black54,
-                      height: 12,
-                    ),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        _ValuesColumn("Current", operation.lastTemp.toString(),
-                            operation.lastHumidity.toString()),
-                        Container(
-                          height: 55,
-                          padding: const EdgeInsets.only(bottom: 4),
-                          child: const VerticalDivider(
-                            color: Colors.black45,
+              ),const Divider(
+                            color: Colors.black54,
+                            height: 12,
                           ),
-                        ),
-                        _ValuesColumn("Avg", operation.avgTemp.toString(),
-                            operation.avgHumidity.toString()),
-                        const SizedBox(width: 6),
-                        Column(
-                          children: [
-                            Text(
-                              operation.name,
-                              style: TextStyles.smallLightTextStyle,
-                            ),
-                            const SizedBox(
-                              height: 6,
-                            ),
-                            operation.safetyStatus == 1
-                                ? Image.asset(
-                                    "assets/icons/shield_small.png",
-                                    width: 25,
-                                  )
-                                : const Icon(
-                                    Icons.safety_check_outlined,
-                                    color: AppColors.mainblue,
-                                    size: 25,
-                                  )
-                          ],
-                        ),
-                      ],
+              operation.checkForValues()
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 7),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          
+                          Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              _ValuesColumn(
+                                  "Current",
+                                  operation.lastTemp.toString(),
+                                  operation.lastHumidity.toString()),
+                              Container(
+                                height: 55,
+                                padding: const EdgeInsets.only(bottom: 4),
+                                child: const VerticalDivider(
+                                  color: Colors.black45,
+                                ),
+                              ),
+                              _ValuesColumn("Avg", operation.avgTemp.toString(),
+                                  operation.avgHumidity.toString()),
+                              const SizedBox(width: 6),
+                              Column(
+                                children: [
+                                  Text(
+                                    operation.name,
+                                    style: TextStyles.smallLightTextStyle,
+                                  ),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  operation.safetyStatus == 1
+                                      ? Image.asset(
+                                          "assets/icons/shield_small.png",
+                                          width: 25,
+                                        )
+                                      : const Icon(
+                                          Icons.safety_check_outlined,
+                                          color: AppColors.mainblue,
+                                          size: 25,
+                                        )
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     )
-                  ],
-                ),
-              ),
+                  : Text(
+                      "No Temp/Humidity Values Found",
+                      style: TextStyles.bodyTextStyle,
+                    ),
             ],
           ),
         ),

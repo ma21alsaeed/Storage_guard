@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
+import 'package:storage_guard/app/extensions/dialog_build_context.dart';
 import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
+import 'package:storage_guard/app/widgets/custom_dialog.dart';
+import 'package:storage_guard/features/operation/presentation/cubit/create_operation_cubit.dart';
+import 'package:storage_guard/features/operation/presentation/cubit/get_all_operations_cubit.dart'
+    as getOpsCubit;
+import 'package:storage_guard/features/transport/presentation/text_input_dialog_widget.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/app/widgets/title_appbar.dart';
 import 'package:storage_guard/features/transport/presentation/add_new_package_page.dart';
 import 'package:storage_guard/features/transport/presentation/link_device_page.dart';
+import 'package:storage_guard/features/transport/services/transport_page_service.dart';
 
 class TransportPage extends StatelessWidget {
   const TransportPage({super.key});
@@ -30,11 +39,53 @@ class TransportPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    GradientButton(
-                      title: "Create",
-                      onPressed: () {},
-                      withArrow: false,
-                    )
+                    BlocConsumer<CreateOperationCubit, CreateOperationState>(
+                        listener: (context, state) {
+                          if(state is CreatedOperationState){Fluttertoast.showToast(msg: "Created Operation Successfully");}
+                        },
+                        builder: (context, state) {
+                          if (state is LoadingState) {
+                            return CircularProgressIndicator();
+                          }
+                          return GradientButton(
+                            title: "Create",
+                            onPressed: () {
+                              context
+                                      .read<TransportPageService>()
+                                      .addedPackages()
+                                  ? context
+                                      .showDialog(
+                                          const CustomDialog(TextInputDialog(
+                                      title: "Enter Name",
+                                    )))
+                                      .then((name) async {
+                                      if (name != null) {
+                                        List products = context
+                                            .read<TransportPageService>()
+                                            .packagesIdList
+                                            .map((id) => {"id": id.toString()})
+                                            .toList();
+                                        Map<String, dynamic> data = {
+                                          "type": "transport",
+                                          "name": name.toString(),
+                                          "products": products
+                                        };
+                                        BlocProvider.of<CreateOperationCubit>(
+                                                context)
+                                            .createOperations(data);
+                                        BlocProvider.of<
+                                                    getOpsCubit
+                                                        .GetAllOperationsCubit>(
+                                                context)
+                                            .getAllOperations();
+                                      }
+                                    })
+                                  : Fluttertoast.showToast(
+                                      msg: "Please add at least one package");
+                            },
+                            withArrow: false,
+                          );
+                        })
                   ],
                 ),
               ],
@@ -62,7 +113,7 @@ class _AddPackageSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Count    15",
+                "Count    ${context.watch<TransportPageService>().packagesIdList.length}",
                 style: TextStyles.regularTextStyle,
               ),
               const SizedBox(height: 14),
@@ -116,34 +167,51 @@ class _AddDevicesSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Device Name",
-                style: TextStyles.regularTextStyle,
+              // context
+              //         .watch<TransportPageService>()
+              //         .bluetoothDeviceName
+              //         .isNotEmpty
+              //     ?
+              Column(
+                children: [
+                  Text(
+                    "Device Name",
+                    style: TextStyles.regularTextStyle,
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    "Monitoring Device C1",
+                    style: TextStyles.regularTextStyle,
+                  ),
+                ],
               ),
+              // : Text(
+              //     "No Connected Device",
+              //     style: TextStyles.regularTextStyle,
+              //   ),
               const SizedBox(height: 14),
-              Text(
-                "Monitoring Device C1",
-                style: TextStyles.regularTextStyle,
-              ),
-              const SizedBox(height: 14),
-              Text(
-                "Device Battery",
-                style: TextStyles.regularTextStyle,
-              ),
-              const SizedBox(height: 14),
-              Text(
-                "80%",
-                style: TextStyles.regularTextStyle,
-              ),
-              const SizedBox(height: 14),
+              // Text(
+              //   "Device Battery",
+              //   style: TextStyles.regularTextStyle,
+              // ),
+              // const SizedBox(height: 14),
+              // Text(
+              //   "80%",
+              //   style: TextStyles.regularTextStyle,
+              // ),
+              // const SizedBox(height: 14),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GradientButton(
                     title: "Link",
                     onPressed: () {
-                      PersistentNavBarNavigator.pushNewScreen(context,
-                          screen: const LinkDevicePage(), withNavBar: false);
+                      context.read<TransportPageService>().createdOperation()
+                          ? PersistentNavBarNavigator.pushNewScreen(context,
+                              screen: const LinkDevicePage(), withNavBar: false)
+                          : Fluttertoast.showToast(
+                              msg:
+                                  "Create an Operation first then link a device");
                     },
                     withArrow: false,
                   )

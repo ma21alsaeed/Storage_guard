@@ -13,6 +13,12 @@ class OperationRepositories {
       await repository(
           () async => await _operationDataSource.sendSensorRecordings(data));
 
-  Future<Either<Failure, List<OperationModel>>> getAllOperations() async => await repository(
-      () async => await _operationDataSource.getAllOperations());
+  Future<Either<Failure, OperationModel>> createOperation(
+          Map<String, dynamic> data) async =>
+      await repository(
+          () async => await _operationDataSource.createOperation(data));
+
+  Future<Either<Failure, List<OperationModel>>> getAllOperations() async =>
+      await repository(
+          () async => await _operationDataSource.getAllOperations());
 }

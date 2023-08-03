@@ -16,67 +16,75 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 19),
-            child: BlocConsumer<GetAllOperationsCubit, GetAllOperationsState>(
-                listener: (context, state) {},
-                builder: (context, state) {
-                  if (state is LoadingState) {
-                    return SizedBox(
-                      height: MediaQuery.sizeOf(context).height * 0.9,
-                      width: MediaQuery.sizeOf(context).width,
-                      child: Center(
-                        child: const LoadingWidget(),
-                      ),
-                    );
-                  }
-                  if (state is ErrorState) {
+        child: RefreshIndicator(
+          onRefresh: () => BlocProvider.of<GetAllOperationsCubit>(context)
+              .getAllOperations(),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 19),
+              child: BlocConsumer<GetAllOperationsCubit, GetAllOperationsState>(
+                  listener: (context, state) {},
+                  builder: (context, state) {
+                    if (state is LoadingState) {
+                      return SizedBox(
+                        height: MediaQuery.sizeOf(context).height * 0.9,
+                        width: MediaQuery.sizeOf(context).width,
+                        child: Center(
+                          child: const LoadingWidget(),
+                        ),
+                      );
+                    }
+                    if (state is ErrorState) {
+                      return ErrorOccurredTextWidget(
+                        message: state.message,
+                        errorType: ErrorType.server,
+                        fun: () => BlocProvider.of<GetAllOperationsCubit>(context)
+                            .getAllOperations(),
+                      );
+                    }
+                    if (state is GotOperationsState) {
+                      List<OperationModel> operations = state.operations
+                          .where((element) => (element.finishedAt == null))
+                          .toList();
+                      // List<OperationModel> operations = [];
+        
+                      bool isAllSafe = true;
+                      for (OperationModel operation in operations) {
+                        if (operation.safetyStatus == 0) {
+                          isAllSafe = false;
+                          break;
+                        }
+                      }
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                  width: 200,
+                                  child:
+                                      Image.asset("assets/images/text_logo.png"))
+                            ],
+                          ),
+                          SizedBox(height: operations.isEmpty ? 0 : 45),
+                          operations.isEmpty
+                              ? const SizedBox()
+                              : _CurrentOperationsSection(operations),
+                          const SizedBox(height: 45),
+                          _LastUpdateSection(operations, isAllSafe)
+                        ],
+                      );
+                    }
                     return ErrorOccurredTextWidget(
-                      message: state.message,
                       errorType: ErrorType.server,
                       fun: () => BlocProvider.of<GetAllOperationsCubit>(context)
                           .getAllOperations(),
                     );
-                  }
-                  if (state is GotOperationsState) {
-                    List<OperationModel> operations = state.operations;
-                    bool isAllSafe = true;
-                    for (OperationModel operation in operations) {
-                      if (operation.safetyStatus == 0) {
-                        isAllSafe = false;
-                        break;
-                      }
-                    }
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                                width: 200,
-                                child:
-                                    Image.asset("assets/images/text_logo.png"))
-                          ],
-                        ),
-                        const SizedBox(height: 45),
-                        operations.isEmpty
-                            ? const SizedBox()
-                            : _CurrentOperationsSection(operations),
-                        const SizedBox(height: 45),
-                        _LastUpdateSection(operations, isAllSafe)
-                      ],
-                    );
-                  }
-                  return ErrorOccurredTextWidget(
-                    errorType: ErrorType.server,
-                    fun: () => BlocProvider.of<GetAllOperationsCubit>(context)
-                        .getAllOperations(),
-                  );
-                }),
+                  }),
+            ),
           ),
         ),
       ),
@@ -97,7 +105,7 @@ class _CurrentOperationsSection extends StatelessWidget {
         const SizedBox(height: 20),
         ListView.separated(
           shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           itemCount: operations.length,
           separatorBuilder: (context, index) => const SizedBox(
             height: 12,

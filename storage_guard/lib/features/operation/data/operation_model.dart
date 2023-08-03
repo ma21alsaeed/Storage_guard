@@ -21,46 +21,63 @@ String operationModelListToJson(List<OperationModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class OperationModel {
-    int id;
-    String type;
-    String name;
-    int userId;
-    DateTime createdAt;
-    DateTime updatedAt;
-    dynamic finishedAt;
-    int lastTemp;
-    int lastHumidity;
-    int avgTemp;
-    int avgHumidity;
-    int safetyStatus;
-    int productsCount;
-    int readingsCount;
+  int id;
+  String type;
+  String name;
+  int? userId;
+  User? user;
+  List<ProductModel>? products;
+  List<SensorReadingModel>? sensorReadings;
+  DateTime createdAt;
+  DateTime updatedAt;
+  DateTime? finishedAt;
+  int? lastTemp;
+  int? lastHumidity;
+  int? avgTemp;
+  int? avgHumidity;
+  int? safetyStatus;
+  int? productsCount;
+  int? readingsCount;
 
-    OperationModel({
-        required this.id,
-        required this.type,
-        required this.name,
-        required this.userId,
-        required this.createdAt,
-        required this.updatedAt,
-        this.finishedAt,
-        required this.lastTemp,
-        required this.lastHumidity,
-        required this.avgTemp,
-        required this.avgHumidity,
-        required this.safetyStatus,
-        required this.productsCount,
-        required this.readingsCount,
-    });
+  OperationModel({
+    required this.id,
+    required this.type,
+    required this.name,
+    this.userId,
+    this.user,
+    this.products,
+    this.sensorReadings,
+    required this.createdAt,
+    required this.updatedAt,
+    this.finishedAt,
+    this.lastTemp,
+    this.lastHumidity,
+    this.avgTemp,
+    this.avgHumidity,
+    this.safetyStatus,
+    this.productsCount,
+    this.readingsCount,
+  });
 
-    factory OperationModel.fromJson(Map<String, dynamic> json) => OperationModel(
+  factory OperationModel.fromJson(Map<String, dynamic> json) => OperationModel(
         id: json["id"],
         type: json["type"],
         name: json["name"],
         userId: json["user_id"],
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        products: json["products"] == null
+            ? null
+            : List<ProductModel>.from(
+                json["products"].map((x) => ProductModel.fromJson(x))),
+        sensorReadings: json["sensor_readings"] == null
+            ? null
+            : List<SensorReadingModel>.from(json["sensor_readings"]
+                .map((x) => SensorReadingModel.fromJson(x))),
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        finishedAt: json["finished_at"],
+        finishedAt: json["finished_at"] == null
+            ? null
+            : DateTime.parse(json["finished_at"]),
         lastTemp: json["last_temp"],
         lastHumidity: json["last_humidity"],
         avgTemp: json["avg_temp"],
@@ -68,16 +85,23 @@ class OperationModel {
         safetyStatus: json["safety_status"],
         productsCount: json["products_count"],
         readingsCount: json["readings_count"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "type": type,
         "name": name,
         "user_id": userId,
+        "user": user?.toJson(),
+        "products": products == null
+            ? null
+            : List<dynamic>.from(products!.map((x) => x.toJson())),
+        "sensor_readings": sensorReadings == null
+            ? null
+            : List<dynamic>.from(sensorReadings!.map((x) => x.toJson())),
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
-        "finished_at": finishedAt,
+        "finished_at": finishedAt?.toIso8601String(),
         "last_temp": lastTemp,
         "last_humidity": lastHumidity,
         "avg_temp": avgTemp,
@@ -85,5 +109,6 @@ class OperationModel {
         "safety_status": safetyStatus,
         "products_count": productsCount,
         "readings_count": readingsCount,
-    };
+      };
+      bool checkForValues()=>lastTemp!=null&&lastHumidity!=null&&avgTemp!=null&&avgHumidity!=null;
 }
