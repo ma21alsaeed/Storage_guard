@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Products\ProductController;
 use App\Http\Controllers\Api\Operations\OperationsController;
 use App\Http\Controllers\Api\Operations\ProductListController;
+use App\Http\Controllers\Api\Products\ClonedProductController;
 use App\Http\Controllers\Api\Operations\SensorReadingsController;
 
 
@@ -36,4 +37,6 @@ Route::middleware('auth:sanctum')->group(function ()
     Route::get('/operation-sensor-records/{operation}', [SensorReadingsController::class, 'index']);
     Route::post('/operation-sensor-records/{operation}', [SensorReadingsController::class, 'store']);
     Route::delete('/operation-sensor-records', [SensorReadingsController::class, 'destroy']);
+    Route::post('/create-cloned-product', [ClonedProductController::class, 'create']);
+    Route::get('/user-cloned-product/{user}', [ClonedProductController::class, 'show']);
 });

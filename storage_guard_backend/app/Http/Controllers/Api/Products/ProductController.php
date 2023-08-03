@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Api\Products;
 
 use Carbon\Carbon;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Products\ProductResources;
 use App\Http\Requests\Products\StoreProductRequest;
 use App\Http\Requests\Products\UpdateProductRequest;
 use App\Http\Resources\Operations\OperationResources;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Resources\Operations\OperationSummaryResources;
 
 class ProductController extends Controller
 {

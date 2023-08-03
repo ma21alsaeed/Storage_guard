@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Operations;
 
-use App\Services\OperationStatusService;
 use Carbon\Carbon;
 use App\Models\Operation;
 use App\Models\ProductsList;
