@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
-import 'package:storage_guard/app/widgets/error_occured_widget.dart';
-import 'package:storage_guard/app/widgets/loading_widget.dart';
+import 'package:storage_guard/app/extensions/date_time_helper.dart';
+import 'package:storage_guard/app/widgets/error_occurred_widget.dart';
 import 'package:storage_guard/app/widgets/title_appbar.dart';
+import 'package:storage_guard/app/widgets/loading_widget.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/features/product/data/product_model.dart';
 import 'package:storage_guard/features/product/presentation/cubit/product_cubit.dart';
@@ -45,7 +46,7 @@ class ProductPage extends StatelessWidget {
                                   style: TextStyles.regularTextStyle),
                               const Spacer(),
                               Text(
-                                product.safe ? "Safe" : "Not Safe",
+                                product.safetyStatus == 1 ? "Safe" : "Not Safe",
                                 style: const TextStyle(fontSize: 15),
                               ),
                               const SizedBox(width: 10),
@@ -58,25 +59,25 @@ class ProductPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            product.productName,
+                            product.name,
                             style: const TextStyle(fontSize: 15),
                           ),
                           const SizedBox(height: 20),
                           Text("Manfactured by",
                               style: TextStyles.regularTextStyle),
                           const SizedBox(height: 8),
-                          Text(product.manufacturedBy),
+                          Text(product.description),
                           const SizedBox(height: 20),
                           Text("Production Date",
                               style: TextStyles.regularTextStyle),
                           const SizedBox(height: 8),
-                          Text(product.productionDate,
+                          Text(product.productionDate.formattedDate2,
                               style: const TextStyle(fontSize: 15)),
                           const SizedBox(height: 20),
                           Text("Expiration Date",
                               style: TextStyles.regularTextStyle),
                           const SizedBox(height: 8),
-                          Text(product.expirationDate,
+                          Text(product.expiryDate.formattedDate2,
                               style: const TextStyle(fontSize: 15)),
                           const SizedBox(height: 50),
                           const TitleDivider("Logs"),
@@ -84,24 +85,24 @@ class ProductPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      width: MediaQuery.sizeOf(context).width,
-                      height: 120,
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: product.logs.length,
-                        itemBuilder: (context, index) {
-                          return LogWidget(
-                            product.logs[index],
-                            isFirst: index == 0,
-                            isLast: index == product.logs.length - 1,
-                          );
-                        },
-                        separatorBuilder: (context, index) =>
-                            const SizedBox.shrink(),
-                      ),
-                    )
+                    // SizedBox(
+                    //   width: MediaQuery.sizeOf(context).width,
+                    //   height: 120,
+                    //   child: ListView.separated(
+                    //     shrinkWrap: true,
+                    //     scrollDirection: Axis.horizontal,
+                    //     itemCount: product.logs.length,
+                    //     itemBuilder: (context, index) {
+                    //       return LogWidget(
+                    //         product.logs[index],
+                    //         isFirst: index == 0,
+                    //         isLast: index == product.logs.length - 1,
+                    //       );
+                    //     },
+                    //     separatorBuilder: (context, index) =>
+                    //         const SizedBox.shrink(),
+                    //   ),
+                    // )
                   ],
                 );
               }
@@ -109,7 +110,7 @@ class ProductPage extends StatelessWidget {
                   height: MediaQuery.sizeOf(context).height,
                   width: MediaQuery.sizeOf(context).width,
                   child: const Center(
-                    child: ErrorOccuredTextWidget(),
+                    child: ErrorOccurredTextWidget(errorType: ErrorType.server),
                   ));
             }),
       )),
@@ -117,44 +118,44 @@ class ProductPage extends StatelessWidget {
   }
 }
 
-class LogWidget extends StatelessWidget {
-  const LogWidget(this.log,
-      {super.key, this.isLast = false, this.isFirst = false});
-  final Log log;
-  final bool isLast;
-  final bool isFirst;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        isFirst ? const LineWidget() : const SizedBox.shrink(),
-        Column(
-          children: [
-            Text(
-              log.getDate(),
-              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                  border: Border.all(width: 2, color: AppColors.mainblue),
-                  borderRadius: BorderRadius.circular(25)),
-              child: Center(
-                  child: SizedBox(
-                      width: 40,
-                      child: Image.asset(log.type == "storage"
-                          ? "assets/icons/warehouse_small.png"
-                          : "assets/icons/truck_small.png"))),
-            ),
-          ],
-        ),
-        !isLast ? const LineWidget() : const SizedBox(width: 20)
-      ],
-    );
-  }
-}
+// class LogWidget extends StatelessWidget {
+//   const LogWidget(this.log,
+//       {super.key, this.isLast = false, this.isFirst = false});
+//   final Log log;
+//   final bool isLast;
+//   final bool isFirst;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         isFirst ? const LineWidget() : const SizedBox.shrink(),
+//         Column(
+//           children: [
+//             Text(
+//               log.getDate(),
+//               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+//             ),
+//             const SizedBox(height: 10),
+//             Container(
+//               height: 70,
+//               width: 70,
+//               decoration: BoxDecoration(
+//                   border: Border.all(width: 2, color: AppColors.mainblue),
+//                   borderRadius: BorderRadius.circular(25)),
+//               child: Center(
+//                   child: SizedBox(
+//                       width: 40,
+//                       child: Image.asset(log.type == "storage"
+//                           ? "assets/icons/warehouse_small.png"
+//                           : "assets/icons/truck_small.png"))),
+//             ),
+//           ],
+//         ),
+//         !isLast ? const LineWidget() : const SizedBox(width: 20)
+//       ],
+//     );
+//   }
+// }
 
 class LineWidget extends StatelessWidget {
   const LineWidget({super.key, this.isFirstLine = false});

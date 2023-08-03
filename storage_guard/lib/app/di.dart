@@ -8,6 +8,7 @@ import 'package:storage_guard/features/authentication/presentation/cubit/auth_cu
 import 'package:storage_guard/features/authentication/services/user_service.dart';
 import 'package:storage_guard/features/operation/data/operation_datasource.dart';
 import 'package:storage_guard/features/operation/data/operation_repositories.dart';
+import 'package:storage_guard/features/operation/presentation/cubit/get_all_operations_cubit.dart';
 import 'package:storage_guard/features/operation/presentation/cubit/send_records_cubit.dart';
 import 'package:storage_guard/features/product/data/product_datasource.dart';
 import 'package:storage_guard/features/product/data/product_repositories.dart';
@@ -65,6 +66,8 @@ abstract class DI {
         () => OperationRepositories(di<OperationDataSource>()));
     di.registerFactory<SendRecordsCubit>(
         () => SendRecordsCubit(di<OperationRepositories>(), preferences));
+    di.registerFactory<GetAllOperationsCubit>(
+        () => GetAllOperationsCubit(di<OperationRepositories>()));
   }
 
   static UserService get userService => di.get<UserService>();

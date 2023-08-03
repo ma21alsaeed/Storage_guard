@@ -5,6 +5,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:storage_guard/features/authentication/presentation/login_page.dart';
+import 'package:storage_guard/features/operation/presentation/cubit/get_all_operations_cubit.dart';
 import 'package:storage_guard/features/operation/presentation/cubit/send_records_cubit.dart';
 import 'package:storage_guard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:storage_guard/features/shop/presentation/cubit/shop_cubit.dart';
@@ -37,6 +38,7 @@ class StorageGuardApp extends StatelessWidget {
         BlocProvider(create: (_) => DI.di<ProductCubit>()),
         BlocProvider(create: (_) => DI.di<ShopCubit>()),
         BlocProvider(create: (_) => DI.di<SendRecordsCubit>()),
+        BlocProvider(create: (_) => DI.di<GetAllOperationsCubit>()..getAllOperations()),
       ],
       child: MaterialApp(
           theme: ThemeData(

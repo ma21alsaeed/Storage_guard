@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:storage_guard/app/widgets/error_occurred_widget.dart';
+import 'package:storage_guard/app/widgets/loading_widget.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/features/home/presentation/widgets/last_update_bottom_operations_section.dart';
 import 'package:storage_guard/features/home/presentation/widgets/last_update_devices_section.dart';
+import 'package:storage_guard/features/operation/data/operation_model.dart';
+import 'package:storage_guard/features/operation/presentation/cubit/get_all_operations_cubit.dart';
 import 'package:storage_guard/features/operation/presentation/widgets/operation_widget.dart';
 
 class Homepage extends StatelessWidget {
@@ -14,25 +19,64 @@ class Homepage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 19),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        width: 200,
-                        child: Image.asset("assets/images/text_logo.png"))
-                  ],
-                ),
-                const SizedBox(height: 45),
-                const _CurrentOperationsSection(),
-                const SizedBox(height: 45),
-                const _LastUpdateSection()
-              ],
-            ),
+            child: BlocConsumer<GetAllOperationsCubit, GetAllOperationsState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  if (state is LoadingState) {
+                    return SizedBox(
+                      height: MediaQuery.sizeOf(context).height * 0.9,
+                      width: MediaQuery.sizeOf(context).width,
+                      child: Center(
+                        child: const LoadingWidget(),
+                      ),
+                    );
+                  }
+                  if (state is ErrorState) {
+                    return ErrorOccurredTextWidget(
+                      message: state.message,
+                      errorType: ErrorType.server,
+                      fun: () => BlocProvider.of<GetAllOperationsCubit>(context)
+                          .getAllOperations(),
+                    );
+                  }
+                  if (state is GotOperationsState) {
+                    List<OperationModel> operations = state.operations;
+                    bool isAllSafe = true;
+                    for (OperationModel operation in operations) {
+                      if (operation.safetyStatus == 0) {
+                        isAllSafe = false;
+                        break;
+                      }
+                    }
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                width: 200,
+                                child:
+                                    Image.asset("assets/images/text_logo.png"))
+                          ],
+                        ),
+                        const SizedBox(height: 45),
+                        operations.isEmpty
+                            ? const SizedBox()
+                            : _CurrentOperationsSection(operations),
+                        const SizedBox(height: 45),
+                        _LastUpdateSection(operations, isAllSafe)
+                      ],
+                    );
+                  }
+                  return ErrorOccurredTextWidget(
+                    errorType: ErrorType.server,
+                    fun: () => BlocProvider.of<GetAllOperationsCubit>(context)
+                        .getAllOperations(),
+                  );
+                }),
           ),
         ),
       ),
@@ -41,7 +85,8 @@ class Homepage extends StatelessWidget {
 }
 
 class _CurrentOperationsSection extends StatelessWidget {
-  const _CurrentOperationsSection();
+  const _CurrentOperationsSection(this.operations);
+  final List<OperationModel> operations;
 
   @override
   Widget build(BuildContext context) {
@@ -53,31 +98,32 @@ class _CurrentOperationsSection extends StatelessWidget {
         ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: 2,
+          itemCount: operations.length,
           separatorBuilder: (context, index) => const SizedBox(
             height: 12,
           ),
-          itemBuilder: (context, index) => const OperationWidget(),
-        ),
+          itemBuilder: (context, index) => OperationWidget(operations[index]),
+        )
       ],
     );
   }
 }
 
 class _LastUpdateSection extends StatelessWidget {
-  const _LastUpdateSection();
-
+  const _LastUpdateSection(this.operations, this.isAllSafe);
+  final List<OperationModel> operations;
+  final bool isAllSafe;
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TitleDivider("Last Update"),
-        SizedBox(height: 16),
-        LastUpdateDevicesSection(),
-        SizedBox(height: 35),
-        LastUpdateBottomSection(),
-        SizedBox(height: 45),
+        const TitleDivider("Last Update"),
+        const SizedBox(height: 16),
+        LastUpdateDevicesSection(operations, isAllSafe),
+        const SizedBox(height: 35),
+        LastUpdateBottomSection(operations),
+        const SizedBox(height: 45),
       ],
     );
   }

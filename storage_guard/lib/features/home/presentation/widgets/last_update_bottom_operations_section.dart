@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
+import 'package:storage_guard/features/operation/data/operation_model.dart';
 
 class LastUpdateBottomSection extends StatelessWidget {
-  const LastUpdateBottomSection({super.key});
+  const LastUpdateBottomSection(this.operations, {super.key});
+  final List<OperationModel> operations;
 
   @override
   Widget build(BuildContext context) {

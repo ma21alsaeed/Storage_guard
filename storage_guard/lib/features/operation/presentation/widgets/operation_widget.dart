@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/di.dart';
+import 'package:storage_guard/features/operation/data/operation_model.dart';
 
 import '../../../../bluetooth_devices_page.dart';
 
 class OperationWidget extends StatelessWidget {
-  const OperationWidget({super.key});
-
+  const OperationWidget(this.operation, {super.key});
+  final OperationModel operation;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         DI.bluetoothService.requestBluetoothPermission();
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const BluetoothDevicesPage()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const BluetoothDevicesPage()));
       },
       child: Material(
         elevation: 5,
@@ -26,7 +29,7 @@ class OperationWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Storage Operation",
+                "${operation.type[0].toUpperCase()}${operation.type.substring(1)} Operation",
                 style: TextStyles.bodyTitleTextStyle,
               ),
               Padding(
@@ -41,7 +44,8 @@ class OperationWidget extends StatelessWidget {
                     Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        const _ValuesColumn("Current", "18", "40"),
+                        _ValuesColumn("Current", operation.lastTemp.toString(),
+                            operation.lastHumidity.toString()),
                         Container(
                           height: 55,
                           padding: const EdgeInsets.only(bottom: 4),
@@ -49,21 +53,28 @@ class OperationWidget extends StatelessWidget {
                             color: Colors.black45,
                           ),
                         ),
-                        const _ValuesColumn("Avg", "20", "50"),
+                        _ValuesColumn("Avg", operation.avgTemp.toString(),
+                            operation.avgHumidity.toString()),
                         const SizedBox(width: 6),
                         Column(
                           children: [
                             Text(
-                              "B1",
+                              operation.name,
                               style: TextStyles.smallLightTextStyle,
                             ),
                             const SizedBox(
                               height: 6,
                             ),
-                            Image.asset(
-                              "assets/icons/shield_small.png",
-                              width: 25,
-                            )
+                            operation.safetyStatus == 1
+                                ? Image.asset(
+                                    "assets/icons/shield_small.png",
+                                    width: 25,
+                                  )
+                                : const Icon(
+                                    Icons.safety_check_outlined,
+                                    color: AppColors.mainblue,
+                                    size: 25,
+                                  )
                           ],
                         ),
                       ],

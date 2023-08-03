@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
-import 'package:storage_guard/app/widgets/error_occured_widget.dart';
+import 'package:storage_guard/app/widgets/error_occurred_widget.dart';
 import 'package:storage_guard/app/widgets/loading_widget.dart';
 import 'package:storage_guard/app/widgets/title_appbar.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
@@ -85,7 +85,7 @@ class ShopPage extends StatelessWidget {
                   height: MediaQuery.sizeOf(context).height,
                   width: MediaQuery.sizeOf(context).width,
                   child: const Center(
-                    child: ErrorOccuredTextWidget(),
+                    child: ErrorOccurredTextWidget(errorType: ErrorType.server),
                   ));
             }),
       )),

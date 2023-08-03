@@ -25,7 +25,7 @@ class StoreSensorReadingsRequest extends FormRequest
             'readings'               => 'required|array|min:1',
             'readings.*.temperature' => 'required|numeric',
             'readings.*.humidity'    => 'required|numeric',
-            'readings.*.read_at'     => 'required|date|unique:table,column,except,id',
+            'readings.*.read_at'     => 'required|date',
         ];
     }
 }
