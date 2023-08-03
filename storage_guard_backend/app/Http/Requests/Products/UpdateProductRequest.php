@@ -25,7 +25,7 @@ class UpdateProductRequest extends FormRequest
             'name'            => 'sometimes|string',
             'description'     => 'sometimes|string',
             'production_date' => 'sometimes|date',
-            'expity_date'     => 'sometimes|date|after:production_date',
+            'expiry_date'     => 'sometimes|date|after:production_date',
             'max_temp'        => 'sometimes|numeric',
             'min_temp'        => 'sometimes|numeric',
             'max_humidity'    => 'sometimes|numeric',

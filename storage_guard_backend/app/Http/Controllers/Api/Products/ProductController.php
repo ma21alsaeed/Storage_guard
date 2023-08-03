@@ -31,7 +31,8 @@ class ProductController extends Controller
 
         $productData = $request->validated();
         $productData['production_date'] = Carbon::parse($productData['production_date']);
-        $productData['expity_date'] = Carbon::parse($productData['expity_date']);
+        $productData['expiry_date'] = Carbon::parse($productData['expiry_date']);
+        $productData['safety_status'] = 1;
         $product = Product::create($productData);
         return response()->json(
             [

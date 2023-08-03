@@ -20,7 +20,7 @@ class ProductResources extends JsonResource
             'name'            => $this->name,
             'description'     => $this->description,
             'production_date' => Carbon::parse($this->production_date),
-            'expity_date'     => Carbon::parse($this->expity_date),
+            'expiry_date'     => Carbon::parse($this->expiry_date),
             'max_temp'        => $this->max_temp,
             'min_temp'        => $this->min_temp,
             'max_humidity'    => $this->max_humidity,
