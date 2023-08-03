@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->longText('description');
             $table->timestamp('production_date');
-            $table->timestamp('expity_date');
+            $table->timestamp('expiry_date');
             $table->double('max_temp');
             $table->double('min_temp');
             $table->double('max_humidity');

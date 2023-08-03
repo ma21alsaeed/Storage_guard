@@ -25,7 +25,7 @@ class StoreProductRequest extends FormRequest
             'name'            => 'required|string',
             'description'     => 'required|string',
             'production_date' => 'required|date',
-            'expity_date'     => 'required|date|after:production_date',
+            'expiry_date'     => 'required|date|after:production_date',
             'max_temp'        => 'required|numeric',
             'min_temp'        => 'required|numeric',
             'max_humidity'    => 'required|numeric',
