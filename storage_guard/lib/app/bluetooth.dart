@@ -22,6 +22,7 @@ class BluetoothService {
   String data = '';
   late DateTime referenceTime;
   bool isFirstConnection = true;
+  String deviceName = '';
 
   BehaviorSubject<List<BluetoothDevice>> devicesStreamController =
       BehaviorSubject<List<BluetoothDevice>>();
@@ -50,16 +51,19 @@ class BluetoothService {
   Future<bool?> enableBluetooth() async =>
       FlutterBluetoothSerial.instance.requestEnable();
 
-  Future<void> connectToDevice(String address,
+  Future<void> connectToDevice(String address, String deviceName,
       {bool warehouseConnection = false}) async {
+        deviceName = deviceName;
     if (connection != null && connection!.isConnected) {
       print("DISCONNECTING");
       await connection!.close();
       isFirstConnection = true;
       await Future.delayed(const Duration(seconds: 1));
-      connectToDevice(address, warehouseConnection: warehouseConnection);
+      connectToDevice(address, deviceName,
+          warehouseConnection: warehouseConnection);
     }
     connection = await BluetoothConnection.toAddress(address);
+    
     if (warehouseConnection) {
       String data =
           "1,${DI.userService.getUser()!.token},${DateTime.now().millisecondsSinceEpoch.toString()}";

@@ -12,6 +12,7 @@ import 'package:storage_guard/features/operation/presentation/cubit/send_records
 import 'package:storage_guard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:storage_guard/features/shop/presentation/cubit/shop_cubit.dart';
 import 'package:storage_guard/features/transport/services/transport_page_service.dart';
+import 'package:storage_guard/features/warehouse/services/warehouse_page_service.dart';
 import 'package:storage_guard/features/welcome/welcome_page.dart';
 import 'package:storage_guard/main_page.dart';
 
@@ -39,6 +40,9 @@ class StorageGuardApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => TransportPageService(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => WarehousePageService(),
         ),
       ],
       child: MultiBlocProvider(

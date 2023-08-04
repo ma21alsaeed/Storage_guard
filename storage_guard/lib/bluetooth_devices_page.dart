@@ -89,7 +89,7 @@ class _BluetoothDevicesWidgetState extends State<BluetoothDevicesWidget> {
                                             () async {
                                               await DI.bluetoothService
                                                   .connectToDevice(
-                                                      devices[index].address,
+                                                      devices[index].address,devices[index].name??"",
                                                       warehouseConnection: true)
                                                   .then((value) {
                                                 Navigator.pop(context);

@@ -41,51 +41,50 @@ class TransportPage extends StatelessWidget {
                   children: [
                     BlocConsumer<CreateOperationCubit, CreateOperationState>(
                         listener: (context, state) {
-                          if(state is CreatedOperationState){Fluttertoast.showToast(msg: "Created Operation Successfully");}
+                      if (state is CreatedOperationState) {
+                        Fluttertoast.showToast(
+                            msg: "Created Operation Successfully");
+                      }
+                    }, builder: (context, state) {
+                      if (state is LoadingState) {
+                        return CircularProgressIndicator();
+                      }
+                      return GradientButton(
+                        title: "Create",
+                        onPressed: () {
+                          context.read<TransportPageService>().addedPackages()
+                              ? context
+                                  .showDialog(
+                                      const CustomDialog(TextInputDialog(
+                                  title: "Enter Name",
+                                )))
+                                  .then((name) async {
+                                  if (name != null) {
+                                    List products = context
+                                        .read<TransportPageService>()
+                                        .packagesIdList
+                                        .map((id) => {"id": id.toString()})
+                                        .toList();
+                                    Map<String, dynamic> data = {
+                                      "type": "transport",
+                                      "name": name.toString(),
+                                      "products": products
+                                    };
+                                    BlocProvider.of<CreateOperationCubit>(
+                                            context)
+                                        .createOperations(data);
+                                    BlocProvider.of<
+                                            getOpsCubit
+                                                .GetAllOperationsCubit>(context)
+                                        .getAllOperations();
+                                  }
+                                })
+                              : Fluttertoast.showToast(
+                                  msg: "Please add at least one package");
                         },
-                        builder: (context, state) {
-                          if (state is LoadingState) {
-                            return CircularProgressIndicator();
-                          }
-                          return GradientButton(
-                            title: "Create",
-                            onPressed: () {
-                              context
-                                      .read<TransportPageService>()
-                                      .addedPackages()
-                                  ? context
-                                      .showDialog(
-                                          const CustomDialog(TextInputDialog(
-                                      title: "Enter Name",
-                                    )))
-                                      .then((name) async {
-                                      if (name != null) {
-                                        List products = context
-                                            .read<TransportPageService>()
-                                            .packagesIdList
-                                            .map((id) => {"id": id.toString()})
-                                            .toList();
-                                        Map<String, dynamic> data = {
-                                          "type": "transport",
-                                          "name": name.toString(),
-                                          "products": products
-                                        };
-                                        BlocProvider.of<CreateOperationCubit>(
-                                                context)
-                                            .createOperations(data);
-                                        BlocProvider.of<
-                                                    getOpsCubit
-                                                        .GetAllOperationsCubit>(
-                                                context)
-                                            .getAllOperations();
-                                      }
-                                    })
-                                  : Fluttertoast.showToast(
-                                      msg: "Please add at least one package");
-                            },
-                            withArrow: false,
-                          );
-                        })
+                        withArrow: false,
+                      );
+                    })
                   ],
                 ),
               ],
@@ -167,28 +166,27 @@ class _AddDevicesSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // context
-              //         .watch<TransportPageService>()
-              //         .bluetoothDeviceName
-              //         .isNotEmpty
-              //     ?
-              Column(
-                children: [
-                  Text(
-                    "Device Name",
-                    style: TextStyles.regularTextStyle,
-                  ),
-                  const SizedBox(height: 14),
-                  Text(
-                    "Monitoring Device C1",
-                    style: TextStyles.regularTextStyle,
-                  ),
-                ],
-              ),
-              // : Text(
-              //     "No Connected Device",
-              //     style: TextStyles.regularTextStyle,
-              //   ),
+              context.watch<TransportPageService>().getConnectedDeviceName() !=
+                      null
+                  ? Column(
+                      children: [
+                        Text(
+                          "Device Name",
+                          style: TextStyles.regularTextStyle,
+                        ),
+                        const SizedBox(height: 14),
+                        Text(
+                          context
+                              .watch<TransportPageService>()
+                              .getConnectedDeviceName()!,
+                          style: TextStyles.regularTextStyle,
+                        ),
+                      ],
+                    )
+                  : Text(
+                      "No Connected Device",
+                      style: TextStyles.regularTextStyle,
+                    ),
               const SizedBox(height: 14),
               // Text(
               //   "Device Battery",

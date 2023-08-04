@@ -24,7 +24,7 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    DI.bluetoothService.connectToDevice(widget.device.address);
+    DI.bluetoothService.connectToDevice(widget.device.address,widget.device.name??'');
   }
 
   void getData(String data) async {
