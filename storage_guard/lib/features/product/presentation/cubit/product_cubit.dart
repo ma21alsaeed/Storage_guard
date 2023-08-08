@@ -7,9 +7,9 @@ part 'product_state.dart';
 class ProductCubit extends Cubit<ProductState> {
   final ProductRepositories _productRepositories;
   ProductCubit(this._productRepositories) : super(ProductInitial());
-  Future<void> getProduct(String url) async {
+  Future<void> getProduct(int productId) async {
     emit(LoadingState());
-    final either = await _productRepositories.getProduct(url);
+    final either = await _productRepositories.getProduct(productId);
     either.fold((error) async {
       final errorMessage = getErrorMessage(error);
       emit(ErrorState(errorMessage));

@@ -46,7 +46,7 @@ class ProductPage extends StatelessWidget {
                                   style: TextStyles.regularTextStyle),
                               const Spacer(),
                               Text(
-                                product.safetyStatus == 1 ? "Safe" : "Not Safe",
+                                product.safeStatus(),
                                 style: const TextStyle(fontSize: 15),
                               ),
                               const SizedBox(width: 10),

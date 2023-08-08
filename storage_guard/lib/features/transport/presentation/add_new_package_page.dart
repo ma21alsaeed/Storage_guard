@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/widgets/blue_title_text.dart';
 import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
 import 'package:storage_guard/app/widgets/buttons/title_button.dart';
+import 'package:storage_guard/features/product/presentation/cubit/product_cubit.dart';
+import 'package:storage_guard/features/qrcode/presentation/qr_view_page.dart';
 import 'package:storage_guard/features/transport/presentation/package_specifications_page.dart';
 
 class AddNewPackagePage extends StatefulWidget {
-  const AddNewPackagePage({super.key});
-
+  const AddNewPackagePage({super.key, this.fromTransportPage = false});
+  final bool fromTransportPage;
   @override
   State<AddNewPackagePage> createState() => _AddNewPackagePageState();
 }
@@ -65,22 +69,34 @@ class _AddNewPackagePageState extends State<AddNewPackagePage> {
                               title: "Scan",
                               onPressed: () {
                                 PersistentNavBarNavigator.pushNewScreen(context,
-                                    withNavBar: false,
-                                    screen: const PackageSpecificationPage());
-                                // PersistentNavBarNavigator.pushNewScreen(context,
-                                //         withNavBar: false, screen: QRViewPage())
-                                //     .then((value) {
-                                //   if (value.contains("api/v1")) {
-                                //     PersistentNavBarNavigator.pushNewScreen(
-                                //         context,
-                                //         withNavBar: false,
-                                //         screen: PackageSpecificationPage());
-                                //   } else {
-                                //     Fluttertoast.showToast(
-                                //         msg:
-                                //             "This is not a storage guard QR Code");
-                                //   }
-                                // });
+                                        withNavBar: false,
+                                        screen: const QRViewPage())
+                                    .then((value) {
+                                  if (value.contains("StorageGuard")) {
+                                    if (value.contains("User")) {
+                                      int.parse(value.substring(
+                                          value.indexOf(":") + 1,
+                                          value.length));
+                                    } else if (value.contains("Product")) {
+                                      int id = int.parse(value.substring(
+                                          value.indexOf(":") + 1,
+                                          value.length));
+                                      BlocProvider.of<ProductCubit>(context)
+                                          .getProduct(id);
+                                      PersistentNavBarNavigator.pushNewScreen(
+                                          context,
+                                          withNavBar: false,
+                                          screen: PackageSpecificationPage(
+                                            fromTransportPage:
+                                                widget.fromTransportPage,
+                                          ));
+                                    }
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "This is not a storage guard QR Code");
+                                  }
+                                });
                               }),
                         ),
                       ],
@@ -106,7 +122,7 @@ class _PackageWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.fromLTRB( 20, 12,20,20),
+        padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
         decoration: BoxDecoration(
           color: AppColors.blueGray,
           borderRadius: BorderRadius.circular(20),

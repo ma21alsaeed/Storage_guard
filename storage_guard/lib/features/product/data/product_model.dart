@@ -66,4 +66,5 @@ class ProductModel {
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
     };
+    String safeStatus()=>safetyStatus == 1 ? "Safe" : "Not Safe";
 }

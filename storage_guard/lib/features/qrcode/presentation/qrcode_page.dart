@@ -66,9 +66,11 @@ class QrCodePage extends StatelessWidget {
                                   MaterialPageRoute(
                                       builder: (context) => const QRViewPage()))
                               .then((value) {
-                            if (value.contains("product")) {
-                              BlocProvider.of<ProductCubit>(context)
-                                  .getProduct(value);
+                            if (value.contains("StorageGuard") &&
+                                value.contains("Product")) {
+                              BlocProvider.of<ProductCubit>(context).getProduct(
+                                  int.parse(value.substring(
+                                      value.indexOf(":") + 1, value.length)));
 
                               Navigator.push(
                                   context,
