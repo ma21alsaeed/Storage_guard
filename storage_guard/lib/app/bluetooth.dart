@@ -52,7 +52,7 @@ class BluetoothService {
       FlutterBluetoothSerial.instance.requestEnable();
 
   Future<void> connectToDevice(String address, String deviceName,
-      {bool warehouseConnection = false}) async {
+      {bool warehouseConnection = false,String? warehouseData,int? operationId}) async {
         deviceName = deviceName;
     if (connection != null && connection!.isConnected) {
       print("DISCONNECTING");
@@ -65,10 +65,8 @@ class BluetoothService {
     connection = await BluetoothConnection.toAddress(address);
     
     if (warehouseConnection) {
-      String data =
-          "1,${DI.userService.getUser()!.token},${DateTime.now().millisecondsSinceEpoch.toString()}";
-      print(data);
-      connection!.output.add(Uint8List.fromList(utf8.encode(data)));
+      print(warehouseData);
+      connection!.output.add(Uint8List.fromList(utf8.encode(warehouseData??'')));
       await connection!.output.allSent;
       connection!.input?.listen((value) async {
         data = String.fromCharCodes(value);
@@ -87,7 +85,7 @@ class BluetoothService {
       connection!.input?.listen((value) async {
         data = String.fromCharCodes(value);
         print("RawBluetoothDataIs:$data");
-        await processData();
+        await processData(operationId??0);
       }).onDone(() {
         connection!.dispose();
         connection = null;
@@ -96,7 +94,8 @@ class BluetoothService {
     }
   }
 
-  Future<void> processData() async {
+  Future<void> processData(int operationId) async {
+    
     if (data.length > 3) {
       if (!isFirstConnection) {
         //Getting SensorModel from bluetooth data
@@ -106,9 +105,9 @@ class BluetoothService {
         //adding data to show in ui streamBuilder
         dataStreamController.sink.add(data);
         //Check SensorModel list in memory to send the unsent values
-        await sendUnsentModels();
+        await sendUnsentModels(operationId);
         //Send data to api
-        DI.di<SendRecordsCubit>().sendSensorRecordings([jsonModel]);
+        DI.di<SendRecordsCubit>().sendSensorRecordings([jsonModel],operationId);
       } else {
         referenceTime =
             DateTime.now().subtract(Duration(microseconds: int.parse(data)));
@@ -117,7 +116,7 @@ class BluetoothService {
     }
   }
 
-  Future<void> sendUnsentModels() async {
+  Future<void> sendUnsentModels(int operationId) async {
     List<SensorModel> memoryList = sensorModelListFromJson(
         _preferences.getString(Preferences.sensorReadingsKey));
     //for each SensorModel in memory check if wasSent value is false
@@ -126,7 +125,7 @@ class BluetoothService {
       SensorModel sensorModel = memoryList[i];
       if (!sensorModel.wasSent) {
         final either = await _operationRepositories
-            .sendSensorRecordings([sensorModelToJson(sensorModel)]);
+            .sendSensorRecordings([sensorModelToJson(sensorModel)],operationId);
         either.fold((error) {}, (data) {
           sensorModel.wasSent = true;
           memoryList[i] = sensorModel;

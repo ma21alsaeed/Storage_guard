@@ -6,7 +6,7 @@ import 'package:storage_guard/bluetooth_devices_page.dart';
 
 class LinkDevicePage extends StatelessWidget {
   const LinkDevicePage({super.key, this.warehouseData});
-  final Map<String, dynamic>? warehouseData;
+  final String? warehouseData;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

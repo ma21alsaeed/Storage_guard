@@ -10,7 +10,7 @@ class CreateOperationCubit extends Cubit<CreateOperationState> {
   CreateOperationCubit(this._operationRepositories)
       : super(CreateOperationInitial());
 
-  Future<void> createOperations(Map<String, dynamic> data) async {
+  Future<void> createOperation(Map<String, dynamic> data) async {
     emit(LoadingState());
     final either = await _operationRepositories.createOperation(data);
     either.fold((error) async {

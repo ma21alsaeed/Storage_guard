@@ -29,17 +29,9 @@ class Homepage extends StatelessWidget {
                       return SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.9,
                         width: MediaQuery.sizeOf(context).width,
-                        child: Center(
-                          child: const LoadingWidget(),
+                        child: const Center(
+                          child: LoadingWidget(),
                         ),
-                      );
-                    }
-                    if (state is ErrorState) {
-                      return ErrorOccurredTextWidget(
-                        message: state.message,
-                        errorType: ErrorType.server,
-                        fun: () => BlocProvider.of<GetAllOperationsCubit>(context)
-                            .getAllOperations(),
                       );
                     }
                     if (state is GotOperationsState) {
@@ -47,7 +39,7 @@ class Homepage extends StatelessWidget {
                           .where((element) => (element.finishedAt == null))
                           .toList();
                       // List<OperationModel> operations = [];
-        
+
                       bool isAllSafe = true;
                       for (OperationModel operation in operations) {
                         if (operation.safetyStatus == 0) {
@@ -65,8 +57,8 @@ class Homepage extends StatelessWidget {
                             children: [
                               SizedBox(
                                   width: 200,
-                                  child:
-                                      Image.asset("assets/images/text_logo.png"))
+                                  child: Image.asset(
+                                      "assets/images/text_logo.png"))
                             ],
                           ),
                           SizedBox(height: operations.isEmpty ? 0 : 45),
@@ -77,12 +69,27 @@ class Homepage extends StatelessWidget {
                           _LastUpdateSection(operations, isAllSafe)
                         ],
                       );
+                    } else if (state is ErrorState) {
+                      return SizedBox(
+                          height: MediaQuery.sizeOf(context).height,
+                          width: MediaQuery.sizeOf(context).width,
+                          child: Center(
+                            child: ErrorOccurredTextWidget(
+                              errorType: ErrorType.server,
+                              message: state.message,
+                              fun: () => BlocProvider.of<GetAllOperationsCubit>(
+                                      context)
+                                  .getAllOperations(),
+                            ),
+                          ));
                     }
-                    return ErrorOccurredTextWidget(
-                      errorType: ErrorType.server,
-                      fun: () => BlocProvider.of<GetAllOperationsCubit>(context)
-                          .getAllOperations(),
-                    );
+                    return SizedBox(
+                        height: MediaQuery.sizeOf(context).height,
+                        width: MediaQuery.sizeOf(context).width,
+                        child: const Center(
+                          child: ErrorOccurredTextWidget(
+                              errorType: ErrorType.server),
+                        ));
                   }),
             ),
           ),
@@ -105,7 +112,7 @@ class _CurrentOperationsSection extends StatelessWidget {
         const SizedBox(height: 20),
         ListView.separated(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: operations.length,
           separatorBuilder: (context, index) => const SizedBox(
             height: 12,

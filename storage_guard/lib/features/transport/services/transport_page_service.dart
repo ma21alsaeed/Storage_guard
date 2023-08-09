@@ -17,9 +17,9 @@ class TransportPageService extends ChangeNotifier {
     notifyListeners();
   }
 
-  int? get operationId => _operationId;
+  int? get getOperationId => _operationId;
 
-  set operationId(int? value) {
+  set setOperationId(int? value) {
     _operationId = value;
     notifyListeners();
   }

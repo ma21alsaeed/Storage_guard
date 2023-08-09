@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:provider/provider.dart';
 import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/app/widgets/loading_widget.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/features/operation/sensor.dart';
+import 'package:storage_guard/features/transport/services/transport_page_service.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class SensorDataScreen extends StatefulWidget {
@@ -12,7 +14,7 @@ class SensorDataScreen extends StatefulWidget {
   const SensorDataScreen({super.key, required this.device});
 
   @override
-  _SensorDataScreenState createState() => _SensorDataScreenState();
+  State<SensorDataScreen> createState() => _SensorDataScreenState();
 }
 
 class _SensorDataScreenState extends State<SensorDataScreen> {
@@ -24,7 +26,9 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    DI.bluetoothService.connectToDevice(widget.device.address,widget.device.name??'');
+    DI.bluetoothService.connectToDevice(
+        widget.device.address, widget.device.name ?? '',
+        operationId: Provider.of<TransportPageService>(context,listen: false).getOperationId);
   }
 
   void getData(String data) async {
@@ -35,7 +39,9 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
       points.add(Point(x: listData.last.time, y: listData.last.temperature));
       points2.add(Point(x: listData.last.time, y: listData.last.humidity));
       values = getMinMaxAvg(listData);
-    } catch (e) {}
+    } catch (e) {
+      debugPrint("Error Getting Data Sensor Page");
+    }
   }
 
   @override
@@ -139,10 +145,10 @@ class _SensorDataScreenState extends State<SensorDataScreen> {
                 return SizedBox(
                   height: MediaQuery.sizeOf(context).height * 0.9,
                   width: MediaQuery.sizeOf(context).width,
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const LoadingWidget(),
+                      LoadingWidget(),
                     ],
                   ),
                 );

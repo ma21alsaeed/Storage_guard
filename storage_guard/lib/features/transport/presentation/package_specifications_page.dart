@@ -14,7 +14,7 @@ import 'package:storage_guard/features/transport/services/transport_page_service
 import 'package:storage_guard/features/warehouse/services/warehouse_page_service.dart';
 
 class PackageSpecificationPage extends StatelessWidget {
-  const PackageSpecificationPage({super.key, this.fromTransportPage = false});
+  const PackageSpecificationPage({super.key, this.fromTransportPage = true});
   final bool fromTransportPage;
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class PackageSpecificationPage extends StatelessWidget {
                       return SizedBox(
                           height: MediaQuery.sizeOf(context).height,
                           width: MediaQuery.sizeOf(context).width,
-                          child: LoadingWidget());
+                          child: const LoadingWidget());
                     } else if (state is GotProduct) {
                       ProductModel product = state.product;
                       return Column(
@@ -130,7 +130,7 @@ class PackageSpecificationPage extends StatelessWidget {
                                               listen: false)
                                           .addToPackagesIdList(product.id);
                                     }
-                                    Navigator.pop(context);
+                                    Navigator.pop(context,product);
                                   },
                                 )),
                               ],
@@ -138,6 +138,15 @@ class PackageSpecificationPage extends StatelessWidget {
                           )
                         ],
                       );
+                    } else if (state is ErrorState) {
+                      return SizedBox(
+                          height: MediaQuery.sizeOf(context).height,
+                          width: MediaQuery.sizeOf(context).width,
+                          child: Center(
+                            child: ErrorOccurredTextWidget(
+                                errorType: ErrorType.server,
+                                message: state.message),
+                          ));
                     }
                     return SizedBox(
                         height: MediaQuery.sizeOf(context).height,
@@ -207,13 +216,13 @@ class _TableSection extends StatelessWidget {
             ),
             TableCell(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Text(product.minTemp.toString()),
               ),
             ),
             TableCell(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Text(product.maxTemp.toString()),
               ),
             ),
@@ -235,12 +244,12 @@ class _TableSection extends StatelessWidget {
             ),
             TableCell(
                 child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Text(product.minHumidity.toString()),
             )),
             TableCell(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Text(product.maxHumidity.toString()),
               ),
             ),

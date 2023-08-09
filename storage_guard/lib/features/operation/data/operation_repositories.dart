@@ -9,9 +9,9 @@ class OperationRepositories {
   OperationRepositories(this._operationDataSource);
 
   Future<Either<Failure, void>> sendSensorRecordings(
-          List<Map<String, dynamic>> data) async =>
+          List<Map<String, dynamic>> data,int operationId) async =>
       await repository(
-          () async => await _operationDataSource.sendSensorRecordings(data));
+          () async => await _operationDataSource.sendSensorRecordings(data,operationId));
 
   Future<Either<Failure, OperationModel>> createOperation(
           Map<String, dynamic> data) async =>

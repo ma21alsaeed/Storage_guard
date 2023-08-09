@@ -60,8 +60,7 @@ extension DateTimeHelper on DateTime {
   String get formattedDate3 =>
       DateFormat(DateTimeConstants.dateFormat3, 'en').format(this);
   String get formattedDateandTime =>
-      DateFormat(DateTimeConstants.dateFormat3WithoutYear, 'en').format(this) +", "+
-      DateFormat(DateTimeConstants.timeFormat, 'en').format(this);
+      "${DateFormat(DateTimeConstants.dateFormat3WithoutYear, 'en').format(this)}, ${DateFormat(DateTimeConstants.timeFormat, 'en').format(this)}";
   String get formattedTime =>
       DateFormat(DateTimeConstants.timeFormat, 'en').format(this);
   String get formattedDateTime =>

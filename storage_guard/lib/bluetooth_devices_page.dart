@@ -32,7 +32,7 @@ class BluetoothDevicesPage extends StatelessWidget {
 
 class BluetoothDevicesWidget extends StatefulWidget {
   const BluetoothDevicesWidget({super.key, this.warehouseData});
-  final Map<String, dynamic>? warehouseData;
+  final String? warehouseData;
   @override
   State<BluetoothDevicesWidget> createState() => _BluetoothDevicesWidgetState();
 }
@@ -85,12 +85,16 @@ class _BluetoothDevicesWidgetState extends State<BluetoothDevicesWidget> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           LoadingPageWithHandler(
-                                            handlerText: "Make sure you get Linked Successful message if you don't try again",
+                                            handlerText:
+                                                "Make sure you get Linked Successful message if you don't try again",
                                             () async {
                                               await DI.bluetoothService
                                                   .connectToDevice(
-                                                      devices[index].address,devices[index].name??"",
-                                                      warehouseConnection: true)
+                                                      devices[index].address,
+                                                      devices[index].name ?? "",
+                                                      warehouseConnection: true,
+                                                      warehouseData:
+                                                          widget.warehouseData)
                                                   .then((value) {
                                                 Navigator.pop(context);
                                                 Navigator.pop(context);
@@ -104,14 +108,16 @@ class _BluetoothDevicesWidgetState extends State<BluetoothDevicesWidget> {
                 );
               } else {
                 return ErrorOccurredTextWidget(
-                  errorType: ErrorType.message,
+                    errorType: ErrorType.message,
                     message: "Error Getting Devices",
                     fun: () => DI.bluetoothService.getPairedDevices());
               }
             },
           )
-        : ErrorOccurredTextWidget(errorType: ErrorType.message,
+        : ErrorOccurredTextWidget(
+            errorType: ErrorType.message,
             message: "Bluetooth is not Enabled",
+            textErrorMessage: "enable bluetooth",
             fun: () async {
               bool result =
                   await DI.bluetoothService.enableBluetooth() ?? false;

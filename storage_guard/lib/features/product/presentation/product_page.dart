@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/extensions/date_time_helper.dart';
 import 'package:storage_guard/app/widgets/error_occurred_widget.dart';
@@ -25,7 +24,7 @@ class ProductPage extends StatelessWidget {
                 return SizedBox(
                     height: MediaQuery.sizeOf(context).height,
                     width: MediaQuery.sizeOf(context).width,
-                    child: LoadingWidget());
+                    child: const LoadingWidget());
               } else if (state is GotProduct) {
                 ProductModel product = state.product;
                 return Column(

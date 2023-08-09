@@ -31,10 +31,10 @@ class OperationModel {
   DateTime createdAt;
   DateTime updatedAt;
   DateTime? finishedAt;
-  int? lastTemp;
-  int? lastHumidity;
-  int? avgTemp;
-  int? avgHumidity;
+  double? lastTemp;
+  double? lastHumidity;
+  double? avgTemp;
+  double? avgHumidity;
   int? safetyStatus;
   int? productsCount;
   int? readingsCount;
@@ -78,10 +78,18 @@ class OperationModel {
         finishedAt: json["finished_at"] == null
             ? null
             : DateTime.parse(json["finished_at"]),
-        lastTemp: json["last_temp"],
-        lastHumidity: json["last_humidity"],
-        avgTemp: json["avg_temp"],
-        avgHumidity: json["avg_humidity"],
+        lastTemp: json["last_temp"] != null
+            ? double.parse(json["last_temp"].toString())
+            : null,
+        lastHumidity: json["last_humidity"] != null
+            ? double.parse(json["last_humidity"].toString())
+            : null,
+        avgTemp: json["avg_temp"] != null
+            ? double.parse(json["avg_temp"].toString())
+            : null,
+        avgHumidity: json["avg_humidity"] != null
+            ? double.parse(json["avg_humidity"].toString())
+            : null,
         safetyStatus: json["safety_status"],
         productsCount: json["products_count"],
         readingsCount: json["readings_count"],
@@ -110,5 +118,9 @@ class OperationModel {
         "products_count": productsCount,
         "readings_count": readingsCount,
       };
-      bool checkForValues()=>lastTemp!=null&&lastHumidity!=null&&avgTemp!=null&&avgHumidity!=null;
+  bool checkForValues() =>
+      lastTemp != null &&
+      lastHumidity != null &&
+      avgTemp != null &&
+      avgHumidity != null;
 }

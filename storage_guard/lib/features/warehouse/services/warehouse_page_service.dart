@@ -17,17 +17,19 @@ class WarehousePageService extends ChangeNotifier {
     notifyListeners();
   }
 
-  int? get operationId => _operationId;
+  int? get getOperationId => _operationId;
 
-  set operationId(int? value) {
+  set setOperationId(int? value) {
     _operationId = value;
     notifyListeners();
   }
 
   String? getConnectedDeviceName() {
+    print("Entered getConnectedDeviceName");
     //function returns null if device is not connected
     if (DI.bluetoothService.connection != null &&
         DI.bluetoothService.connection!.isConnected) {
+          print("Entered getConnectedDeviceName: ${DI.bluetoothService.deviceName}");
       return DI.bluetoothService.deviceName;
     }
     return null;

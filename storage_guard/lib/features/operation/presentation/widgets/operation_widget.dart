@@ -117,7 +117,7 @@ class _ValuesColumn extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "$temp C",
+              "${int.parse(temp.split(".").first)} C",
               style: const TextStyle(
                 color: AppColors.textColor,
                 fontSize: 14,
@@ -135,7 +135,7 @@ class _ValuesColumn extends StatelessWidget {
                   width: 8,
                 )),
             Text(
-              "$humidity %",
+              "${int.parse(humidity.split(".").first)} %",
               style: const TextStyle(
                 color: AppColors.textColor,
                 fontSize: 14,

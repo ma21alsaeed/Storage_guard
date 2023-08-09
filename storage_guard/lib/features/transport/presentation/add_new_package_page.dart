@@ -7,19 +7,20 @@ import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/widgets/blue_title_text.dart';
 import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
 import 'package:storage_guard/app/widgets/buttons/title_button.dart';
+import 'package:storage_guard/features/product/data/product_model.dart';
 import 'package:storage_guard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:storage_guard/features/qrcode/presentation/qr_view_page.dart';
 import 'package:storage_guard/features/transport/presentation/package_specifications_page.dart';
 
 class AddNewPackagePage extends StatefulWidget {
-  const AddNewPackagePage({super.key, this.fromTransportPage = false});
+  const AddNewPackagePage({super.key, this.fromTransportPage = true});
   final bool fromTransportPage;
   @override
   State<AddNewPackagePage> createState() => _AddNewPackagePageState();
 }
 
 class _AddNewPackagePageState extends State<AddNewPackagePage> {
-  List packageList = [];
+  List<ProductModel> packageList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +38,13 @@ class _AddNewPackagePageState extends State<AddNewPackagePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const TitleButton("Cancel"),
+                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const TitleButton("Cancel"),
+                          packageList.isNotEmpty ?const TitleButton("Confirm",color: AppColors.mainblue):const SizedBox(),
+                        ],
+                      ),
                       const SizedBox(height: 45),
                       const BlueTitleText("Add New Package"),
                       const SizedBox(height: 20),
@@ -89,7 +96,10 @@ class _AddNewPackagePageState extends State<AddNewPackagePage> {
                                           screen: PackageSpecificationPage(
                                             fromTransportPage:
                                                 widget.fromTransportPage,
-                                          ));
+                                          )).then((product) {
+                                        packageList.add(product);
+                                        setState(() {});
+                                      });
                                     }
                                   } else {
                                     Fluttertoast.showToast(

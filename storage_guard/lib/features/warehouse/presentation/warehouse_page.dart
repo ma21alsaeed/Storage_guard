@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
+import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/app/extensions/dialog_build_context.dart';
 import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
 import 'package:storage_guard/app/widgets/custom_dialog.dart';
@@ -15,28 +16,28 @@ import 'package:storage_guard/features/transport/presentation/link_device_page.d
 import 'package:storage_guard/features/transport/presentation/text_input_dialog_widget.dart';
 import 'package:storage_guard/features/warehouse/services/warehouse_page_service.dart';
 import 'package:storage_guard/features/operation/presentation/cubit/get_all_operations_cubit.dart'
-    as getOpsCubit;
+    as getopscubit;
 
 class WarehousePage extends StatelessWidget {
   const WarehousePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 19),
+            padding: EdgeInsets.symmetric(horizontal: 19),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const TitleAppBar(),
-                const SizedBox(height: 45),
-                const _AddPackageSection(),
-                const SizedBox(height: 25),
-                const _AddDevicesSection(),
-                const SizedBox(height: 25),
+                TitleAppBar(),
+                SizedBox(height: 45),
+                _AddPackageSection(),
+                SizedBox(height: 25),
+                _AddDevicesSection(),
+                SizedBox(height: 25),
               ],
             ),
           ),
@@ -88,7 +89,8 @@ class _AddPackageSection extends StatelessWidget {
                       title: "Add",
                       onPressed: () {
                         PersistentNavBarNavigator.pushNewScreen(context,
-                            screen: const AddNewPackagePage(),
+                            screen: const AddNewPackagePage(
+                                fromTransportPage: false),
                             withNavBar: false);
                       },
                       withArrow: false,
@@ -96,12 +98,24 @@ class _AddPackageSection extends StatelessWidget {
                   ),
                   const SizedBox(width: 22),
                   Expanded(
-                    child: GradientButton(
+                    child:   BlocConsumer<CreateOperationCubit, CreateOperationState>(
+                        listener: (context, state) {
+                      if (state is CreatedOperationState) {
+                        Provider.of<WarehousePageService>(context,listen: false).setOperationId=state.operation.id;
+                        Fluttertoast.showToast(
+                            msg: "Created Operation Successfully");
+                      }
+                    }, builder: (context, state) {
+                      if (state is LoadingState) {
+                        return const CircularProgressIndicator();
+                      }
+                      return GradientButton(
                       title: "Create",
                       onPressed: () {
                         context.read<WarehousePageService>().addedPackages()
                             ? context
                                 .showDialog(const CustomDialog(TextInputDialog(
+                                false,
                                 title: "Enter Name",
                               )))
                                 .then((name) async {
@@ -117,9 +131,9 @@ class _AddPackageSection extends StatelessWidget {
                                     "products": products
                                   };
                                   BlocProvider.of<CreateOperationCubit>(context)
-                                      .createOperations(data);
+                                      .createOperation(data);
                                   BlocProvider.of<
-                                          getOpsCubit
+                                          getopscubit
                                               .GetAllOperationsCubit>(context)
                                       .getAllOperations();
                                 }
@@ -128,7 +142,9 @@ class _AddPackageSection extends StatelessWidget {
                                 msg: "Please add at least one package");
                       },
                       withArrow: false,
-                    ),
+                    );
+                    }) 
+                    
                   )
                 ],
               ),
@@ -193,7 +209,7 @@ class _AddDevicesSection extends StatelessWidget {
                   GradientButton(
                     title: "Link",
                     onPressed: () {
-                      Map<String, dynamic> warehouseData = {};
+                      String warehouseData = "${Provider.of<WarehousePageService>(context,listen: false).getOperationId},${DI.userService.getUser()!.token},${DateTime.now().millisecondsSinceEpoch.toString()}";
                       context.read<WarehousePageService>().createdOperation()
                           ? PersistentNavBarNavigator.pushNewScreen(context,
                               screen: LinkDevicePage(

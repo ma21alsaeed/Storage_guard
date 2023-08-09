@@ -6,9 +6,10 @@ import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
 import 'package:storage_guard/app/widgets/text_form_field.dart';
 
 class TextInputDialog extends StatefulWidget {
-  const TextInputDialog({super.key, this.title = "Text Dialog"});
+  const TextInputDialog(this.fromTransportPage,
+      {super.key, this.title = "Text Dialog"});
   final String title;
-
+  final bool fromTransportPage;
   @override
   State<TextInputDialog> createState() => _TextInputDialogState();
 }

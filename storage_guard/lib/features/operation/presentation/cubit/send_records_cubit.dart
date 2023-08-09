@@ -14,11 +14,11 @@ class SendRecordsCubit extends Cubit<SendRecordState> {
       : super(SendRecordInitial());
 
   Future<void> sendSensorRecordings(
-      List<Map<String, dynamic>> sensorData) async {
+      List<Map<String, dynamic>> sensorData,int operationId) async {
     print(sensorData);
     emit(LoadingState());
     final either =
-        await _operationRepositories.sendSensorRecordings(sensorData);
+        await _operationRepositories.sendSensorRecordings(sensorData,operationId);
     either.fold((error) async {
       print("CUBIT ERROR$error");
       saveSensorReading(false, sensorData[0]);

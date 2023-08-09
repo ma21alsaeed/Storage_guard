@@ -3,11 +3,16 @@ import 'package:lottie/lottie.dart';
 
 class ErrorOccurredTextWidget extends StatelessWidget {
   const ErrorOccurredTextWidget(
-      {Key? key, this.message, this.fun, required this.errorType})
+      {Key? key,
+      this.message,
+      this.textErrorMessage,
+      this.fun,
+      required this.errorType})
       : super(
           key: key,
         );
   final String? message;
+  final String? textErrorMessage;
   final ErrorType errorType;
   final Future<void> Function()? fun;
   @override
@@ -40,9 +45,9 @@ class ErrorOccurredTextWidget extends StatelessWidget {
           fun != null
               ? InkWell(
                   onTap: fun,
-                  child: const Text(
-                    "Try Again",
-                    style: TextStyle(color: Colors.indigo, fontSize: 25),
+                  child: Text(
+                    textErrorMessage ?? "Try Again",
+                    style: const TextStyle(color: Colors.indigo, fontSize: 25),
                   ),
                 )
               : const SizedBox.shrink()
@@ -51,23 +56,23 @@ class ErrorOccurredTextWidget extends StatelessWidget {
   Widget serverError() => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "Server Error",
-            style: TextStyle(
-                color: Colors.black87, fontSize: 22, fontFamily: "Poppins"),
-          ),
           fun != null
               ? InkWell(
                   onTap: fun,
                   child: Lottie.asset('assets/error.json', fit: BoxFit.contain))
               : Lottie.asset('assets/error.json', fit: BoxFit.contain),
+          Text(
+            message ?? "Server Error",textAlign: TextAlign.center,
+            style: const TextStyle(
+                color: Colors.black87, fontSize: 22, fontFamily: "Poppins"),
+          ),
         ],
       );
   Widget emptyError() => Column(
         children: [
           Text(
             message ?? "No Trips Found",
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.black87, fontSize: 22, fontFamily: "Poppins"),
           ),
           fun != null

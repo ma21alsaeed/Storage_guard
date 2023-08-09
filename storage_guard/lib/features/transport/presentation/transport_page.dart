@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:provider/provider.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/extensions/dialog_build_context.dart';
 import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
@@ -9,11 +10,11 @@ import 'package:storage_guard/app/widgets/custom_dialog.dart';
 import 'package:storage_guard/features/operation/presentation/cubit/create_operation_cubit.dart';
 import 'package:storage_guard/features/operation/presentation/cubit/get_all_operations_cubit.dart'
     as getOpsCubit;
-import 'package:storage_guard/features/transport/presentation/text_input_dialog_widget.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/app/widgets/title_appbar.dart';
 import 'package:storage_guard/features/transport/presentation/add_new_package_page.dart';
 import 'package:storage_guard/features/transport/presentation/link_device_page.dart';
+import 'package:storage_guard/features/transport/presentation/text_input_dialog_widget.dart';
 import 'package:storage_guard/features/transport/services/transport_page_service.dart';
 
 class TransportPage extends StatelessWidget {
@@ -42,12 +43,15 @@ class TransportPage extends StatelessWidget {
                     BlocConsumer<CreateOperationCubit, CreateOperationState>(
                         listener: (context, state) {
                       if (state is CreatedOperationState) {
+                        Provider.of<TransportPageService>(context,
+                                listen: false)
+                            .setOperationId = state.operation.id;
                         Fluttertoast.showToast(
                             msg: "Created Operation Successfully");
                       }
                     }, builder: (context, state) {
                       if (state is LoadingState) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                       return GradientButton(
                         title: "Create",
@@ -56,6 +60,7 @@ class TransportPage extends StatelessWidget {
                               ? context
                                   .showDialog(
                                       const CustomDialog(TextInputDialog(
+                                  true,
                                   title: "Enter Name",
                                 )))
                                   .then((name) async {
@@ -72,7 +77,7 @@ class TransportPage extends StatelessWidget {
                                     };
                                     BlocProvider.of<CreateOperationCubit>(
                                             context)
-                                        .createOperations(data);
+                                        .createOperation(data);
                                     BlocProvider.of<
                                             getOpsCubit
                                                 .GetAllOperationsCubit>(context)

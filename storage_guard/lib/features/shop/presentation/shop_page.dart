@@ -23,7 +23,7 @@ class ShopPage extends StatelessWidget {
                 return SizedBox(
                     height: MediaQuery.sizeOf(context).height,
                     width: MediaQuery.sizeOf(context).width,
-                    child: LoadingWidget());
+                    child: const LoadingWidget());
               } else if (state is GotShop) {
                 ShopModel shop = state.shop;
                 return Padding(

@@ -35,10 +35,10 @@ class OperationDataSource {
           ),
       model: operationModelListFromJson);
 
-  Future<void> sendSensorRecordings(List<Map<String, dynamic>> data) async =>
+  Future<void> sendSensorRecordings(List<Map<String, dynamic>> data,int operationId) async =>
       dataSource(
         () => _client.post(
-          Uri.parse(operationSensorRecordingsUrl(1)),
+          Uri.parse(operationSensorRecordingsUrl(operationId)),
           body: json.encode({"readings": data}),
           headers: {
             'Accept': 'application/json',
