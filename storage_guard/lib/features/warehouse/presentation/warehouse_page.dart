@@ -98,18 +98,19 @@ class _AddPackageSection extends StatelessWidget {
                   ),
                   const SizedBox(width: 22),
                   Expanded(
-                    child:   BlocConsumer<CreateOperationCubit, CreateOperationState>(
-                        listener: (context, state) {
-                      if (state is CreatedOperationState) {
-                        Provider.of<WarehousePageService>(context,listen: false).setOperationId=state.operation.id;
-                        Fluttertoast.showToast(
-                            msg: "Created Operation Successfully");
-                      }
-                    }, builder: (context, state) {
-                      if (state is LoadingState) {
-                        return const CircularProgressIndicator();
-                      }
-                      return GradientButton(
+                      child: BlocConsumer<CreateOperationCubit,
+                          CreateOperationState>(listener: (context, state) {
+                    if (state is CreatedOperationState) {
+                      Provider.of<WarehousePageService>(context, listen: false)
+                          .setOperationId = state.operation.id;
+                      Fluttertoast.showToast(
+                          msg: "Created Operation Successfully");
+                    }
+                  }, builder: (context, state) {
+                    if (state is LoadingState) {
+                      return const CircularProgressIndicator();
+                    }
+                    return GradientButton(
                       title: "Create",
                       onPressed: () {
                         context.read<WarehousePageService>().addedPackages()
@@ -143,9 +144,7 @@ class _AddPackageSection extends StatelessWidget {
                       },
                       withArrow: false,
                     );
-                    }) 
-                    
-                  )
+                  }))
                 ],
               ),
             ],
@@ -209,7 +208,11 @@ class _AddDevicesSection extends StatelessWidget {
                   GradientButton(
                     title: "Link",
                     onPressed: () {
-                      String warehouseData = "${Provider.of<WarehousePageService>(context,listen: false).getOperationId},${DI.userService.getUser()!.token},${DateTime.now().millisecondsSinceEpoch.toString()}";
+                      String time =
+                          DateTime.now().millisecondsSinceEpoch.toString();
+                      String timeStamp = time.substring(0, time.length - 4);
+                      String warehouseData =
+                          "${Provider.of<WarehousePageService>(context, listen: false).getOperationId},${DI.userService.getUser()!.token},$timeStamp";
                       context.read<WarehousePageService>().createdOperation()
                           ? PersistentNavBarNavigator.pushNewScreen(context,
                               screen: LinkDevicePage(
