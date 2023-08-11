@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\Operations\SensorReadingsController;
 Route::get('/user', [UserController::class, 'index']); //show users
 Route::Post('/user', [UserController::class, 'store']); //create new user
 Route::Post('/login', LoginController::class);
+Route::get('/user-id-operations/{Userid}', [OperationsController::class, 'showAllOperations']);
 
 Route::middleware('auth:sanctum')->group(function ()
 {
