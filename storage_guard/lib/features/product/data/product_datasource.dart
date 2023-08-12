@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart';
 import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/core/network/data_source.dart';
@@ -16,5 +18,17 @@ class ProductDataSource {
               'Authorization': 'Bearer ${DI.userService.getUser()?.token}'
             },
           ),
-      model: productModelFromJson);
+      model: productModelFromJsonWithProductKey);
+  Future<ProductModel> createClonedProduct(int productId) async =>
+      await dataSource(
+          () => _client.post(
+                Uri.parse(clonedProductsUrl),
+                body: json.encode({"product_id": productId}),
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ${DI.userService.getUser()?.token}'
+                },
+              ),
+          model: productModelFromJson);
 }

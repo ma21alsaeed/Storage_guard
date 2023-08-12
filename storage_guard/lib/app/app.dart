@@ -52,6 +52,7 @@ class StorageGuardApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (_) => DI.authCubitFactory()),
           BlocProvider(create: (_) => DI.productCubitFactory()),
+          BlocProvider(create: (_) => DI.createClonedProductCubitFactory()),
           BlocProvider(create: (_) => DI.shopCubitFactory()),
           BlocProvider(create: (_) => DI.sendRecordsCubitFactory()),
           BlocProvider(

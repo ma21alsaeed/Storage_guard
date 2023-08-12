@@ -17,6 +17,6 @@ Future<T> dataSource<T>(Function call,
     }
     return model(response.body);
   } else {
-    throw HttpException(jsonResponse["error"]);
+    throw HttpException(jsonResponse["message"]);
   }
 }

@@ -14,6 +14,7 @@ import 'package:storage_guard/features/operation/presentation/cubit/get_all_oper
 import 'package:storage_guard/features/operation/presentation/cubit/send_records_cubit.dart';
 import 'package:storage_guard/features/product/data/product_datasource.dart';
 import 'package:storage_guard/features/product/data/product_repositories.dart';
+import 'package:storage_guard/features/product/presentation/cubit/create_cloned_product_cubit.dart';
 import 'package:storage_guard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:storage_guard/features/shop/data/shop_datasource.dart';
 import 'package:storage_guard/features/shop/data/shop_repositories.dart';
@@ -52,6 +53,8 @@ abstract class DI {
         () => ProductRepositories(di<ProductDataSource>()));
     di.registerFactory<ProductCubit>(
         () => ProductCubit(di<ProductRepositories>()));
+    di.registerFactory<CreateClonedProductCubit>(
+        () => CreateClonedProductCubit(di<ProductRepositories>()));
   }
 
   static void registerShop() async {
@@ -80,6 +83,7 @@ abstract class DI {
   static BluetoothService get bluetoothService => di.get<BluetoothService>();
   static AuthCubit authCubitFactory() => di.get<AuthCubit>();
   static ProductCubit productCubitFactory() => di.get<ProductCubit>();
+  static CreateClonedProductCubit createClonedProductCubitFactory() => di.get<CreateClonedProductCubit>();
   static MainPageService get mainService => di.get<MainPageService>();
   static ShopCubit shopCubitFactory() => di.get<ShopCubit>();
   static SendRecordsCubit sendRecordsCubitFactory() =>

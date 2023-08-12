@@ -68,7 +68,7 @@ class OperationModel {
         products: json["products"] == null
             ? null
             : List<ProductModel>.from(
-                json["products"].map((x) => ProductModel.fromJson(x))),
+                json["products"].map((x) => ProductModel.fromJson(x,false))),
         sensorReadings: json["sensor_readings"] == null
             ? null
             : List<SensorReadingModel>.from(json["sensor_readings"]

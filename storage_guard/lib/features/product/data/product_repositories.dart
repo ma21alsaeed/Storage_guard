@@ -10,4 +10,7 @@ class ProductRepositories {
   final ProductDataSource _productDataSource;
   Future<Either<Failure, ProductModel>> getProduct(int productId) async =>
       await repository(() => _productDataSource.getProduct(productId));
+  Future<Either<Failure, ProductModel>> createClonedProduct(
+          int productId) async =>
+      await repository(() => _productDataSource.createClonedProduct(productId));
 }

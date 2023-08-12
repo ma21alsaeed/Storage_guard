@@ -78,7 +78,7 @@ class QrCodePage extends StatelessWidget {
                                       builder: (context) =>
                                           const ProductPage()));
                             }
-                            if (value.contains("shop")) {
+                            if (value.contains("user")) {
                               BlocProvider.of<ShopCubit>(context)
                                   .getShop(value);
                               Navigator.push(
