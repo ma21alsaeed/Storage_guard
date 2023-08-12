@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
 import 'package:storage_guard/app/extensions/date_time_helper.dart';
@@ -10,6 +11,7 @@ import 'package:storage_guard/app/widgets/title_appbar.dart';
 import 'package:storage_guard/app/widgets/loading_widget.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
 import 'package:storage_guard/features/operation/data/operation_model.dart';
+import 'package:storage_guard/features/operation/presentation/operation_page.dart';
 import 'package:storage_guard/features/product/data/product_model.dart';
 import 'package:storage_guard/features/product/presentation/cubit/create_cloned_product_cubit.dart'
     as cloned;
@@ -122,7 +124,6 @@ class ProductPage extends StatelessWidget {
                           child: BlocConsumer<cloned.CreateClonedProductCubit,
                                   cloned.CreateClonedProductState>(
                               listener: (context, state) {
-                                
                             if (state is cloned.CreatedClonedProduct) {
                               Fluttertoast.showToast(
                                   msg: "Cloned product successfully");
@@ -178,28 +179,41 @@ class LogWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         isFirst ? const LineWidget() : const SizedBox.shrink(),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              operation.finishedAt?.formattedDateWithoutYear ?? "Running",
-              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                  border: Border.all(width: 2, color: AppColors.mainblue),
-                  borderRadius: BorderRadius.circular(25)),
-              child: Center(
-                  child: SizedBox(
-                      width: 40,
-                      child: Image.asset(operation.type == "storage"
-                          ? "assets/icons/warehouse_small.png"
-                          : "assets/icons/truck_small.png"))),
-            ),
-          ],
+        InkWell(
+          onTap: () {
+            PersistentNavBarNavigator.pushNewScreen(context,
+                screen: OperationPage(operation.id, {
+                  "last_temp": operation.lastTemp,
+                  "last_humidity": operation.lastHumidity,
+                  "avg_temp": operation.avgTemp,
+                  "avg_humidity": operation.avgHumidity
+                }),
+                withNavBar: false);
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                operation.finishedAt?.formattedDateWithoutYear ?? "Running",
+                style:
+                    const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                height: 70,
+                width: 70,
+                decoration: BoxDecoration(
+                    border: Border.all(width: 2, color: AppColors.mainblue),
+                    borderRadius: BorderRadius.circular(25)),
+                child: Center(
+                    child: SizedBox(
+                        width: 40,
+                        child: Image.asset(operation.type == "storage"
+                            ? "assets/icons/warehouse_small.png"
+                            : "assets/icons/truck_small.png"))),
+              ),
+            ],
+          ),
         ),
         !isLast ? const LineWidget() : const SizedBox(width: 20)
       ],
