@@ -16,9 +16,9 @@ class ClonedProductLogResources extends JsonResource
     {
         return
         [
-            'product_id' => $this->product_id,
-            'product'    => $this->new_product,
-            'created_at' => $this->created_at,
+            'product_id'  => $this->product_id,
+            'new_product' => $this->new_product,
+            'created_at'  => $this->created_at,
         ];
     }
 }

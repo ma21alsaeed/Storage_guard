@@ -29,8 +29,8 @@ class ClonedProductController extends Controller
         $clonedLog->save();
         return response()->json(
             [
-                'message'     => 'The product has been successfully cloned and added to the store.',
-                'new_product' => new ProductResources($newProduct)
+                'message' => 'The product has been successfully cloned and added to the store.',
+                'product' => new ProductResources($newProduct)
             ]);
     }
     public function show($userId)

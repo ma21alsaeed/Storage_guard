@@ -987,7 +987,7 @@
 					"response": []
 				},
 				{
-					"name": "Show User Clonec Product",
+					"name": "Show User Cloned Product",
 					"request": {
 						"auth": {
 							"type": "bearer",
