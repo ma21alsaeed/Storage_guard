@@ -17,6 +17,6 @@ class LoginController extends Controller
             $token = $user->createToken('authToken')->plainTextToken;
             return response()->json(['token' => $token, 'user' => $user]);
         }
-        return response()->json(['error' => 'The username or password is incorrect.'], 401);
+        return response()->json(['message' => 'The username or password is incorrect.'], 401);
     }
 }
