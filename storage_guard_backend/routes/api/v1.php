@@ -40,4 +40,5 @@ Route::middleware('auth:sanctum')->group(function ()
     Route::delete('/operation-sensor-records', [SensorReadingsController::class, 'destroy']);
     Route::post('/create-cloned-product', [ClonedProductController::class, 'create']);
     Route::get('/user-cloned-product/{user}', [ClonedProductController::class, 'show']);
+    Route::get('/all-spoilt-product', [ProductController::class, 'showAllSpoiltProduct']);
 });

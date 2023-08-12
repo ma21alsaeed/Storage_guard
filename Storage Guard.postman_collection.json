@@ -263,6 +263,40 @@
 					"response": []
 				},
 				{
+					"name": "Show All Spoilt Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{authority}}/{{api-v1}}/all-spoilt-product",
+							"host": [
+								"{{authority}}"
+							],
+							"path": [
+								"{{api-v1}}",
+								"all-spoilt-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Product",
 					"request": {
 						"auth": {
