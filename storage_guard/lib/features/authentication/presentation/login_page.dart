@@ -82,7 +82,6 @@ class _LoginPageState extends State<LoginPage> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       const MainPage()));
-                                          DI.welcomeService.setIsFirstTime();
                                         } else if (state is ErrorState) {
                                           Fluttertoast.showToast(
                                               msg: state.message);

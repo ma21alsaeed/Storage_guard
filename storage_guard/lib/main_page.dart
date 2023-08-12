@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:storage_guard/app/di.dart';
 import 'features/home/presentation/home_page.dart';
 import 'features/qrcode/presentation/qrcode_page.dart';
 import 'features/transport/presentation/transport_page.dart';
@@ -14,7 +15,7 @@ class MainPage extends StatelessWidget {
     return Scaffold(
       body: PersistentTabView(
         context,
-        // controller: _controller,
+        controller: DI.mainService.pageController,
         screens: _buildScreens(),
         items: _navBarsItems(),
         confineInSafeArea: true,
@@ -50,7 +51,7 @@ class MainPage extends StatelessWidget {
 
   List<Widget> _buildScreens() {
     return [
-      const Homepage(),
+      const HomePage(),
       const TransportPage(),
       const WarehousePage(),
       const QrCodePage()

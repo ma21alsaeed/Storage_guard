@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.storage_guard">
    <application
-        android:label="storage_guard"
+        android:label="Storage Guard"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

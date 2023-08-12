@@ -10,6 +10,7 @@ import 'package:storage_guard/features/warehouse/services/warehouse_page_service
 import 'package:storage_guard/features/welcome/welcome_page.dart';
 import 'package:storage_guard/main_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class StorageGuardApp extends StatelessWidget {
   static Future<void> init() async {
@@ -62,6 +63,7 @@ class StorageGuardApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
+            navigatorKey: navigatorKey,
             // home: const MainPage()
             home: DI.userService.getUser() == null
                 ? const LoginPage()

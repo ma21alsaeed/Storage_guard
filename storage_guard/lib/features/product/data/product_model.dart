@@ -4,55 +4,61 @@
 
 import 'dart:convert';
 
-ProductModel productModelFromJson(String str) => ProductModel.fromJson(json.decode(str)["product"]);
+import 'package:storage_guard/features/operation/data/operation_model.dart';
+
+ProductModel productModelFromJson(String str) =>
+    ProductModel.fromJson(json.decode(str));
 
 String productModelToJson(ProductModel data) => json.encode(data.toJson());
 
 class ProductModel {
-    int id;
-    String name;
-    String description;
-    DateTime productionDate;
-    DateTime expiryDate;
-    int maxTemp;
-    int minTemp;
-    int maxHumidity;
-    int minHumidity;
-    int safetyStatus;
-    DateTime createdAt;
-    DateTime updatedAt;
+  int id;
+  String name;
+  String description;
+  DateTime productionDate;
+  DateTime expiryDate;
+  int maxTemp;
+  int minTemp;
+  int maxHumidity;
+  int minHumidity;
+  int safetyStatus;
+  DateTime createdAt;
+  DateTime updatedAt;
+  List<OperationModel> operations;
 
-    ProductModel({
-        required this.id,
-        required this.name,
-        required this.description,
-        required this.productionDate,
-        required this.expiryDate,
-        required this.maxTemp,
-        required this.minTemp,
-        required this.maxHumidity,
-        required this.minHumidity,
-        required this.safetyStatus,
-        required this.createdAt,
-        required this.updatedAt,
-    });
+  ProductModel(
+      {required this.id,
+      required this.name,
+      required this.description,
+      required this.productionDate,
+      required this.expiryDate,
+      required this.maxTemp,
+      required this.minTemp,
+      required this.maxHumidity,
+      required this.minHumidity,
+      required this.safetyStatus,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.operations});
 
-    factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        productionDate: DateTime.parse(json["production_date"]),
-        expiryDate: DateTime.parse(json["expiry_date"]),
-        maxTemp: json["max_temp"],
-        minTemp: json["min_temp"],
-        maxHumidity: json["max_humidity"],
-        minHumidity: json["min_humidity"],
-        safetyStatus: json["safety_status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-    );
+  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
+        id: json["product"]["id"],
+        name: json["product"]["name"],
+        description: json["product"]["description"],
+        productionDate: DateTime.parse(json["product"]["production_date"]),
+        expiryDate: DateTime.parse(json["product"]["expiry_date"]),
+        maxTemp: json["product"]["max_temp"],
+        minTemp: json["product"]["min_temp"],
+        maxHumidity: json["product"]["max_humidity"],
+        minHumidity: json["product"]["min_humidity"],
+        safetyStatus: json["product"]["safety_status"],
+        createdAt: DateTime.parse(json["product"]["created_at"]),
+        updatedAt: DateTime.parse(json["product"]["updated_at"]),
+        operations: List<OperationModel>.from(
+            json["operations"].map((x) => OperationModel.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "description": description,
@@ -65,6 +71,7 @@ class ProductModel {
         "safety_status": safetyStatus,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
-    };
-    String safeStatus()=>safetyStatus == 1 ? "Safe" : "Not Safe";
+        "operations": List<dynamic>.from(operations.map((x) => x.toJson()))
+      };
+  String safeStatus() => safetyStatus == 1 ? "Safe" : "Not Safe";
 }

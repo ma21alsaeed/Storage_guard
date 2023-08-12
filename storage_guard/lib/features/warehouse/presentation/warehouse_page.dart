@@ -127,7 +127,7 @@ class _AddPackageSection extends StatelessWidget {
                                       .map((id) => {"id": id.toString()})
                                       .toList();
                                   Map<String, dynamic> data = {
-                                    "type": "transport",
+                                    "type": "storage",
                                     "name": name.toString(),
                                     "products": products
                                   };
@@ -210,7 +210,9 @@ class _AddDevicesSection extends StatelessWidget {
                     onPressed: () {
                       String time =
                           DateTime.now().millisecondsSinceEpoch.toString();
+                      print("timestamp before cutting$time");
                       String timeStamp = time.substring(0, time.length - 4);
+                      print("timestamp before cutting$timeStamp");
                       String warehouseData =
                           "${Provider.of<WarehousePageService>(context, listen: false).getOperationId},${DI.userService.getUser()!.token},$timeStamp";
                       context.read<WarehousePageService>().createdOperation()

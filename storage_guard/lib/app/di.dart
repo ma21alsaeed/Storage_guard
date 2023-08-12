@@ -2,6 +2,7 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get_it/get_it.dart';
 import 'package:storage_guard/app/bluetooth.dart';
+import 'package:storage_guard/core/main_page_service.dart';
 import 'package:storage_guard/features/authentication/data/auth_datasource.dart';
 import 'package:storage_guard/features/authentication/data/auth_repositories.dart';
 import 'package:storage_guard/features/authentication/presentation/cubit/auth_cubit.dart';
@@ -29,6 +30,7 @@ abstract class DI {
     di.registerLazySingleton<Client>(() => Client());
     di.registerLazySingleton<BluetoothService>(
         () => BluetoothService(preferences, di<OperationRepositories>()));
+    di.registerLazySingleton<MainPageService>(() => MainPageService());
     registerAuth();
     registerProduct();
     registerShop();
@@ -78,6 +80,7 @@ abstract class DI {
   static BluetoothService get bluetoothService => di.get<BluetoothService>();
   static AuthCubit authCubitFactory() => di.get<AuthCubit>();
   static ProductCubit productCubitFactory() => di.get<ProductCubit>();
+  static MainPageService get mainService => di.get<MainPageService>();
   static ShopCubit shopCubitFactory() => di.get<ShopCubit>();
   static SendRecordsCubit sendRecordsCubitFactory() =>
       di.get<SendRecordsCubit>();

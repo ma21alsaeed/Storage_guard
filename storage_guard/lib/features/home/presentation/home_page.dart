@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/app/widgets/error_occurred_widget.dart';
 import 'package:storage_guard/app/widgets/loading_widget.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
@@ -8,9 +9,28 @@ import 'package:storage_guard/features/home/presentation/widgets/last_update_dev
 import 'package:storage_guard/features/operation/data/operation_model.dart';
 import 'package:storage_guard/features/operation/presentation/cubit/get_all_operations_cubit.dart';
 import 'package:storage_guard/features/operation/presentation/widgets/operation_widget.dart';
+import 'package:storage_guard/features/welcome/welcome_page.dart';
 
-class Homepage extends StatelessWidget {
-  const Homepage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    if (DI.welcomeService.getIsFirstTime() != null) {
+      return const HomePageImpl();
+    } else {
+      return const WelcomePage();
+    }
+  }
+}
+
+class HomePageImpl extends StatelessWidget {
+  const HomePageImpl({super.key});
 
   @override
   Widget build(BuildContext context) {
