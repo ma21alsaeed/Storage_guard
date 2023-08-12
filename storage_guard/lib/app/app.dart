@@ -10,6 +10,7 @@ import 'package:storage_guard/features/warehouse/services/warehouse_page_service
 import 'package:storage_guard/features/welcome/welcome_page.dart';
 import 'package:storage_guard/main_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class StorageGuardApp extends StatelessWidget {
@@ -55,6 +56,7 @@ class StorageGuardApp extends StatelessWidget {
           BlocProvider(create: (_) => DI.createClonedProductCubitFactory()),
           BlocProvider(create: (_) => DI.shopCubitFactory()),
           BlocProvider(create: (_) => DI.sendRecordsCubitFactory()),
+          BlocProvider(create: (_) => DI.getOperationCubitFactory()),
           BlocProvider(
               create: (_) =>
                   DI.getAllOperationsCubitFactory()..getAllOperations()),

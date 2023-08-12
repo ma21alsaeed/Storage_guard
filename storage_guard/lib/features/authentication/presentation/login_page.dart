@@ -74,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                                     children: [
                                       BlocConsumer<AuthCubit, AuthState>(
                                           listener: (context, state) {
+                                            print(state);
                                         if (state is AuthenticatedState) {
                                           context.showSuccessSnackBar(
                                               'Login Successful');

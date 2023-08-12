@@ -11,6 +11,7 @@ import 'package:storage_guard/features/operation/data/operation_datasource.dart'
 import 'package:storage_guard/features/operation/data/operation_repositories.dart';
 import 'package:storage_guard/features/operation/presentation/cubit/create_operation_cubit.dart';
 import 'package:storage_guard/features/operation/presentation/cubit/get_all_operations_cubit.dart';
+import 'package:storage_guard/features/operation/presentation/cubit/get_operation_cubit.dart';
 import 'package:storage_guard/features/operation/presentation/cubit/send_records_cubit.dart';
 import 'package:storage_guard/features/product/data/product_datasource.dart';
 import 'package:storage_guard/features/product/data/product_repositories.dart';
@@ -74,6 +75,8 @@ abstract class DI {
         () => SendRecordsCubit(di<OperationRepositories>(), preferences));
     di.registerFactory<GetAllOperationsCubit>(
         () => GetAllOperationsCubit(di<OperationRepositories>()));
+    di.registerFactory<GetOperationCubit>(
+        () => GetOperationCubit(di<OperationRepositories>()));
     di.registerFactory<CreateOperationCubit>(
         () => CreateOperationCubit(di<OperationRepositories>()));
   }
@@ -83,13 +86,16 @@ abstract class DI {
   static BluetoothService get bluetoothService => di.get<BluetoothService>();
   static AuthCubit authCubitFactory() => di.get<AuthCubit>();
   static ProductCubit productCubitFactory() => di.get<ProductCubit>();
-  static CreateClonedProductCubit createClonedProductCubitFactory() => di.get<CreateClonedProductCubit>();
+  static CreateClonedProductCubit createClonedProductCubitFactory() =>
+      di.get<CreateClonedProductCubit>();
   static MainPageService get mainService => di.get<MainPageService>();
   static ShopCubit shopCubitFactory() => di.get<ShopCubit>();
   static SendRecordsCubit sendRecordsCubitFactory() =>
       di.get<SendRecordsCubit>();
   static GetAllOperationsCubit getAllOperationsCubitFactory() =>
       di.get<GetAllOperationsCubit>();
+  static GetOperationCubit getOperationCubitFactory() =>
+      di.get<GetOperationCubit>();
   static CreateOperationCubit createOperationCubitFactory() =>
       di.get<CreateOperationCubit>();
 }

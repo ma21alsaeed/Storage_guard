@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
-import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/features/operation/data/operation_model.dart';
-
-import '../../../../bluetooth_devices_page.dart';
+import 'package:storage_guard/features/operation/presentation/operation_page.dart';
 
 class OperationWidget extends StatelessWidget {
   const OperationWidget(this.operation, {super.key});
@@ -13,11 +12,14 @@ class OperationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        DI.bluetoothService.requestBluetoothPermission();
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const BluetoothDevicesPage()));
+        PersistentNavBarNavigator.pushNewScreen(context,
+            screen: OperationPage(operation.id, {
+              "last_temp": operation.lastTemp,
+              "last_humidity": operation.lastHumidity,
+              "avg_temp": operation.avgTemp,
+              "avg_humidity": operation.avgHumidity
+            }),
+            withNavBar: false);
       },
       child: Material(
         elevation: 5,
@@ -31,17 +33,17 @@ class OperationWidget extends StatelessWidget {
               Text(
                 "${operation.type[0].toUpperCase()}${operation.type.substring(1)} Operation",
                 style: TextStyles.bodyTitleTextStyle,
-              ),const Divider(
-                            color: Colors.black54,
-                            height: 12,
-                          ),
+              ),
+              const Divider(
+                color: Colors.black54,
+                height: 12,
+              ),
               operation.checkForValues()
                   ? Padding(
                       padding: const EdgeInsets.only(left: 7),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          
                           Wrap(
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [

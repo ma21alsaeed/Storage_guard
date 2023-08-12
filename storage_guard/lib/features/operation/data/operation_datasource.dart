@@ -9,9 +9,8 @@ import 'package:storage_guard/features/operation/data/operation_model.dart';
 class OperationDataSource {
   final Client _client;
   OperationDataSource(this._client);
-  
-  Future<OperationModel> createOperation(
-          Map<String, dynamic> data) async =>
+
+  Future<OperationModel> createOperation(Map<String, dynamic> data) async =>
       dataSource(
           () => _client.post(
                 Uri.parse(operationsUrl),
@@ -35,7 +34,19 @@ class OperationDataSource {
           ),
       model: operationModelListFromJson);
 
-  Future<void> sendSensorRecordings(List<Map<String, dynamic>> data,int operationId) async =>
+  Future<OperationModel> getOperation(int operationId) async => dataSource(
+      () => _client.get(
+            Uri.parse(operationUrl(operationId)),
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ${DI.userService.getUser()?.token}'
+            },
+          ),
+      model: operationModelFromJson);
+
+  Future<void> sendSensorRecordings(
+          List<Map<String, dynamic>> data, int operationId) async =>
       dataSource(
         () => _client.post(
           Uri.parse(operationSensorRecordingsUrl(operationId)),
@@ -47,4 +58,21 @@ class OperationDataSource {
           },
         ),
       );
+  Future<void> endOperation(int operationId) async {
+    print("EndOperationData:${operationUrl(operationId)}${{
+      "finished_at": DateTime.now().millisecondsSinceEpoch.toString()
+    }}");
+    return dataSource(
+      () => _client.put(
+        Uri.parse(operationUrl(operationId)),
+        body: json.encode(
+            {"finished_at": DateTime.now().toIso8601String()}),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${DI.userService.getUser()?.token}'
+        },
+      ),
+    );
+  }
 }

@@ -46,7 +46,7 @@ class ProductPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const TitleAppBar(),
+                              const TitleAppBar(withReturn: true),
                               const SizedBox(height: 60),
                               const TitleDivider("Specifications"),
                               const SizedBox(height: 10),
@@ -90,8 +90,9 @@ class ProductPage extends StatelessWidget {
                               Text(product.expiryDate.formattedDate2,
                                   style: const TextStyle(fontSize: 15)),
                               const SizedBox(height: 50),
-                              const TitleDivider("Operations"),
-                              // const SizedBox(height: 40),
+                              productOperations.isEmpty
+                                  ? const SizedBox.shrink()
+                                  : const TitleDivider("Operations"),
                             ],
                           ),
                         ),
@@ -121,6 +122,7 @@ class ProductPage extends StatelessWidget {
                           child: BlocConsumer<cloned.CreateClonedProductCubit,
                                   cloned.CreateClonedProductState>(
                               listener: (context, state) {
+                                
                             if (state is cloned.CreatedClonedProduct) {
                               Fluttertoast.showToast(
                                   msg: "Cloned product successfully");
@@ -129,7 +131,7 @@ class ProductPage extends StatelessWidget {
                                   msg: "Unable to clone product");
                             }
                           }, builder: (context, state) {
-                            if (state is LoadingState) {
+                            if (state is cloned.LoadingState) {
                               const SizedBox(
                                   width: 40,
                                   child: CircularProgressIndicator());
@@ -180,7 +182,7 @@ class LogWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              operation.finishedAt?.formattedDateWithoutYear??"Running",
+              operation.finishedAt?.formattedDateWithoutYear ?? "Running",
               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 10),

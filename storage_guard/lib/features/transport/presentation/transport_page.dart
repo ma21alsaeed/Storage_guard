@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:storage_guard/app/constants/text_styles.dart';
+import 'package:storage_guard/app/di.dart';
 import 'package:storage_guard/app/extensions/dialog_build_context.dart';
 import 'package:storage_guard/app/widgets/buttons/gradient_button.dart';
 import 'package:storage_guard/app/widgets/custom_dialog.dart';
@@ -209,6 +210,7 @@ class _AddDevicesSection extends StatelessWidget {
                   GradientButton(
                     title: "Link",
                     onPressed: () {
+                      DI.bluetoothService.requestBluetoothPermission();
                       context.read<TransportPageService>().createdOperation()
                           ? PersistentNavBarNavigator.pushNewScreen(context,
                               screen: const LinkDevicePage(), withNavBar: false)

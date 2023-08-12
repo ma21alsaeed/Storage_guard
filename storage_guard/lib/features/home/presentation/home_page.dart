@@ -67,27 +67,30 @@ class HomePageImpl extends StatelessWidget {
                           break;
                         }
                       }
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                  width: 200,
-                                  child: Image.asset(
-                                      "assets/images/text_logo.png"))
-                            ],
-                          ),
-                          SizedBox(height: operations.isEmpty ? 0 : 45),
-                          operations.isEmpty
-                              ? const SizedBox()
-                              : _CurrentOperationsSection(operations),
-                          const SizedBox(height: 45),
-                          _LastUpdateSection(operations, isAllSafe)
-                        ],
+                      return SizedBox(
+                        height: MediaQuery.sizeOf(context).height,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                    width: 200,
+                                    child: Image.asset(
+                                        "assets/images/text_logo.png"))
+                              ],
+                            ),
+                            SizedBox(height: operations.isEmpty ? 0 : 45),
+                            operations.isEmpty
+                                ? const SizedBox()
+                                : _CurrentOperationsSection(operations),
+                            const SizedBox(height: 45),
+                            _LastUpdateSection(operations, isAllSafe)
+                          ],
+                        ),
                       );
                     } else if (state is ErrorState) {
                       return SizedBox(

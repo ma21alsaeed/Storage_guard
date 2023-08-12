@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:storage_guard/app/constants/colors.dart';
 import 'package:storage_guard/app/widgets/button.dart';
 import 'package:storage_guard/app/widgets/title_appbar.dart';
@@ -85,6 +86,9 @@ class QrCodePage extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => const ShopPage()));
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "This is not a storage guard QR Code");
                             }
                           });
                         },

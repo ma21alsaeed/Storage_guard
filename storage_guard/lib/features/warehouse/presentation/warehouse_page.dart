@@ -215,6 +215,7 @@ class _AddDevicesSection extends StatelessWidget {
                       print("timestamp before cutting$timeStamp");
                       String warehouseData =
                           "${Provider.of<WarehousePageService>(context, listen: false).getOperationId},${DI.userService.getUser()!.token},$timeStamp";
+                      DI.bluetoothService.requestBluetoothPermission();
                       context.read<WarehousePageService>().createdOperation()
                           ? PersistentNavBarNavigator.pushNewScreen(context,
                               screen: LinkDevicePage(

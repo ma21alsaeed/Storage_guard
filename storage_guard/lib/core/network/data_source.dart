@@ -8,7 +8,7 @@ Future<T> dataSource<T>(Function call,
   final response = await call();
   print("responseIs: ${response.body}");
   var jsonResponse = json.decode(response.body);
-  if (response.statusCode == 401) {
+  if (jsonResponse["message"] == "Unauthenticated.") {
     await DI.userService.logout();
   }
   if (response.statusCode == 200) {
@@ -17,6 +17,8 @@ Future<T> dataSource<T>(Function call,
     }
     return model(response.body);
   } else {
-    throw HttpException(jsonResponse["message"]);
+    throw jsonResponse["message"] == null
+        ? HttpException(jsonResponse["error"])
+        : HttpException(jsonResponse["message"]);
   }
 }

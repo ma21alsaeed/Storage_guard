@@ -30,5 +30,5 @@ class ProductDataSource {
                   'Authorization': 'Bearer ${DI.userService.getUser()?.token}'
                 },
               ),
-          model: productModelFromJson);
+          model: productModelFromJsonWithProductKey);
 }
