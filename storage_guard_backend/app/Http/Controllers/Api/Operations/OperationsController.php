@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Operation;
 use App\Models\ProductsList;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Users\UserResources;
 use App\Http\Resources\Operations\OperationResources;
 use App\Http\Requests\Operations\StoreOperationRequest;
 use App\Http\Requests\Operations\UpdateOperationRequest;
@@ -32,7 +33,9 @@ class OperationsController extends Controller
         {
             return response()->json(['message' => 'User not found.'], 404);
         }
-        return response()->json(['data' => OperationSummaryResources::collection($user->operations)]);
+        return response()->json([
+            'user' => new UserResources($user),
+            'data' => OperationSummaryResources::collection($user->operations)]);
     }
 
     /**
