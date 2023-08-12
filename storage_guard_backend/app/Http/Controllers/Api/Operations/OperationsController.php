@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Operations;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Operation;
 use App\Models\ProductsList;
 use App\Http\Controllers\Controller;
@@ -20,6 +21,18 @@ class OperationsController extends Controller
     public function index()
     {
         return response()->json(['data' => OperationSummaryResources::collection(auth()->user()->operations)]);
+    }
+    public function showAllOperations($userId)
+    {
+        try
+        {
+            $user = User::findOrFail($userId);
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+        return response()->json(['data' => OperationSummaryResources::collection($user->operations)]);
     }
 
     /**

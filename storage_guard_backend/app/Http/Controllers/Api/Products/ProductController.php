@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Products;
 
+use App\Http\Resources\Products\SpoiltProductResources;
 use Carbon\Carbon;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
@@ -23,6 +24,22 @@ class ProductController extends Controller
         ]);
     }
 
+    /**
+     * show all spoilt product.
+     */
+    public function showAllSpoiltProduct()
+    {
+        $spoiltProduct = Product::where('safety_status', false)->get();
+        // return $spoiltProduct->get();
+        // return $spoiltProduct;
+
+        // $operation = $spoiltProduct->operations->last()->id;
+
+        return response()->json([
+
+            'spoiltProduct' => SpoiltProductResources::collection($spoiltProduct)
+            ]);
+    }
     /**
      * Store a newly created resource in storage.
      */
