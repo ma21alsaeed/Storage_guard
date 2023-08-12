@@ -25,13 +25,17 @@ Route::get('/user', [UserController::class, 'index']); //show users
 Route::Post('/user', [UserController::class, 'store']); //create new user
 Route::Post('/login', LoginController::class);
 Route::get('/user-id-operations/{Userid}', [OperationsController::class, 'showAllOperations']);
+Route::get('/products/{productId}', [ProductController::class, 'show']);
+Route::get('/user/operations/{operaionId}', [OperationsController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function ()
 {
     Route::Put('/user/{userId}', [UserController::class, 'update']);
     Route::Delete('/user/{userId}', [UserController::class, 'destroy']);
-    Route::resource('/products', ProductController::class)->except('create', 'edit');
-    Route::resource('/user/operations', OperationsController::class)->except('create', 'edit');
+    //! crad request to product
+    Route::resource('/products', ProductController::class)->except('create', 'edit', 'show');
+    //! crad request to operation
+    Route::resource('/user/operations', OperationsController::class)->except('create', 'edit', 'show');
     Route::get('/operation-products/{operation}', [ProductListController::class, 'index']);
     Route::post('/operation-products/{operation}', [ProductListController::class, 'store']);
     Route::delete('/operation-products/{operation}', [ProductListController::class, 'destroy']);
