@@ -7,6 +7,6 @@ import 'package:storage_guard/features/shop/data/shop_model.dart';
 class ShopRepositories {
   ShopRepositories(this._shopDataSource);
   final ShopDataSource _shopDataSource;
-  Future<Either<Failure, ShopModel>> getshop(String url) async =>
-      await repository(() => _shopDataSource.getshop(url));
+  Future<Either<Failure, ShopModel>> getShop(int userId) async =>
+      await repository(() => _shopDataSource.getShop(userId));
 }

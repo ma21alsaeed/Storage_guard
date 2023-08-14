@@ -52,7 +52,9 @@ class _OperationPageState extends State<OperationPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 19),
               child: BlocConsumer<GetOperationCubit, GetOperationState>(
-                  listener: (context, state) {},
+                  listener: (context, state) {if (state is GotOperationState) {
+                  if(state.operation.sensorReadings!.isEmpty){Fluttertoast.showToast(msg: "No readings found");}
+                }},
                   builder: (context, state) {
                     if (state is LoadingState) {
                       return SizedBox(
