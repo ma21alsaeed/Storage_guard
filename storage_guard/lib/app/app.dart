@@ -63,6 +63,7 @@ class StorageGuardApp extends StatelessWidget {
           BlocProvider(create: (_) => DI.createOperationCubitFactory()),
         ],
         child: MaterialApp(
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),

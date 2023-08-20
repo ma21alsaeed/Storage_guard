@@ -27,6 +27,10 @@ abstract class TextStyles {
     color: AppColors.textColor,
     fontFamily: "Inter",
     fontSize: 20,
+  );static TextStyle regularNotSafeTextStyle = const TextStyle(
+    color: Colors.red,
+    fontFamily: "Inter",
+    fontSize: 20,
   );
   static TextStyle bodyTitleTextStyle = const TextStyle(
     color: AppColors.textColor,

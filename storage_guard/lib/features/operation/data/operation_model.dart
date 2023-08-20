@@ -79,16 +79,16 @@ class OperationModel {
             ? null
             : DateTime.parse(json["finished_at"]),
         lastTemp: json["last_temp"] != null
-            ? double.parse(json["last_temp"].toString())
+            ? double.parse(json["last_temp"].toStringAsFixed(1))
             : null,
         lastHumidity: json["last_humidity"] != null
-            ? double.parse(json["last_humidity"].toString())
+            ? double.parse(json["last_humidity"].toStringAsFixed(1))
             : null,
         avgTemp: json["avg_temp"] != null
-            ? double.parse(json["avg_temp"].toString())
+            ? double.parse(json["avg_temp"].toStringAsFixed(1))
             : null,
         avgHumidity: json["avg_humidity"] != null
-            ? double.parse(json["avg_humidity"].toString())
+            ? double.parse(json["avg_humidity"].toStringAsFixed(1))
             : null,
         safetyStatus: json["safety_status"],
         productsCount: json["products_count"],

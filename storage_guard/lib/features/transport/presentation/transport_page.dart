@@ -175,17 +175,34 @@ class _AddDevicesSection extends StatelessWidget {
               context.watch<TransportPageService>().getConnectedDeviceName() !=
                       null
                   ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Device Name",
-                          style: TextStyles.regularTextStyle,
+                        Row(
+                          children: [
+                            Text(
+                              "Device Name: ",
+                              style: TextStyles.regularTextStyle,
+                            ),
+                            Container(
+                                width: 4 * 2,
+                                height: 4 * 2,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color.fromARGB(255, 60, 206, 55),
+                                )),
+                            const SizedBox(width: 5),
+                            Text(
+                              "Connected",
+                              style: TextStyles.regularTextStyle,
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 14),
                         Text(
                           context
                               .watch<TransportPageService>()
                               .getConnectedDeviceName()!,
-                          style: TextStyles.regularTextStyle,
+                          style: TextStyles.bodyTitleTextStyle,
                         ),
                       ],
                     )

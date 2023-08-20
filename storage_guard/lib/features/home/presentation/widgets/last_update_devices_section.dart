@@ -23,13 +23,20 @@ class LastUpdateDevicesSection extends StatelessWidget {
               const Spacer(),
               Text(
                 isAllSafe ? "All Safe" : "Not Safe",
-                style: TextStyles.regularTextStyle,
+                style: isAllSafe
+                    ? TextStyles.regularTextStyle
+                    : TextStyles.regularNotSafeTextStyle,
               ),
               const SizedBox(width: 4),
-              Image.asset(
-                "assets/icons/shield_small.png",
-                width: 25,
-              )
+              isAllSafe
+                  ? Image.asset(
+                      "assets/icons/shield_small.png",
+                      width: 25,
+                    )
+                  : Image.asset(
+                      "assets/icons/not_safe_small.png",
+                      width: 25,
+                    )
             ],
           ),
         ),

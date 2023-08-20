@@ -21,7 +21,7 @@ class LastUpdateBottomSection extends StatelessWidget {
             child: ListView.separated(
               itemCount: 2,
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              physics: const ScrollPhysics(),
               separatorBuilder: (context, index) => const SizedBox(
                 height: 20,
               ),

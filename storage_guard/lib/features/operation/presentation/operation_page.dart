@@ -12,7 +12,8 @@ import 'package:storage_guard/core/funcs.dart';
 import 'package:storage_guard/features/operation/data/operation_model.dart';
 import 'package:storage_guard/features/operation/data/operation_repositories.dart';
 import 'package:storage_guard/features/operation/data/sensor_reading_model.dart';
-import 'package:storage_guard/features/operation/presentation/cubit/get_all_operations_cubit.dart'as getAll;
+import 'package:storage_guard/features/operation/presentation/cubit/get_all_operations_cubit.dart'
+    as getAll;
 import 'package:storage_guard/features/operation/presentation/cubit/get_operation_cubit.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -79,19 +80,26 @@ class _OperationPageState extends State<OperationPage> {
                               Row(
                                 children: [
                                   SizedBox(
-                                    width: 22,
-                                    child: Image.asset(
-                                        "assets/icons/shield_small.png"),
-                                  ),
+                                      width: 22,
+                                      child: widget.data["safety_status"] == 1
+                                          ? Image.asset(
+                                              "assets/icons/shield_small.png",
+                                              width: 25,
+                                            )
+                                          : Image.asset(
+                                              "assets/icons/not_safe_small.png",
+                                              width: 25,
+                                            )),
                                   const SizedBox(
                                     width: 5,
                                   ),
                                   Text(
-                                    operation.safetyStatus == 1
+                                    widget.data["safety_status"] == 1
                                         ? "Safe"
                                         : "Not Safe",
                                     style:
-                                        const TextStyle(color: Colors.black87),
+                                         TextStyle(color:widget.data["safety_status"] == 1
+                                        ? Colors.black87:Colors.red),
                                   ),
                                 ],
                               ),
@@ -181,11 +189,14 @@ class _OperationPageState extends State<OperationPage> {
                                     .di<OperationRepositories>()
                                     .endOperation(operation.id);
                                 either.fold((l) {
-                                  Fluttertoast.showToast(msg: "Error: ${getErrorMessage(l)}");
+                                  Fluttertoast.showToast(
+                                      msg: "Error: ${getErrorMessage(l)}");
                                 }, (r) {
                                   Fluttertoast.showToast(
                                       msg: "Ended Operation");
-                                      BlocProvider.of<getAll.GetAllOperationsCubit>(context).getAllOperations();
+                                  BlocProvider.of<getAll.GetAllOperationsCubit>(
+                                          context)
+                                      .getAllOperations();
                                 });
                               },
                               title: "End operation",

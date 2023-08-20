@@ -159,9 +159,9 @@ class _LastUpdateSection extends StatelessWidget {
         const TitleDivider("Last Update"),
         const SizedBox(height: 16),
         LastUpdateDevicesSection(operations, isAllSafe),
-        const SizedBox(height: 35),
-        LastUpdateBottomSection(operations),
-        const SizedBox(height: 45),
+        // const SizedBox(height: 35),
+        // LastUpdateBottomSection(operations),
+        // const SizedBox(height: 45),
       ],
     );
   }

@@ -17,7 +17,8 @@ class OperationWidget extends StatelessWidget {
               "last_temp": operation.lastTemp,
               "last_humidity": operation.lastHumidity,
               "avg_temp": operation.avgTemp,
-              "avg_humidity": operation.avgHumidity
+              "avg_humidity": operation.avgHumidity,
+              "safety_status": operation.safetyStatus,
             }),
             withNavBar: false);
       },
@@ -75,10 +76,9 @@ class OperationWidget extends StatelessWidget {
                                           "assets/icons/shield_small.png",
                                           width: 25,
                                         )
-                                      : const Icon(
-                                          Icons.safety_check_outlined,
-                                          color: AppColors.mainblue,
-                                          size: 25,
+                                      : Image.asset(
+                                          "assets/icons/not_safe_small.png",
+                                          width: 25,
                                         )
                                 ],
                               ),
