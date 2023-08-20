@@ -6,8 +6,8 @@ import 'package:storage_guard/features/shop/data/shop_model.dart';
 class ShopDataSource {
   ShopDataSource(this._client);
   final Client _client;
-  Future<ShopModel> getshop(String url) async => await dataSource(
+  Future<ShopModel> getShop(int userId) async => await dataSource(
       () => _client
-          .get(Uri.parse(baseUrl+url), headers: {'Accept': 'application/json'}),
+          .get(Uri.parse(shopUrl(userId)), headers: {'Accept': 'application/json'}),
       model: shopModelFromJson);
 }

@@ -67,25 +67,31 @@ class QrCodePage extends StatelessWidget {
                                   MaterialPageRoute(
                                       builder: (context) => const QRViewPage()))
                               .then((value) {
-                            if (value.contains("StorageGuard") &&
-                                value.contains("Product")) {
-                              BlocProvider.of<ProductCubit>(context).getProduct(
-                                  int.parse(value.substring(
-                                      value.indexOf(":") + 1, value.length)));
+                            print("ValueIs:$value");
+                            if (value.contains("StorageGuard")) {
+                              if (value.contains("Product")) {
+                                BlocProvider.of<ProductCubit>(context)
+                                    .getProduct(int.parse(value.substring(
+                                        value.indexOf(":") + 1, value.length)));
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProductPage()));
-                            }
-                            if (value.contains("user")) {
-                              BlocProvider.of<ShopCubit>(context)
-                                  .getShop(value);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const ShopPage()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ProductPage()));
+                              } else if (value.contains("User")) {
+                                BlocProvider.of<ShopCubit>(context).getShop(
+                                    int.parse(value.substring(
+                                        value.indexOf(":") + 1, value.length)));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ShopPage()));
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg: "This is not a storage guard QR Code");
+                              }
                             } else {
                               Fluttertoast.showToast(
                                   msg: "This is not a storage guard QR Code");

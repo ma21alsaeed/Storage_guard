@@ -7,9 +7,9 @@ part 'shop_state.dart';
 class ShopCubit extends Cubit<ShopState> {
   final ShopRepositories _shopRepositories;
   ShopCubit(this._shopRepositories) : super(ShopInitial());
-  Future<void> getShop(String url) async {
+  Future<void> getShop(int userId) async {
     emit(LoadingState());
-    final either = await _shopRepositories.getshop(url);
+    final either = await _shopRepositories.getShop(userId);
     either.fold((error) async {
       final errorMessage = getErrorMessage(error);
       emit(ErrorState(errorMessage));

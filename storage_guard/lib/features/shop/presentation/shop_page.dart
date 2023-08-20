@@ -5,6 +5,8 @@ import 'package:storage_guard/app/widgets/error_occurred_widget.dart';
 import 'package:storage_guard/app/widgets/loading_widget.dart';
 import 'package:storage_guard/app/widgets/title_appbar.dart';
 import 'package:storage_guard/app/widgets/title_divider.dart';
+import 'package:storage_guard/features/operation/data/operation_model.dart';
+import 'package:storage_guard/features/product/presentation/product_page.dart';
 import 'package:storage_guard/features/shop/data/shop_model.dart';
 import 'package:storage_guard/features/shop/presentation/cubit/shop_cubit.dart';
 
@@ -26,6 +28,7 @@ class ShopPage extends StatelessWidget {
                     child: const LoadingWidget());
               } else if (state is GotShop) {
                 ShopModel shop = state.shop;
+                List<OperationModel> shopOperations = state.shop.operations;
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 19),
                   child: Column(
@@ -33,16 +36,12 @@ class ShopPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const TitleAppBar(),
-                      const SizedBox(height: 60),
-                      TitleDivider(shop.shopName),
-                      const SizedBox(height: 10),
-                      Row(
+                      
+                      const SizedBox(height: 30),
+                      TitleDivider(shop.user.name),const SizedBox(height: 8),Row(
                         children: [
-                          Text("Temperature",
-                              style: TextStyles.regularTextStyle),
-                          const Spacer(),
                           Text(
-                            shop.safe ? "Safe" : "Not Safe",
+                            shop.getIsSafe() ? "Safe" : "Not Safe",
                             style: const TextStyle(fontSize: 15),
                           ),
                           const SizedBox(width: 10),
@@ -52,30 +51,42 @@ class ShopPage extends StatelessWidget {
                           )
                         ],
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        "${shop.temperature} Celsius",
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      const SizedBox(height: 20),
-                      Text("Humidity", style: TextStyles.regularTextStyle),
-                      const SizedBox(height: 8),
-                      Text(shop.humidity),
-                      const SizedBox(height: 60),
-                      const TitleDivider("Market Information"),
                       const SizedBox(height: 10),
                       Text("Location", style: TextStyles.regularTextStyle),
                       const SizedBox(height: 8),
                       Text(
-                        shop.location,
+                        shop.user.location,
                         style: const TextStyle(fontSize: 15),
                       ),
                       const SizedBox(height: 10),
                       Text("Phone", style: TextStyles.regularTextStyle),
                       const SizedBox(height: 8),
                       Text(
-                        shop.phone,
+                        shop.user.phone.toString(),
                         style: const TextStyle(fontSize: 15),
+                      ),
+                      const SizedBox(height: 30),
+                      shopOperations.isEmpty
+                          ? const SizedBox.shrink()
+                          : const TitleDivider("Operations"),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: MediaQuery.sizeOf(context).width,
+                        height: 120,
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: shopOperations.length,
+                          itemBuilder: (context, index) {
+                            return LogWidget(
+                              shopOperations[index],
+                              isFirst: index == 0,
+                              isLast: index == shopOperations.length - 1,
+                            );
+                          },
+                          separatorBuilder: (context, index) =>
+                              const SizedBox.shrink(),
+                        ),
                       ),
                     ],
                   ),
