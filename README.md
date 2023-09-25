@@ -43,4 +43,4 @@ You can view the UI design for this project on Figma. Click [here](https://www.f
 
 
 ## Test Video 
-![Alt Text](Video/test_video.mp4)
+![Alt Text](Video/video.mp4)
