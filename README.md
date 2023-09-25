@@ -25,3 +25,7 @@ Regarding the tools used in this project, we will be using ESP32, DHT11, OLED 0.
 ![Alt Text](Diagrams/block_diagram.jpg)
 
 This Block diagram of the project
+
+
+## UI Design
+You can view the UI design for this project on Figma. Click [here](https://www.figma.com/file/PbwwBlaESeXXwpQmey9ZeX/Storage-Guard?type=design&node-id=106%3A343&mode=design&t=6I2FvKPpFj7dOu3u-1) to access the design.
