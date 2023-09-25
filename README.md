@@ -4,6 +4,11 @@
 
 
 The project aims to develop a device for monitoring the conditions surrounding stored and transported goods throughout the supply chain. This is done to ensure user protection from spoiled products such as medicines and food. The methodology followed in this project consists of three main steps.
+### Project scenario
+
+![Alt Text](Diagrams/scenario.jpg)
+
+###### This diagram shows the scenario of this project
 
 * Step 1: This step involves the production of the product and the installation of a label containing a Quick Response (QR) code on the box that contains the product or on the product itself, depending on the distribution method. This code contains a link that provides information about the product, including its type, manufacturer, specifications, and the environmental conditions.
 
@@ -13,14 +18,10 @@ The project aims to develop a device for monitoring the conditions surrounding s
 
 Regarding the tools used in this project, we will be using ESP32, DHT11, OLED 0.96, in addition to several other device-related components. In terms of software, we have developed a consumer application, a device user application, and a backend application for storage and process linking.
 
-### Project scenario
 
-![Alt Text](Diagrams/scenario.png)
-
-###### This diagram shows the scenario of this project
 
 ### Block diagram
 
-![Alt Text](path/to/block_diagram.png)
+![Alt Text](Diagrams/block_diagram.jpg)
 
 ###### This Block diagram of the project
