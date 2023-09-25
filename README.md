@@ -8,7 +8,7 @@ The project aims to develop a device for monitoring the conditions surrounding s
 
 ![Alt Text](Diagrams/scenario.jpg)
 
-###### This diagram shows the scenario of this project
+This diagram shows the scenario of this project
 
 * Step 1: This step involves the production of the product and the installation of a label containing a Quick Response (QR) code on the box that contains the product or on the product itself, depending on the distribution method. This code contains a link that provides information about the product, including its type, manufacturer, specifications, and the environmental conditions.
 
@@ -24,4 +24,4 @@ Regarding the tools used in this project, we will be using ESP32, DHT11, OLED 0.
 
 ![Alt Text](Diagrams/block_diagram.jpg)
 
-###### This Block diagram of the project
+This Block diagram of the project
